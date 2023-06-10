@@ -32,6 +32,8 @@ pnpm install
 
 #### Mobile
 
+Nesse caso será necessário rodar o app em um emulador ou dispositivo físico. Olhe mais sobre [lá embaixo](#configure-expo-dev-script).
+
 ### Rodando o projeto
 
 Instale as dependencias:
@@ -47,13 +49,7 @@ Configure as variáveis de ambiente baseado no arquivo de exemplo:
 cp .env.example .env
 ```
 
-Gere o prisma client:
-
-```bash
-pnpm db:generate
-```
-
-Atualize o banco de dados de acordo com o schema:
+Atualize o banco de dados de acordo com o schema do prisma:
 
 ```bash
 pnpm db:push
@@ -130,7 +126,7 @@ pnpm db:push
 
 ### Configure Expo `dev`-script
 
-#### Use iOS Simulator
+#### Use iOS Simulator (only for macOS)
 
 1. Make sure you have XCode and XCommand Line Tools installed [as shown on expo docs](https://docs.expo.dev/workflow/ios-simulator/).
    > **NOTE:** If you just installed XCode, or if you have updated it, you need to open the simulator manually once. Run `npx expo start` in the root dir, and then enter `I` to launch Expo Go. After the manual launch, you can run `pnpm dev` in the root directory.
