@@ -103,7 +103,7 @@ packages
      └─ typesafe db-calls using Prisma
 ```
 
-> In this template, we use `@shared-pkgs` as a placeholder for package names. As a user, you might want to replace it with your own organization or project name. You can use find-and-replace to change all the instances of `@struct/` to something like `@project-name/`.
+> In this template, we use `@struct` as a placeholder for package names. As a user, you might want to replace it with your own organization or project name. You can use find-and-replace to change all the instances of `@struct/` to something like `@project-name/`.
 
 ## Quick Start
 
