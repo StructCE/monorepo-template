@@ -1,20 +1,80 @@
-# create-t3-turbo
+# Nosso template
 
-<img width="1758" alt="turbo2" src="https://user-images.githubusercontent.com/51714798/213819392-33e50db9-3e38-4c51-9a22-03abe5e48f3d.png">
+Pode ser usado tanto para criar um projeto web quanto um aplicativo mobile. Compartilha código backend, mas não frontend.
 
-## Installation
+Talvez, no futuro, tamagui ou outra biblioteca possa ser adicionada para compartilhar código frontend entre plataformas.
 
-There are two ways of initializing an app using `create-t3-turbo` starter. You can either use this repository as a template or use Turbo's CLI to init your project:
+## Como rodar:
+
+### Pre requisitos
+
+#### Gerais
+
+Caso não já tenha, instale e use a última versão estável do node:
 
 ```bash
-npx create-turbo@latest -e https://github.com/t3-oss/create-t3-turbo
+nvm install --lts
 ```
 
-## About
+Caso não já tenha, instale o pnpm:
 
-Ever wondered how to migrate your T3 application into a monorepo? Stop right here! This is the perfect starter repo to get you running with the perfect stack!
+```bash
+npm install -g pnpm
+```
 
-It uses [Turborepo](https://turborepo.org/) and contains:
+O gerenciador de pacotes a ser usado nesse repositorio é o pnpm, que é mais rápido e consome menos espaço que o npm ou yarn.
+
+Então, dentro da raíz do projeto rode o comando:
+
+```bash
+pnpm install
+```
+
+#### Mobile
+
+### Rodando o projeto
+
+Instale as dependencias:
+
+```bash
+pnpm i
+```
+
+Configure as variáveis de ambiente baseado no arquivo de exemplo:
+
+```bash
+# adicione as chaves que tiver que adicionar após copiar
+cp .env.example .env
+```
+
+Gere o prisma client:
+
+```bash
+pnpm db:generate
+```
+
+Atualize o banco de dados de acordo com o schema:
+
+```bash
+pnpm db:push
+```
+
+Rode o projeto:
+
+```bash
+pnpm dev
+```
+
+## Sobre
+
+Repositório iniciado com o template: https://github.com/t3-oss/create-t3-turbo
+
+Monorepo que usa a ideia do t3-stack para criar um monorepo com expo (aplicativo) e nextjs (web).
+Unifica o código backend com typesafety end to end.
+
+Estrutura de pastas:
+
+(A partir daqui o README é o mesmo do t3-turbo)
 
 ```
 .github
@@ -43,29 +103,7 @@ packages
      └─ typesafe db-calls using Prisma
 ```
 
-> In this template, we use `@acme` as a placeholder for package names. As a user, you might want to replace it with your own organization or project name. You can use find-and-replace to change all the instances of `@acme/` to something like `@my-company/` / `@project-name/`.
-
-## FAQ
-
-### Can you include Solito?
-
-No. Solito will not be included in this repo. It is a great tool if you want to share code between your Next.js and Expo app. However, the main purpose of this repo is not the integration between Next.js and Expo - it's the codesplitting of your T3 App into a monorepo, the Expo app is just a bonus example of how you can utilize the monorepo with multiple apps but can just as well be any app such as Vite, Electron, etc.
-
-Integrating Solito into this repo isn't hard, and there are a few [offical templates](https://github.com/nandorojo/solito/tree/master/example-monorepos) by the creators of Solito that you can use as a reference.
-
-### What auth solution should I use instead of Next-Auth.js for Expo?
-
-I've left this kind of open for you to decide. Some options are [Clerk](https://clerk.dev), [Supabase Auth](https://supabase.com/docs/guides/auth), [Firebase Auth](https://firebase.google.com/docs/auth/) or [Auth0](https://auth0.com/docs). Note that if you're dropping the Expo app for something more "browser-like", you can still use Next-Auth.js for those. [See an example in a Plasmo Chrome Extension here](https://github.com/t3-oss/create-t3-turbo/tree/chrome/apps/chrome).
-
-The Clerk.dev team even made an [official template repository](https://github.com/clerkinc/t3-turbo-and-clerk) integrating Clerk.dev with this repo.
-
-During Launch Week 7, Supabase [announced their fork](https://supabase.com/blog/launch-week-7-community-highlights#t3-turbo-x-supabase) of this repo integrating it with their newly announced auth improvements. You can check it out [here](https://github.com/supabase-community/create-t3-turbo).
-
-### Does this pattern leak backend code to my client applications?
-
-No, it does not. The `api` package should only be a production dependency in the Next.js application where it's served. The Expo app, and all other apps you may add in the future, should only add the `api` package as a dev dependency. This lets you have full typesafety in your client applications, while keeping your backend code safe.
-
-If you need to share runtime code between the client and server, such as input validation schemas, you can create a separate `shared` package for this and import on both sides.
+> In this template, we use `@shared-pkgs` as a placeholder for package names. As a user, you might want to replace it with your own organization or project name. You can use find-and-replace to change all the instances of `@struct/` to something like `@project-name/`.
 
 ## Quick Start
 
