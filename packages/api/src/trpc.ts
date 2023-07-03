@@ -7,25 +7,31 @@
  * The pieces you will need to use are documented accordingly near the end
  */
 
+import type { NextApiRequest, NextApiResponse } from "next/types";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { User } from "lucia-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { prisma } from "@struct/db";
+
+import { auth } from "./lucia";
 
 /**
  * 1. CONTEXT
  *
  * This section defines the "contexts" that are available in the backend API
  *
- * These allow you to access things like the database, the session, etc, when
+ * These allow you to access things like the database, the user, etc, when
  * processing a request
  *
  */
-type Session = { user: {} };
+
 type CreateContextOptions = {
-  session: Session | null;
+  user: User | null;
+  req: NextApiRequest;
+  res: NextApiResponse;
 };
 
 /**
@@ -39,8 +45,11 @@ type CreateContextOptions = {
  */
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
-    session: opts.session,
+    user: opts.user,
+    req: opts.req,
+    res: opts.res,
     prisma,
+    auth,
   };
 };
 
@@ -52,11 +61,15 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
 
-  // Get the session from the server using the unstable_getServerSession wrapper function
-  // const session = await getServerSession({ req, res });
+  // Get the user from the server using the unstable_getServerUser wrapper function
+  // const user = await getServerUser({ req, res });
+  const authRequest = auth.handleRequest({ req, res });
+  const { user } = await authRequest.validateUser();
 
   return createInnerTRPCContext({
-    session: null,
+    user,
+    req,
+    res,
   });
 };
 
@@ -98,7 +111,7 @@ export const createTRPCRouter = t.router;
  *
  * This is the base piece you use to build new queries and mutations on your
  * tRPC API. It does not guarantee that a user querying is authorized, but you
- * can still access user session data if they are logged in
+ * can still access user user data if they are logged in
  */
 export const publicProcedure = t.procedure;
 
@@ -107,13 +120,13 @@ export const publicProcedure = t.procedure;
  * procedure
  */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.session?.user) {
+  if (!ctx.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({
     ctx: {
-      // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.session.user },
+      // infers the `user` as non-nullable
+      user: ctx.user,
     },
   });
 });
@@ -122,7 +135,7 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  * Protected (authed) procedure
  *
  * If you want a query or mutation to ONLY be accessible to logged in users, use
- * this. It verifies the session is valid and guarantees ctx.session.user is not
+ * this. It verifies the user is valid and guarantees ctx.user.user is not
  * null
  *
  * @see https://trpc.io/docs/procedures

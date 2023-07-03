@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEventHandler, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 
@@ -6,159 +6,103 @@ import { useSession } from "@struct/auth-context";
 
 import { api, type RouterOutputs } from "~/utils/api";
 
-const PostCard: React.FC<{
-  post: RouterOutputs["post"]["all"][number];
-  onPostDelete?: () => void;
-}> = ({ post, onPostDelete }) => {
-  return (
-    <div className="flex flex-row rounded-lg bg-white/10 p-4 transition-all hover:scale-[101%]">
-      <div className="flex-grow">
-        <h2 className="text-2xl font-bold text-pink-400">{post.title}</h2>
-        <p className="mt-2 text-sm">{post.content}</p>
-      </div>
-      <div>
-        <span
-          className="cursor-pointer text-sm font-bold uppercase text-pink-400"
-          onClick={onPostDelete}
-        >
-          Delete
-        </span>
-      </div>
-    </div>
-  );
-};
+const Home: NextPage = () => {
+  const signUp = api.auth.signUp.useMutation().mutate;
 
-const CreatePostForm: React.FC = () => {
-  const utils = api.useContext();
-
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-
-  const { mutate, error } = api.post.create.useMutation({
-    async onSuccess() {
-      setTitle("");
-      setContent("");
-      await utils.post.all.invalidate();
-    },
+  const [isRegistering, setIsRegistering] = useState(true);
+  const [registerInfo, setRegisterInfo] = useState({
+    username: "",
+    email: "",
+    password: "",
+    passwordConfirmation: "",
   });
 
+  function handleRegisterChange(key: string, value: string) {
+    setRegisterInfo((p) => ({ ...p, [key]: value }));
+  }
+  const handleRegister: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+
+    signUp(registerInfo);
+  };
+
+  function handleLogin() {}
+
   return (
-    <div className="flex w-full max-w-2xl flex-col p-4">
-      <input
-        className="mb-2 rounded bg-white/10 p-2 text-white"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="Title"
-      />
-      {error?.data?.zodError?.fieldErrors.title && (
-        <span className="mb-2 text-red-500">
-          {error.data.zodError.fieldErrors.title}
-        </span>
-      )}
-      <input
-        className="mb-2 rounded bg-white/10 p-2 text-white"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        placeholder="Content"
-      />
-      {error?.data?.zodError?.fieldErrors.content && (
-        <span className="mb-2 text-red-500">
-          {error.data.zodError.fieldErrors.content}
-        </span>
+    <main className="flex min-h-screen flex-col items-center justify-center bg-slate-900 text-white">
+      {isRegistering ? (
+        <form onSubmit={handleRegister}>
+          <label className="pr-3" htmlFor="">
+            Nome
+          </label>
+          <br />
+          <input
+            onChange={(e) => handleRegisterChange("name", e.target.value)}
+            className="text-black"
+            name="name"
+          />
+          <div className="h-10" />
+          <label className="pr-3" htmlFor="">
+            Email
+          </label>
+          <br />
+          <input
+            onChange={(e) => handleRegisterChange("email", e.target.value)}
+            className="text-black"
+            name="email"
+          />
+          <div className="h-10" />
+          <label className="pr-3" htmlFor="">
+            Senha:
+          </label>
+          <br />
+          <input
+            onChange={(e) => handleRegisterChange("password", e.target.value)}
+            className="text-black"
+            name="password"
+          />
+          <div className="h-10" />
+          <label className="pr-3" htmlFor="">
+            Confirme sua Senha:
+          </label>
+          <br />
+          <input
+            onChange={(e) =>
+              handleRegisterChange("passwordConfirmation", e.target.value)
+            }
+            className="text-black"
+            name="passwordConfirmation"
+          />
+          <div className="h-10" />
+          <button className="ml-1/2 rounded bg-black px-3 py-2">Criar</button>
+        </form>
+      ) : (
+        <form onSubmit={handleLogin}>
+          <label className="pr-3" htmlFor="">
+            Email
+          </label>
+          <br />
+          <input className="text-black" name="email" />
+          <div className="h-10" />
+          <label className="pr-3" htmlFor="">
+            Senha:
+          </label>
+          <br />
+          <input className="text-black" name="password" />
+          <div className="h-10" />
+          <button className="ml-1/2 rounded bg-black px-3 py-2">Logar</button>
+        </form>
       )}
       <button
-        className="rounded bg-pink-400 p-2 font-bold"
-        onClick={() => {
-          mutate({
-            title,
-            content,
-          });
-        }}
+        onClick={() => setIsRegistering((p) => !p)}
+        className="mt-10 p-3 text-white underline"
       >
-        Create
+        {isRegistering
+          ? "I already have an account"
+          : "I don't have an account"}
       </button>
-    </div>
-  );
-};
-
-const Home: NextPage = () => {
-  const postQuery = api.post.all.useQuery();
-
-  const deletePostMutation = api.post.delete.useMutation({
-    onSettled: () => postQuery.refetch(),
-  });
-
-  return (
-    <>
-      <Head>
-        <title>Create T3 App</title>
-        <meta name="description" content="Generated by create-t3-app" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main className="flex h-screen flex-col items-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-        <div className="container mt-12 flex flex-col items-center justify-center gap-4 px-4 py-8">
-          <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-            Create <span className="text-pink-400">T3</span> Turbo
-          </h1>
-          <AuthShowcase />
-
-          <CreatePostForm />
-
-          {postQuery.data ? (
-            <div className="w-full max-w-2xl">
-              {postQuery.data?.length === 0 ? (
-                <span>There are no posts!</span>
-              ) : (
-                <div className="flex h-[40vh] justify-center overflow-y-scroll px-4 text-2xl">
-                  <div className="flex w-full flex-col gap-4">
-                    {postQuery.data?.map((p) => {
-                      return (
-                        <PostCard
-                          key={p.id}
-                          post={p}
-                          onPostDelete={() => deletePostMutation.mutate(p.id)}
-                        />
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
-          ) : (
-            <p>Loading...</p>
-          )}
-        </div>
-      </main>
-    </>
+    </main>
   );
 };
 
 export default Home;
-
-const AuthShowcase: React.FC = () => {
-  const { signIn, signOut } = useSession();
-
-  const { data: session } = api.auth.getSession.useQuery();
-
-  const { data: secretMessage } = api.auth.getSecretMessage.useQuery(
-    undefined, // no input
-    { enabled: !!session?.user },
-  );
-
-  return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      {session?.user && (
-        <p className="text-center text-2xl text-white">
-          {session && <span>Logged in as {session?.user?.name}</span>}
-          {secretMessage && <span> - {secretMessage}</span>}
-        </p>
-      )}
-      <button
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-        onClick={session ? () => void signOut() : () => void signIn()}
-      >
-        {session ? "Sign out" : "Sign in"}
-      </button>
-    </div>
-  );
-};
