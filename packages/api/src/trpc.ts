@@ -6,12 +6,13 @@
  * tl;dr - this is where all the tRPC server stuff is created and plugged in.
  * The pieces you will need to use are documented accordingly near the end
  */
-import { getServerSession, type Session } from "@struct/auth";
-import { prisma } from "@struct/db";
+
 import { initTRPC, TRPCError } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
+
+import { prisma } from "@struct/db";
 
 /**
  * 1. CONTEXT
@@ -22,6 +23,7 @@ import { ZodError } from "zod";
  * processing a request
  *
  */
+type Session = { user: {} };
 type CreateContextOptions = {
   session: Session | null;
 };
@@ -51,10 +53,10 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
 
   // Get the session from the server using the unstable_getServerSession wrapper function
-  const session = await getServerSession({ req, res });
+  // const session = await getServerSession({ req, res });
 
   return createInnerTRPCContext({
-    session,
+    session: null,
   });
 };
 

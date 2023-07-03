@@ -1,7 +1,8 @@
 import { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { signIn, signOut } from "next-auth/react";
+
+import { useSession } from "@struct/auth-context";
 
 import { api, type RouterOutputs } from "~/utils/api";
 
@@ -135,6 +136,8 @@ const Home: NextPage = () => {
 export default Home;
 
 const AuthShowcase: React.FC = () => {
+  const { signIn, signOut } = useSession();
+
   const { data: session } = api.auth.getSession.useQuery();
 
   const { data: secretMessage } = api.auth.getSecretMessage.useQuery(
