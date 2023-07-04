@@ -14,12 +14,15 @@ const AuthContext = createContext<null | {
     _loginInfo: RouterInputs["auth"]["login"],
   ) => Promise<Lucia.UserAttributes>;
   logout: () => Promise<unknown>;
+  signup: (
+    signUpInfo: RouterInputs["auth"]["signUp"],
+  ) => Promise<Lucia.UserAttributes>;
 }>(null);
 
 export const AuthContextProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<Lucia.UserAttributes | null>(null);
 
-  const { mutate: apiLogin } = api.auth.login.useMutation();
+  const { mutateAsync: apiLogin } = api.auth.login.useMutation();
 
   const { mutateAsync: getUser } = api.auth.getUser.useMutation();
   useEffect(() => {
@@ -29,20 +32,24 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   async function login(loginInfo: RouterInputs["auth"]["login"]) {
-    return new Promise<Lucia.UserAttributes>((resolve, reject) => {
-      apiLogin(loginInfo, {
-        onError(error, variables) {
-          reject({ error, variables });
-        },
-        onSuccess(response, variables) {
-          setUser(response);
-          resolve(response);
-        },
-      });
+    return apiLogin(loginInfo).then((res) => {
+      setUser(res);
+      return res;
     });
   }
 
-  async function logout() {}
+  const { mutateAsync: apiLogout } = api.auth.logout.useMutation();
+  async function logout() {
+    return apiLogout().then((res) => {
+      setUser(null);
+      return res;
+    });
+  }
+
+  const { mutateAsync: signupMutation } = api.auth.signUp.useMutation();
+  async function signup(signUpInfo: RouterInputs["auth"]["signUp"]) {
+    return signupMutation(signUpInfo);
+  }
 
   return (
     <AuthContext.Provider
@@ -50,6 +57,7 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
         user,
         login,
         logout,
+        signup,
       }}
     >
       {children}

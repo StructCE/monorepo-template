@@ -1,5 +1,6 @@
-import { appRouter, createTRPCContext } from "@struct/api";
 import { createNextApiHandler } from "@trpc/server/adapters/next";
+
+import { appRouter, createTRPCContext } from "@struct/api";
 
 // export API handler
 export default createNextApiHandler({

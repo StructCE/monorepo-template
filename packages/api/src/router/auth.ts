@@ -71,7 +71,6 @@ export const authRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      console.log(1);
       try {
         const authRequest = ctx.auth.handleRequest({
           req: ctx.req,
@@ -101,6 +100,19 @@ export const authRouter = createTRPCRouter({
         });
       }
     }),
+
+  logout: protectedProcedure.mutation(async ({ ctx }) => {
+    const authRequest = ctx.auth.handleRequest(ctx);
+    const { session } = await authRequest.validateUser();
+    if (!session) {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "User must be logged in to logout",
+      });
+    }
+    await ctx.auth.invalidateSession(session.sessionId);
+    authRequest.setSession(null);
+  }),
 
   getUser: protectedProcedure.mutation(({ ctx }) => {
     return ctx.user;

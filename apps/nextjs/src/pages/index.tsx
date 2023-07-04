@@ -1,15 +1,10 @@
 import { FormEventHandler, useState } from "react";
 import type { NextPage } from "next";
-import Head from "next/head";
 
-import { useSession } from "@struct/auth-context";
-
-import { api, type RouterOutputs } from "~/utils/api";
 import { useAuthContext } from "~/authContext";
 
 const Home: NextPage = () => {
-  const signUp = api.auth.signUp.useMutation().mutate;
-  const { login, user, logout } = useAuthContext();
+  const { login, user, logout, signup } = useAuthContext();
 
   const [isRegistering, setIsRegistering] = useState(true);
   const [registerInfo, setRegisterInfo] = useState({
@@ -23,16 +18,18 @@ const Home: NextPage = () => {
     password: "",
   });
 
-  function handleRegisterChange(key: string, value: string) {
+  function handleRegisterChange(key: keyof typeof registerInfo, value: string) {
     setRegisterInfo((p) => ({ ...p, [key]: value }));
   }
   const handleRegister: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
-    signUp(registerInfo);
+    signup(registerInfo)
+      .then((res) => alert(`Usuário de email ${res.email} criado`))
+      .catch((er) => alert(er.message));
   };
 
-  function handleLoginChange(key: string, value: string) {
+  function handleLoginChange(key: keyof typeof loginInfo, value: string) {
     setLoginInfo((p) => ({ ...p, [key]: value }));
   }
   const handleLogin: FormEventHandler<HTMLFormElement> = (e) => {
@@ -59,7 +56,7 @@ const Home: NextPage = () => {
           </label>
           <br />
           <input
-            onChange={(e) => handleRegisterChange("name", e.target.value)}
+            onChange={(e) => handleRegisterChange("username", e.target.value)}
             className="text-black"
             name="name"
           />
