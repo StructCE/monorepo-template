@@ -12,10 +12,7 @@ export const auth = lucia({
   env: process.env.NODE_ENV === "production" ? "PROD" : "DEV", // "PROD" if prod
   middleware: nextjs(),
   transformDatabaseUser: (userData) => {
-    return {
-      userId: userData.id,
-      email: userData.email,
-    };
+    return userData;
   },
 });
 

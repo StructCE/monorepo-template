@@ -70,7 +70,8 @@ export const authRouter = createTRPCRouter({
         password: z.string(),
       }),
     )
-    .query(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx }) => {
+      console.log(1);
       try {
         const authRequest = ctx.auth.handleRequest({
           req: ctx.req,
@@ -79,7 +80,7 @@ export const authRouter = createTRPCRouter({
         const key = await ctx.auth.useKey("email", input.email, input.password);
         const session = await ctx.auth.createSession(key.userId);
         authRequest.setSession(session);
-        return session;
+        return ctx.auth.getUser(session.userId);
       } catch (e) {
         const error = e as LuciaError;
         if (
@@ -101,7 +102,7 @@ export const authRouter = createTRPCRouter({
       }
     }),
 
-  getUser: protectedProcedure.query(({ ctx }) => {
+  getUser: protectedProcedure.mutation(({ ctx }) => {
     return ctx.user;
   }),
 

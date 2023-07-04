@@ -5,10 +5,11 @@ import Head from "next/head";
 import { useSession } from "@struct/auth-context";
 
 import { api, type RouterOutputs } from "~/utils/api";
+import { useAuthContext } from "~/authContext";
 
 const Home: NextPage = () => {
   const signUp = api.auth.signUp.useMutation().mutate;
-  const login = api.auth.login.useQuery;
+  const { login, user, logout } = useAuthContext();
 
   const [isRegistering, setIsRegistering] = useState(true);
   const [registerInfo, setRegisterInfo] = useState({
@@ -36,12 +37,21 @@ const Home: NextPage = () => {
   }
   const handleLogin: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
+    console.log("antes");
 
-    login(loginInfo);
+    login(loginInfo)
+      .then((usr) => alert(JSON.stringify(usr)))
+      .catch((er) => alert("na"));
+    console.log("dps");
   };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-slate-900 text-white">
+      {user && (
+        <p>
+          Logado como {user.username} <button onClick={logout}>Sair</button>
+        </p>
+      )}
       {isRegistering ? (
         <form onSubmit={handleRegister}>
           <label className="pr-3" htmlFor="">
