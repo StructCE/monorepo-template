@@ -10,7 +10,7 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { User } from "lucia-auth";
+import type { User } from "lucia-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
 

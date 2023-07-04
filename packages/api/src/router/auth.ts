@@ -22,7 +22,7 @@ export const authRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        await ctx.auth.createUser({
+        return await ctx.auth.createUser({
           primaryKey: {
             providerId: "email",
             providerUserId: input.email,
@@ -37,11 +37,11 @@ export const authRouter = createTRPCRouter({
         if (
           error instanceof Prisma.PrismaClientKnownRequestError &&
           error.code === "P2002" &&
-          error.message?.includes("username")
+          error.message?.includes("email")
         ) {
           throw new TRPCError({
             code: "BAD_REQUEST",
-            message: "Username already in use",
+            message: "Email already in use",
           });
         }
         if (
@@ -50,7 +50,7 @@ export const authRouter = createTRPCRouter({
         ) {
           throw new TRPCError({
             code: "BAD_REQUEST",
-            message: "Username already in use",
+            message: "Email already in use",
           });
         }
         // database connection error
@@ -101,9 +101,10 @@ export const authRouter = createTRPCRouter({
       }
     }),
 
-  getUser: publicProcedure.query(({ ctx }) => {
+  getUser: protectedProcedure.query(({ ctx }) => {
     return ctx.user;
   }),
+
   getSecretMessage: protectedProcedure.query(() => {
     // testing type validation of overridden next-auth Session in @struct/auth package
     return "you can see this secret message!";

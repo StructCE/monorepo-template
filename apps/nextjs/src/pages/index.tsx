@@ -8,6 +8,7 @@ import { api, type RouterOutputs } from "~/utils/api";
 
 const Home: NextPage = () => {
   const signUp = api.auth.signUp.useMutation().mutate;
+  const login = api.auth.login.useQuery;
 
   const [isRegistering, setIsRegistering] = useState(true);
   const [registerInfo, setRegisterInfo] = useState({
@@ -15,6 +16,10 @@ const Home: NextPage = () => {
     email: "",
     password: "",
     passwordConfirmation: "",
+  });
+  const [loginInfo, setLoginInfo] = useState({
+    email: "",
+    password: "",
   });
 
   function handleRegisterChange(key: string, value: string) {
@@ -26,7 +31,14 @@ const Home: NextPage = () => {
     signUp(registerInfo);
   };
 
-  function handleLogin() {}
+  function handleLoginChange(key: string, value: string) {
+    setLoginInfo((p) => ({ ...p, [key]: value }));
+  }
+  const handleLogin: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+
+    login(loginInfo);
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-slate-900 text-white">
@@ -82,13 +94,21 @@ const Home: NextPage = () => {
             Email
           </label>
           <br />
-          <input className="text-black" name="email" />
+          <input
+            onChange={(e) => handleLoginChange("email", e.target.value)}
+            className="text-black"
+            name="email"
+          />
           <div className="h-10" />
           <label className="pr-3" htmlFor="">
             Senha:
           </label>
           <br />
-          <input className="text-black" name="password" />
+          <input
+            onChange={(e) => handleLoginChange("password", e.target.value)}
+            className="text-black"
+            name="password"
+          />
           <div className="h-10" />
           <button className="ml-1/2 rounded bg-black px-3 py-2">Logar</button>
         </form>
