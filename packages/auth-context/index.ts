@@ -1,1 +1,1 @@
-export { useSession, SessionProvider } from "./src/context";
+export { useAuthContext, AuthContextProvider } from "./src/context";

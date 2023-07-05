@@ -11,11 +11,11 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@struct/api": "^0.1.0",
     "@t3-oss/env-nextjs": "^0.3.1",
     "react": "18.2.0"
   },
   "devDependencies": {
+    "@struct/api": "^0.1.0",
     "@struct/eslint-config": "^0.1.0",
     "eslint": "^8.42.0",
     "typescript": "^5.1.3"

@@ -1,58 +1,90 @@
 import {
   createContext,
-  useCallback,
   useContext,
+  useEffect,
   useState,
-  type FC,
-  type PropsWithChildren,
+  type ReactNode,
 } from "react";
+import type { NextPageContext } from "next";
+import type { CreateTRPCNext } from "@trpc/next/dist/createTRPCNext";
+import type { CreateTRPCReact } from "@trpc/react-query/dist/createTRPCReact";
 
-import { signInFromContext } from "./signIn";
-import { signOutFromContext } from "./signOut";
+import type { AppRouter, RouterInputs } from "@struct/api";
 
-type SignInType = "email" | "google";
+const AuthContext = createContext<null | {
+  user: null | Lucia.UserAttributes;
+  login: (
+    _loginInfo: RouterInputs["auth"]["login"],
+  ) => Promise<Lucia.UserAttributes>;
+  logout: () => Promise<unknown>;
+  signup: (
+    signUpInfo: RouterInputs["auth"]["signUp"],
+  ) => Promise<Lucia.UserAttributes>;
+}>(null);
 
-type SignInInfo<T extends SignInType> = T extends "email"
-  ? {
-      email: string;
-      password: string;
-    }
-  : {};
+export const AuthContextProvider = ({
+  children,
+  api,
+}: {
+  children: ReactNode;
+  api:
+    | CreateTRPCReact<AppRouter, unknown, null>
+    | CreateTRPCNext<AppRouter, NextPageContext, null>;
+}) => {
+  const [user, setUser] = useState<Lucia.UserAttributes | null>(null);
 
-export interface ContextT {
-  session: {} | null;
-  signIn: (type: SignInType, signInInfo: SignInInfo<SignInType>) => void;
-  signOut: () => void;
-}
+  const { mutateAsync: apiLogin } = api.auth.login.useMutation();
 
-export type Session = object;
+  const { mutateAsync: getUser } = api.auth.getUser.useMutation();
+  useEffect(() => {
+    getUser()
+      .then((usr) => setUser(usr))
+      .catch(() => {});
+  }, []);
 
-const SessionContext = createContext<ContextT>({
-  session: null,
-  signIn: () => {},
-  signOut: () => {},
-});
+  async function login(loginInfo: RouterInputs["auth"]["login"]) {
+    return apiLogin(loginInfo).then((res) => {
+      setUser(res);
+      return res;
+    });
+  }
 
-// This hook can be used to access the session info.
-export function useSession() {
-  return useContext(SessionContext);
-}
+  const { mutateAsync: apiLogout } = api.auth.logout.useMutation();
+  async function logout() {
+    return apiLogout().then((res) => {
+      setUser(null);
+      return res;
+    });
+  }
 
-export const SessionProvider: FC<PropsWithChildren> = (props) => {
-  const [session, setSession] = useState<Session | null>(null);
-
-  const signIn = useCallback(signInFromContext(setSession), [setSession]);
-  const signOut = useCallback(signOutFromContext(setSession), [setSession]);
+  const { mutateAsync: signupMutation } = api.auth.signUp.useMutation();
+  async function signup(signUpInfo: RouterInputs["auth"]["signUp"]) {
+    return signupMutation(signUpInfo);
+  }
 
   return (
-    <SessionContext.Provider
+    <AuthContext.Provider
       value={{
-        session,
-        signIn,
-        signOut,
+        user,
+        login,
+        logout,
+        signup,
       }}
     >
-      {props.children}
-    </SessionContext.Provider>
+      {children}
+    </AuthContext.Provider>
   );
+};
+
+export const useAuthContext = () => {
+  const authContext = useContext(AuthContext);
+  if (!authContext) {
+    throw new Error(
+      "You may only call useAuthContext inside its provider. Make sure you're wrapping <AuthProvider /> around your app.",
+    );
+  }
+
+  console.log(authContext);
+
+  return authContext;
 };

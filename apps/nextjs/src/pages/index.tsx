@@ -1,8 +1,7 @@
-import { FormEventHandler, useState } from "react";
 import type { NextPage } from "next";
 import Link from "next/link";
 
-import { useAuthContext } from "~/authContext";
+import { useAuthContext } from "@struct/auth-context";
 
 const Home: NextPage = () => {
   const { user, logout } = useAuthContext();
@@ -21,7 +20,10 @@ const Home: NextPage = () => {
             </h2>
           )}
           {user ? (
-            <button className="mx-auto p-3 text-lg underline" onClick={logout}>
+            <button
+              className="mx-auto p-3 text-lg underline"
+              onClick={() => void logout()}
+            >
               Sair
             </button>
           ) : (

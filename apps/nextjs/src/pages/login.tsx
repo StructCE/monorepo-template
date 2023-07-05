@@ -1,9 +1,9 @@
-import { FormEventHandler, useEffect, useState } from "react";
+import { useEffect, useState, type FormEventHandler } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import * as Tabs from "@radix-ui/react-tabs";
 
-import { useAuthContext } from "~/authContext";
+import { useAuthContext } from "@struct/auth-context";
 
 const Home: NextPage = () => {
   const { login, user, signup } = useAuthContext();
@@ -11,10 +11,9 @@ const Home: NextPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (user) router.replace("/");
-  }, [user]);
+    if (user) void router.replace("/");
+  }, [user, router]);
 
-  const [isRegistering, setIsRegistering] = useState(false);
   const [userInfo, setUserInfo] = useState({
     username: "",
     email: "",
@@ -30,7 +29,10 @@ const Home: NextPage = () => {
 
     signup(userInfo)
       .then((res) => alert(`Usuário de email ${res.email} criado`))
-      .catch((er) => alert(er.message));
+      .catch((er) => {
+        // get error type with conditionals:
+        if (er instanceof Error) alert(er.message);
+      });
   };
 
   const handleLogin: FormEventHandler<HTMLFormElement> = (e) => {
