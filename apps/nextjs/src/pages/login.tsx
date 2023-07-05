@@ -49,15 +49,18 @@ const Home: NextPage = () => {
         defaultValue="login"
         className="h-max w-full max-w-xl rounded bg-zinc-900"
       >
-        <Tabs.List className="flex w-full flex-wrap rounded-t">
+        <Tabs.List
+          aria-label="Faça login ou registre uma conta"
+          className="flex w-full flex-wrap rounded-t"
+        >
           <Tabs.Trigger
-            className="h-full w-1/2 rounded-tl border-b border-gray-500 p-3 opacity-80 outline-1 outline-offset-1 outline-white transition-all focus-visible:outline data-[state='active']:border-white data-[state='active']:text-sky-100 data-[state='active']:opacity-100"
+            className="h-full w-1/2 rounded-tl border-b border-gray-500 p-3 text-sky-100 opacity-80 outline-1 outline-offset-1 outline-white transition-all focus-visible:outline data-[state='active']:border-white data-[state='active']:text-white data-[state='active']:opacity-100"
             value="login"
           >
             Logar
           </Tabs.Trigger>
           <Tabs.Trigger
-            className="h-full w-1/2 rounded-tr border-b border-gray-500 p-3 opacity-80 outline-1 outline-offset-1 outline-white transition-all focus-visible:outline data-[state='active']:border-white data-[state='active']:text-sky-100 data-[state='active']:opacity-100"
+            className="h-full w-1/2 rounded-tr border-b border-gray-500 p-3  text-sky-100 opacity-80 outline-1 outline-offset-1 outline-white transition-all focus-visible:outline data-[state='active']:border-white data-[state='active']:text-white data-[state='active']:opacity-100"
             value="register"
           >
             Nova conta
@@ -68,35 +71,50 @@ const Home: NextPage = () => {
           value="register"
         >
           <form className="flex flex-col" onSubmit={handleRegister}>
-            <h2 className="mb-4 text-lg opacity-90">Registre uma nova conta</h2>
-            <label className="pr-3" htmlFor="name">
+            <h2 className="mx-auto text-xl opacity-90">
+              Registre uma nova conta
+            </h2>
+            <label
+              className="pr-3 pt-10 text-sky-100 opacity-80"
+              htmlFor="name"
+            >
               Nome
             </label>
             <br />
             <input
               onChange={(e) => handleChange("username", e.target.value)}
-              className="rounded border border-white/50 bg-transparent p-2 outline-1 outline-current focus-visible:outline"
+              className="rounded border border-white/50 bg-transparent p-2 text-lg outline-1 outline-current focus-visible:outline"
               id="name"
             />
-            <label className="pr-3 pt-10" htmlFor="email">
+            <label
+              className="pr-3 pt-10 text-sky-100 opacity-80"
+              htmlFor="email"
+            >
               Email
             </label>
             <br />
             <input
               onChange={(e) => handleChange("email", e.target.value)}
-              className="rounded border border-white/50 bg-transparent p-2 outline-1 outline-current focus-visible:outline"
+              className="rounded border border-white/50 bg-transparent p-2 text-lg outline-1 outline-current focus-visible:outline"
               id="email"
             />
-            <label className="pr-3 pt-10" htmlFor="password">
+            <label
+              className="pr-3 pt-10 text-sky-100 opacity-80"
+              htmlFor="password"
+            >
               Senha:
             </label>
             <br />
             <input
               onChange={(e) => handleChange("password", e.target.value)}
-              className="rounded border border-white/50 bg-transparent p-2 outline-1 outline-current focus-visible:outline"
+              className="rounded border border-white/50 bg-transparent p-2 text-lg outline-1 outline-current focus-visible:outline"
               id="password"
+              type="password"
             />
-            <label className="pr-3 pt-10" htmlFor="passwordConfirmation">
+            <label
+              className="pr-3 pt-10 text-sky-100 opacity-80"
+              htmlFor="passwordConfirmation"
+            >
               Confirme sua Senha:
             </label>
             <br />
@@ -104,11 +122,14 @@ const Home: NextPage = () => {
               onChange={(e) =>
                 handleChange("passwordConfirmation", e.target.value)
               }
-              className="rounded border border-white/50 bg-transparent p-2 outline-1 outline-current focus-visible:outline"
+              className="rounded border border-white/50 bg-transparent p-2 text-lg outline-1 outline-current focus-visible:outline"
               id="passwordConfirmation"
+              type="password"
             />
-            <button className="mt-10 rounded p-3 text-right underline underline-offset-4 outline-1 outline-offset-1 outline-white focus-visible:outline">
-              Criar
+            <button className="group mt-10 rounded py-3 text-right focus-visible:outline-none">
+              <span className="rounded bg-white/50 p-3 font-bold text-zinc-950 outline-1 outline-offset-2 outline-gray-300 group-focus-visible:outline">
+                Criar
+              </span>
             </button>
           </form>
         </Tabs.Content>
@@ -117,112 +138,40 @@ const Home: NextPage = () => {
           value="login"
         >
           <form className="flex flex-col" onSubmit={handleLogin}>
-            <h2 className="mb-4 text-lg opacity-90">Faça Login</h2>
-            <label className="pr-3" htmlFor="email">
+            <h2 className="mx-auto text-xl opacity-90">Faça Login</h2>
+            <label
+              className="pr-3 pt-10 text-sky-100 opacity-80"
+              htmlFor="email"
+            >
               Email
             </label>
             <br />
             <input
               onChange={(e) => handleChange("email", e.target.value)}
-              className="rounded border border-white/50 bg-transparent p-2 outline-1 outline-current focus-visible:outline"
+              className="rounded border border-white/50 bg-transparent p-2 text-lg outline-1 outline-current focus-visible:outline"
               id="email"
             />
-            <label className="pr-3 pt-10" htmlFor="password">
+            <label
+              className="pr-3 pt-10 text-sky-100 opacity-80"
+              htmlFor="password"
+            >
               Senha:
             </label>
             <br />
             <input
               onChange={(e) => handleChange("password", e.target.value)}
-              className="rounded border border-white/50 bg-transparent p-2 outline-1 outline-current focus-visible:outline"
+              className="rounded border border-white/50 bg-transparent p-2 text-lg outline-1 outline-current focus-visible:outline"
               id="password"
+              type="password"
             />
-            <button className="p-3-2 mt-10 text-right underline underline-offset-4 outline-1 outline-offset-1 outline-white focus-visible:outline">
-              Entrar
+            <button className="group mt-10 rounded py-3 text-right focus-visible:outline-none">
+              <span className="rounded bg-white/50 p-3 font-bold text-zinc-950 outline-1 outline-offset-2 outline-gray-300 group-focus-visible:outline">
+                Entrar
+              </span>
             </button>
           </form>
         </Tabs.Content>
       </Tabs.Root>
-      {/* {isRegistering ? (
-        <form className="flex flex-col" onSubmit={handleRegister}>
-          <h2>Registre-se</h2>
-          <label className="pr-3" htmlFor="name">
-            Nome
-          </label>
-          <br />
-          <input
-            onChange={(e) => handleChange("username", e.target.value)}
-            className="text-black p-2"
-            id="name"
-          />
-          <div className="h-10" />
-          <label className="pr-3" htmlFor="email">
-            Email
-          </label>
-          <br />
-          <input
-            onChange={(e) => handleChange("email", e.target.value)}
-            className="text-black p-2"
-            id="email"
-          />
-          <div className="h-10" />
-          <label className="pr-3" htmlFor="password">
-            Senha:
-          </label>
-          <br />
-          <input
-            onChange={(e) => handleChange("password", e.target.value)}
-            className="text-black p-2"
-            id="password"
-          />
-          <div className="h-10" />
-          <label className="pr-3" htmlFor="">
-            Confirme sua Senha:
-          </labe           classNamel>
-          <br />
-          <input
-            onChange={(e) =>
-              handleChange("passwordConfirmation", e.target.value)
-            id
-            className="text-black p-2"
-            name="passwordConfirmation"
-          />
-          <div className="h-10" />
-          <button className="text-right 1 outline-offset-1 outline-white focus-visible:outline ml-1/2 rounded bg-black px-3 py-2 ml-auto">Criar</button>
-        </form>
-      ) : (
-        <form className="flex flex-col" onSubmit={handleLogin}>
-          <h2>Faça Login</h2>
-          <label className="pr-3" htmlFor="email">
-            Email
-          </label>
-          <br />
-          <input
-            onChange={(e) => handleChange("email", e.target.value)}
-            className="text-black p-2"
-            id="email"
-          />
-          <div className="h-10" />
-          <label className="pr-3" htmlFor="password">
-            Senha:
-          </label>
-          <br />
-          <input
-            onChange={(e) => handleChange("password", e.target.value)}
-            className="text-black p-2"
-            id="password"
-          />
-          <div className="h-10" />
-          <button className="text-right 1 outline-offset-1 outline-white focus-visible:outline ml-1/2 rounded bg-black px-3 py-2 ml-auto">Logar</button>
-        </form>
-      )}
-      <button
-        onClick={() => setIsRegistering((p) => !p)}
-        className="mt-10 p-3 text-white underline"
-      >
-        {isRegistering
-          ? "I already have an account"
-          : "I don't have an account"}
-      </button> */}
     </main>
   );
 };
