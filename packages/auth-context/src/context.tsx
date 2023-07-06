@@ -41,8 +41,10 @@ export const AuthContextProvider = ({
   useEffect(() => {
     getUser()
       .then((usr) => setUser(usr))
-      .catch(() => {});
-  }, []);
+      .catch(() => {
+        setUser(null);
+      });
+  }, [getUser]);
 
   async function signIn(signInInfo: RouterInputs["auth"]["signIn"]) {
     return apiSignIn(signInInfo).then((res) => {
