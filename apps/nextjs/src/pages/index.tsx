@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useAuthContext } from "@struct/auth-context";
 
 const Home: NextPage = () => {
-  const { user, logout } = useAuthContext();
+  const { user, signOut } = useAuthContext();
 
   return (
     <section className="flex min-h-screen bg-zinc-900 text-sky-200">
@@ -22,7 +22,7 @@ const Home: NextPage = () => {
           {user ? (
             <button
               className="mx-auto p-3 text-lg underline"
-              onClick={() => void logout()}
+              onClick={() => void signOut()}
             >
               Sair
             </button>

@@ -11,16 +11,18 @@ import type { CreateTRPCReact } from "@trpc/react-query/dist/createTRPCReact";
 
 import type { AppRouter, RouterInputs } from "@struct/api";
 
-const AuthContext = createContext<null | {
+type AuthContextT = {
   user: null | Lucia.UserAttributes;
-  login: (
-    _loginInfo: RouterInputs["auth"]["login"],
+  signIn: (
+    arg: RouterInputs["auth"]["signIn"],
   ) => Promise<Lucia.UserAttributes>;
-  logout: () => Promise<unknown>;
-  signup: (
-    signUpInfo: RouterInputs["auth"]["signUp"],
+  signOut: () => Promise<unknown>;
+  signUp: (
+    arg: RouterInputs["auth"]["signUp"],
   ) => Promise<Lucia.UserAttributes>;
-}>(null);
+};
+
+const AuthContext = createContext<null | AuthContextT>(null);
 
 export const AuthContextProvider = ({
   children,
@@ -33,7 +35,7 @@ export const AuthContextProvider = ({
 }) => {
   const [user, setUser] = useState<Lucia.UserAttributes | null>(null);
 
-  const { mutateAsync: apiLogin } = api.auth.login.useMutation();
+  const { mutateAsync: apiSignIn } = api.auth.signIn.useMutation();
 
   const { mutateAsync: getUser } = api.auth.getUser.useMutation();
   useEffect(() => {
@@ -42,33 +44,33 @@ export const AuthContextProvider = ({
       .catch(() => {});
   }, []);
 
-  async function login(loginInfo: RouterInputs["auth"]["login"]) {
-    return apiLogin(loginInfo).then((res) => {
+  async function signIn(signInInfo: RouterInputs["auth"]["signIn"]) {
+    return apiSignIn(signInInfo).then((res) => {
       setUser(res);
       return res;
     });
   }
 
-  const { mutateAsync: apiLogout } = api.auth.logout.useMutation();
-  async function logout() {
-    return apiLogout().then((res) => {
+  const { mutateAsync: apiSignOut } = api.auth.signOut.useMutation();
+  async function signOut() {
+    return apiSignOut().then((res) => {
       setUser(null);
       return res;
     });
   }
 
-  const { mutateAsync: signupMutation } = api.auth.signUp.useMutation();
-  async function signup(signUpInfo: RouterInputs["auth"]["signUp"]) {
-    return signupMutation(signUpInfo);
+  const { mutateAsync: signUpMutation } = api.auth.signUp.useMutation();
+  async function signUp(signUpInfo: RouterInputs["auth"]["signUp"]) {
+    return signUpMutation(signUpInfo);
   }
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        login,
-        logout,
-        signup,
+        signIn,
+        signOut,
+        signUp,
       }}
     >
       {children}

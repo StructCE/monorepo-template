@@ -63,7 +63,7 @@ export const authRouter = createTRPCRouter({
       }
     }),
 
-  login: publicProcedure
+  signIn: publicProcedure
     .input(
       z.object({
         email: z.string(),
@@ -101,7 +101,7 @@ export const authRouter = createTRPCRouter({
       }
     }),
 
-  logout: protectedProcedure.mutation(async ({ ctx }) => {
+  signOut: protectedProcedure.mutation(async ({ ctx }) => {
     const authRequest = ctx.auth.handleRequest(ctx);
     const { session } = await authRequest.validateUser();
     if (!session) {
