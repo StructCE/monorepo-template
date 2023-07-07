@@ -11,7 +11,8 @@ import type { CreateTRPCReact } from "@trpc/react-query/dist/createTRPCReact";
 
 import type { AppRouter, RouterInputs } from "@struct/api";
 
-type AuthContextT = {
+// interface instead of type for better intellisense
+interface AuthContextT {
   user: null | Lucia.UserAttributes;
   signIn: (
     arg: RouterInputs["auth"]["signIn"],
@@ -20,22 +21,24 @@ type AuthContextT = {
   signUp: (
     arg: RouterInputs["auth"]["signUp"],
   ) => Promise<Lucia.UserAttributes>;
-};
+}
 
 const AuthContext = createContext<null | AuthContextT>(null);
 
-export const AuthContextProvider = ({
-  children,
-  api,
-}: {
+type AuthContextProviderProps = {
   children: ReactNode;
+  // react native or nextjs api instance:
   api:
     | CreateTRPCReact<AppRouter, unknown, null>
     | CreateTRPCNext<AppRouter, NextPageContext, null>;
-}) => {
-  const [user, setUser] = useState<Lucia.UserAttributes | null>(null);
+};
 
-  const { mutateAsync: apiSignIn } = api.auth.signIn.useMutation();
+export const AuthContextProvider = ({
+  children,
+  // pass the clientside api to the context provider:
+  api,
+}: AuthContextProviderProps) => {
+  const [user, setUser] = useState<Lucia.UserAttributes | null>(null);
 
   const { mutateAsync: getUser } = api.auth.getUser.useMutation();
   useEffect(() => {
@@ -46,6 +49,9 @@ export const AuthContextProvider = ({
       });
   }, [getUser]);
 
+  // usando mutateAsync porque fica mais fácil de lidar com o retorno da api,
+  // já que o retorno é uma Promise e basta usar .then().catch()
+  const { mutateAsync: apiSignIn } = api.auth.signIn.useMutation();
   async function signIn(signInInfo: RouterInputs["auth"]["signIn"]) {
     return apiSignIn(signInInfo).then((res) => {
       setUser(res);
@@ -53,6 +59,8 @@ export const AuthContextProvider = ({
     });
   }
 
+  // isso é estranho, não deveríamos depender da api para remover os cookies do
+  // lado do cliente.
   const { mutateAsync: apiSignOut } = api.auth.signOut.useMutation();
   async function signOut() {
     return apiSignOut().then((res) => {
@@ -87,8 +95,6 @@ export const useAuthContext = () => {
       "You may only call useAuthContext inside its provider. Make sure you're wrapping <AuthProvider /> around your app.",
     );
   }
-
-  console.log(authContext);
 
   return authContext;
 };
