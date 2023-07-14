@@ -10,7 +10,7 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import type { User } from "lucia-auth";
+import type { Session, User } from "lucia-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
@@ -29,9 +29,8 @@ import { auth } from "./lucia";
  */
 
 type CreateContextOptions = {
-  user: User | null;
-  req: NextApiRequest;
-  res: NextApiResponse;
+  authInfo: { user: User | null; session: Session | null };
+  authRequest: ReturnType<typeof auth.handleRequest>;
 };
 
 /**
@@ -45,9 +44,8 @@ type CreateContextOptions = {
  */
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
-    user: opts.user,
-    req: opts.req,
-    res: opts.res,
+    authRequest: opts.authRequest,
+    authInfo: opts.authInfo,
     prisma,
     auth,
   };
@@ -58,18 +56,36 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
  * process every request that goes through your tRPC endpoint
  * @link https://trpc.io/docs/context
  */
+
+function getSessionId({ req }: CreateNextContextOptions): string {
+  // When request is made from browser, we can get the session id from the
+  // cookie
+  const fromCookie = req.cookies["auth_session"];
+  if (fromCookie) return fromCookie;
+
+  // When request is made from native app, we can get the session id from the
+  // header
+  const fromHeader = req.headers["auth_session"];
+  if (fromHeader && fromHeader.length) {
+    if (typeof fromHeader == "string") return fromHeader;
+    if (fromHeader[0]) return fromHeader[0];
+  }
+
+  return "";
+}
+
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
 
-  // Get the user from the server using the unstable_getServerUser wrapper function
-  // const user = await getServerUser({ req, res });
+  const sessionId = getSessionId(opts);
+
+  // NOTE: this is where you would add any other context you need
   const authRequest = auth.handleRequest({ req, res });
-  const { user } = await authRequest.validateUser();
+  const authInfo = await auth.validateSessionUser(sessionId);
 
   return createInnerTRPCContext({
-    user,
-    req,
-    res,
+    authRequest,
+    authInfo,
   });
 };
 
@@ -120,13 +136,13 @@ export const publicProcedure = t.procedure;
  * procedure
  */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.user) {
+  if (!ctx.authInfo.user || !ctx.authInfo.session) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({
     ctx: {
-      // infers the `user` as non-nullable
-      user: ctx.user,
+      // infers `user` and `session` as non-nullable
+      authInfo: { user: ctx.authInfo.user, session: ctx.authInfo.session },
     },
   });
 });

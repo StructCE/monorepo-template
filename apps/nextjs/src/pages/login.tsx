@@ -53,13 +53,13 @@ const Home: NextPage = () => {
           className="flex w-full flex-wrap rounded-t"
         >
           <Tabs.Trigger
-            className="h-full w-1/2 rounded-tl border-b border-gray-500 p-3 text-sky-100 opacity-80 outline-1 outline-offset-1 outline-white transition-all focus-visible:outline data-[state='active']:border-white data-[state='active']:text-white data-[state='active']:opacity-100"
+            className="h-full w-1/2 rounded-tl border-zinc-700 p-3 text-sky-100 opacity-70 outline-1 outline-offset-1 outline-white focus-visible:outline data-[state='inactive']:border-b data-[state='inactive']:border-r data-[state='inactive']:bg-zinc-800 data-[state='active']:text-white data-[state='active']:opacity-100 data-[state='inactive']:shadow-inner data-[state='inactive']:hover:bg-zinc-900"
             value="signIn"
           >
             Entrar
           </Tabs.Trigger>
           <Tabs.Trigger
-            className="h-full w-1/2 rounded-tr border-b border-gray-500 p-3  text-sky-100 opacity-80 outline-1 outline-offset-1 outline-white transition-all focus-visible:outline data-[state='active']:border-white data-[state='active']:text-white data-[state='active']:opacity-100"
+            className="h-full w-1/2 rounded-tr border-zinc-700 p-3 text-sky-100  opacity-70 outline-1 outline-offset-1 outline-white focus-visible:outline data-[state='inactive']:border-b data-[state='inactive']:border-l data-[state='inactive']:bg-zinc-800 data-[state='active']:text-white data-[state='active']:opacity-100 data-[state='inactive']:shadow-inner data-[state='inactive']:hover:bg-zinc-900"
             value="register"
           >
             Criar conta
@@ -109,7 +109,7 @@ const Home: NextPage = () => {
               </>
             ))}
             <button className="group mt-10 rounded py-3 text-right focus-visible:outline-none">
-              <span className="rounded bg-white/50 p-3 font-bold text-zinc-950 outline-1 outline-offset-2 outline-gray-300 group-focus-visible:outline">
+              <span className="rounded bg-white/50 p-3 font-bold text-zinc-950 outline-1 outline-offset-2 outline-gray-300 hover:bg-white/60 group-focus-visible:outline">
                 Criar
               </span>
             </button>
@@ -149,7 +149,7 @@ const Home: NextPage = () => {
               </>
             ))}
             <button className="group mt-10 rounded py-3 text-right focus-visible:outline-none">
-              <span className="rounded bg-white/50 p-3 font-bold text-zinc-950 outline-1 outline-offset-2 outline-gray-300 group-focus-visible:outline">
+              <span className="rounded bg-white/50 p-3 font-bold text-zinc-950 outline-1 outline-offset-2 outline-gray-300 hover:bg-white/60 group-focus-visible:outline">
                 Entrar
               </span>
             </button>

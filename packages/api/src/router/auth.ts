@@ -72,14 +72,17 @@ export const authRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       try {
-        const authRequest = ctx.auth.handleRequest({
-          req: ctx.req,
-          res: ctx.res,
-        });
         const key = await ctx.auth.useKey("email", input.email, input.password);
         const session = await ctx.auth.createSession(key.userId);
-        authRequest.setSession(session);
-        return ctx.auth.getUser(session.userId);
+        const sessionCookie = ctx.auth.createSessionCookie(session);
+
+        ctx.authRequest.setSession(session); // NOTE: does not set cookie on mobile app
+
+        return {
+          user: await ctx.auth.getUser(session.userId),
+          // passing cookie so client may set (needed for mobile app)
+          sessionCookie: sessionCookie,
+        };
       } catch (e) {
         const error = e as LuciaError;
         if (
@@ -102,20 +105,13 @@ export const authRouter = createTRPCRouter({
     }),
 
   signOut: protectedProcedure.mutation(async ({ ctx }) => {
-    const authRequest = ctx.auth.handleRequest(ctx);
-    const { session } = await authRequest.validateUser();
-    if (!session) {
-      throw new TRPCError({
-        code: "UNAUTHORIZED",
-        message: "User must be logged in to logout",
-      });
-    }
-    await ctx.auth.invalidateSession(session.sessionId);
-    authRequest.setSession(null);
+    ctx.authRequest.setSession(null); // NOTE: does not clear cookie on mobile app
+
+    return ctx.auth.invalidateSession(ctx.authInfo.session.sessionId);
   }),
 
   getUser: protectedProcedure.mutation(({ ctx }) => {
-    return ctx.user;
+    return ctx.authInfo.user;
   }),
 
   getSecretMessage: protectedProcedure.query(() => {

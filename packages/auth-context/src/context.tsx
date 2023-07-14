@@ -25,28 +25,54 @@ interface AuthContextT {
 
 const AuthContext = createContext<null | AuthContextT>(null);
 
+type CookieHandler = {
+  set: (cookie: { name: string; value: string; expireDate: string }) => void;
+  remove: (cookie: { name: string }) => void;
+  get: (cookie: { name: string }) => string | undefined;
+};
+
 type AuthContextProviderProps = {
   children: ReactNode;
   // react native or nextjs api instance:
   api:
     | CreateTRPCReact<AppRouter, unknown, null>
     | CreateTRPCNext<AppRouter, NextPageContext, null>;
+  manualCookieManager?: {
+    cookieHandler: CookieHandler;
+    addAuthSessionToHeaders: (authSession: string | undefined) => void;
+  };
 };
 
 export const AuthContextProvider = ({
   children,
   // pass the clientside api to the context provider:
   api,
+  // pass the client cookie setter to the context provider:
+  manualCookieManager,
 }: AuthContextProviderProps) => {
   const [user, setUser] = useState<Lucia.UserAttributes | null>(null);
 
   const { mutateAsync: getUser } = api.auth.getUser.useMutation();
   useEffect(() => {
-    getUser()
-      .then((usr) => setUser(usr))
-      .catch(() => {
-        setUser(null);
+    if (manualCookieManager) {
+      const authSession = manualCookieManager.cookieHandler.get({
+        name: "authSession",
       });
+      manualCookieManager.addAuthSessionToHeaders(authSession);
+      if (authSession) {
+        getUser()
+          .then((usr) => setUser(usr))
+          .catch(() => {
+            setUser(null);
+          });
+      }
+    } else {
+      getUser()
+        .then((usr) => setUser(usr))
+        .catch(() => {
+          setUser(null);
+        });
+    }
   }, [getUser]);
 
   // usando mutateAsync porque fica mais fácil de lidar com o retorno da api,
@@ -54,8 +80,8 @@ export const AuthContextProvider = ({
   const { mutateAsync: apiSignIn } = api.auth.signIn.useMutation();
   async function signIn(signInInfo: RouterInputs["auth"]["signIn"]) {
     return apiSignIn(signInInfo).then((res) => {
-      setUser(res);
-      return res;
+      setUser(res.user);
+      return res.user;
     });
   }
 
