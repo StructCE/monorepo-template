@@ -1,1 +1,5 @@
-export { useAuthContext, AuthContextProvider } from "./src/context";
+export {
+  useAuthContext,
+  AuthContextProvider,
+  type SessionHandler,
+} from "./src/context";

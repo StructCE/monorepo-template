@@ -1,10 +1,11 @@
 import React from "react";
 import Constants from "expo-constants";
-import { type AppRouter } from "@struct/api";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import superjson from "superjson";
+
+import { type AppRouter } from "@struct/api";
 
 /**
  * A set of typesafe hooks for consuming your API.
@@ -38,6 +39,8 @@ const getBaseUrl = () => {
   return `http://${localhost}:3000`;
 };
 
+export const defaultHeaders = {} as Record<string, string>;
+
 /**
  * A wrapper for your app that provides the TRPC context.
  * Use only in _app.tsx
@@ -52,6 +55,7 @@ export const TRPCProvider: React.FC<{ children: React.ReactNode }> = ({
       links: [
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
+          headers: () => defaultHeaders,
         }),
       ],
     }),

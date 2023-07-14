@@ -74,7 +74,7 @@ export const authRouter = createTRPCRouter({
       try {
         const key = await ctx.auth.useKey("email", input.email, input.password);
         const session = await ctx.auth.createSession(key.userId);
-        const sessionCookie = ctx.auth.createSessionCookie(session);
+        const sessionCookie = ctx.auth.createSessionCookie(session).serialize();
 
         ctx.authRequest.setSession(session); // NOTE: does not set cookie on mobile app
 
