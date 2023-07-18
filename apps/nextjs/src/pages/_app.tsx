@@ -2,17 +2,14 @@ import "../styles/globals.css";
 
 import type { AppType } from "next/app";
 
-import { AuthContextProvider } from "@struct/auth-context";
-
 import { api } from "~/utils/api";
+import AuthWebContextProvider from "~/utils/AuthWebContext";
 
 const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
   return (
-    // <SessionProvider session={session}>
-    <AuthContextProvider api={api}>
+    <AuthWebContextProvider>
       <Component {...pageProps} />
-    </AuthContextProvider>
-    // </SessionProvider>
+    </AuthWebContextProvider>
   );
 };
 

@@ -11,6 +11,8 @@ import type { CreateTRPCReact } from "@trpc/react-query/dist/createTRPCReact";
 
 import type { AppRouter, RouterInputs } from "@struct/api";
 
+const DEFAULT_SESSION_STORED_NAME = "auth_session";
+
 // interface instead of type for better intellisense
 interface AuthContextT {
   user: null | Lucia.UserAttributes;
@@ -25,10 +27,10 @@ interface AuthContextT {
 
 const AuthContext = createContext<null | AuthContextT>(null);
 
-export type SessionHandler = {
+export type LocalSessionHandler = {
   set: (sessionCookie: { name: string; value: string }) => void;
   remove: (name: string) => void;
-  get: (name: string) => string | undefined;
+  get: (name: string) => Promise<string | null>;
 };
 
 type AuthContextProviderProps = {
@@ -38,7 +40,7 @@ type AuthContextProviderProps = {
     | CreateTRPCReact<AppRouter, unknown, null>
     | CreateTRPCNext<AppRouter, NextPageContext, null>;
   // if you want to use a custom cookie manager, pass it here:
-  sessionHandler?: SessionHandler;
+  localSessionHandler: LocalSessionHandler;
 };
 
 export const AuthContextProvider = ({
@@ -46,31 +48,27 @@ export const AuthContextProvider = ({
   // pass the clientside api to the context provider:
   api,
   // pass the client cookie setter to the context provider:
-  sessionHandler,
+  localSessionHandler,
 }: AuthContextProviderProps) => {
   const [user, setUser] = useState<Lucia.UserAttributes | null>(null);
 
   const { mutateAsync: getUser } = api.auth.getUser.useMutation();
   useEffect(() => {
-    if (sessionHandler) {
-      const authSession = sessionHandler.get("auth_session");
-
+    localSessionHandler.get(DEFAULT_SESSION_STORED_NAME).then((authSession) => {
       if (authSession) {
+        localSessionHandler.set({
+          name: DEFAULT_SESSION_STORED_NAME,
+          value: authSession,
+        });
         getUser()
           .then((usr) => setUser(usr))
           .catch(() => {
             setUser(null);
-            sessionHandler.remove("auth_session");
+            localSessionHandler.remove(DEFAULT_SESSION_STORED_NAME);
           });
       }
-    } else {
-      getUser()
-        .then((usr) => setUser(usr))
-        .catch(() => {
-          setUser(null);
-        });
-    }
-  }, [getUser, sessionHandler]);
+    });
+  }, []);
 
   // usando mutateAsync porque fica mais fácil de lidar com o retorno da api,
   // já que o retorno é uma Promise e basta usar .then().catch()
@@ -78,11 +76,10 @@ export const AuthContextProvider = ({
   async function signIn(signInInfo: RouterInputs["auth"]["signIn"]) {
     return apiSignIn(signInInfo).then((res) => {
       setUser(res.user);
-      if (sessionHandler)
-        sessionHandler.set({
-          name: "auth_session",
-          value: res.sessionCookie,
-        });
+      localSessionHandler.set({
+        name: DEFAULT_SESSION_STORED_NAME,
+        value: res.session.sessionId,
+      });
       return res.user;
     });
   }
@@ -93,7 +90,7 @@ export const AuthContextProvider = ({
   async function signOut() {
     return apiSignOut().then((res) => {
       setUser(null);
-      if (sessionHandler) sessionHandler.remove("auth_session");
+      localSessionHandler.remove(DEFAULT_SESSION_STORED_NAME);
       return res;
     });
   }

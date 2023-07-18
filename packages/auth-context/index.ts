@@ -1,5 +1,5 @@
 export {
   useAuthContext,
   AuthContextProvider,
-  type SessionHandler,
+  type LocalSessionHandler,
 } from "./src/context";

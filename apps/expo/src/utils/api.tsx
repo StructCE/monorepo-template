@@ -39,6 +39,7 @@ const getBaseUrl = () => {
   return `http://${localhost}:3000`;
 };
 
+// So that we can set the auth headers on the client
 export const defaultHeaders = {} as Record<string, string>;
 
 /**

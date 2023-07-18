@@ -72,16 +72,14 @@ export const authRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       try {
+        // may throw:
         const key = await ctx.auth.useKey("email", input.email, input.password);
-        const session = await ctx.auth.createSession(key.userId);
-        const sessionCookie = ctx.auth.createSessionCookie(session).serialize();
 
-        ctx.authRequest.setSession(session); // NOTE: does not set cookie on mobile app
+        const session = await ctx.auth.createSession(key.userId);
 
         return {
           user: await ctx.auth.getUser(session.userId),
-          // passing cookie so client may set (needed for mobile app)
-          sessionCookie: sessionCookie,
+          session: session,
         };
       } catch (e) {
         const error = e as LuciaError;
@@ -105,8 +103,6 @@ export const authRouter = createTRPCRouter({
     }),
 
   signOut: protectedProcedure.mutation(async ({ ctx }) => {
-    ctx.authRequest.setSession(null); // NOTE: does not clear cookie on mobile app
-
     return ctx.auth.invalidateSession(ctx.authInfo.session.sessionId);
   }),
 

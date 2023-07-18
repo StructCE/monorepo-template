@@ -20,6 +20,10 @@ const defineConfig = (): ExpoConfig => ({
   ios: {
     supportsTablet: true,
     bundleIdentifier: "your.bundle.identifier",
+    config: {
+      // https://docs.expo.dev/versions/latest/sdk/securestore/#exempting-encryption-prompt
+      usesNonExemptEncryption: false,
+    },
   },
   android: {
     adaptiveIcon: {

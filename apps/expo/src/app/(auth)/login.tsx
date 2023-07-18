@@ -34,7 +34,7 @@ export default function LoginPage() {
         alert("Logado com sucesso!");
         router.replace("/");
       })
-      .catch(() => alert("Erro ao logar"));
+      .catch((e) => alert(e));
   }
 
   return (

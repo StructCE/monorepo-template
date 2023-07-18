@@ -11,6 +11,9 @@ const getBaseUrl = () => {
   return `http://localhost:3000`; // dev SSR should use localhost
 };
 
+// needed to add auth session header to all requests
+export const defaultHeaders = {} as Record<string, string>;
+
 export const api = createTRPCNext<AppRouter>({
   config() {
     return {
@@ -23,6 +26,7 @@ export const api = createTRPCNext<AppRouter>({
         }),
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
+          headers: () => defaultHeaders,
         }),
       ],
     };

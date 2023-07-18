@@ -58,13 +58,6 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
  */
 
 function getSessionId({ req }: CreateNextContextOptions): string {
-  // When request is made from browser, we can get the session id from the
-  // cookie
-  const fromCookie = req.cookies["auth_session"];
-  if (fromCookie) return fromCookie;
-
-  // When request is made from native app, we can get the session id from the
-  // header
   const fromHeader = req.headers["auth_session"];
   if (fromHeader && fromHeader.length) {
     if (typeof fromHeader == "string") return fromHeader;
@@ -78,10 +71,14 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
 
   const sessionId = getSessionId(opts);
+  console.log("sessionId", sessionId);
 
   // NOTE: this is where you would add any other context you need
   const authRequest = auth.handleRequest({ req, res });
-  const authInfo = await auth.validateSessionUser(sessionId);
+  const authInfo = await auth.validateSessionUser(sessionId).catch(() => ({
+    user: null,
+    session: null,
+  }));
 
   return createInnerTRPCContext({
     authRequest,
