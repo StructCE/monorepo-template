@@ -21,6 +21,13 @@ export const auth = lucia({
 });
 
 export const googleAuth = google(auth, {
+  scope: [
+    /* See more about scopes: https://developers.google.com/identity/protocols/oauth2/scopes#oauth2
+      Lucia Auth already gets .profile as a default.
+      Next scope is needed to get the user's email, guaranteeing unique users in the database.
+    */
+    "https://www.googleapis.com/auth/userinfo.email",
+  ],
   clientId: env.WEB_GOOGLE_CLIENT_ID,
   clientSecret: env.WEB_GOOGLE_CLIENT_SECRET,
   redirectUri: env.WEB_OAUTH_DEFAULT_REDIRECT_URL,
