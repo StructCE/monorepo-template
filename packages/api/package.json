@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@lucia-auth/adapter-prisma": "^2.0.0",
+    "@lucia-auth/oauth": "^1.2.1",
     "@struct/db": "^0.1.0",
     "@trpc/client": "^10.27.1",
     "@trpc/server": "^10.27.1",

@@ -3,6 +3,8 @@ import { createNextApiHandler } from "@trpc/server/adapters/next";
 
 import { appRouter, createTRPCContext } from "@struct/api";
 
+import { cors } from "~/utils/cors";
+
 // export API handler
 // export default createNextApiHandler({
 //   router: appRouter,
@@ -12,10 +14,7 @@ import { appRouter, createTRPCContext } from "@struct/api";
 // If you need to enable cors, you can do so like this:
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // Enable cors
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Request-Method", "*");
-  res.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET");
-  res.setHeader("Access-Control-Allow-Headers", "*");
+  cors(res);
 
   // Let the tRPC handler do its magic
   return createNextApiHandler({

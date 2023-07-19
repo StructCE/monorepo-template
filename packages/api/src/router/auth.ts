@@ -63,6 +63,40 @@ export const authRouter = createTRPCRouter({
       }
     }),
 
+  signOut: protectedProcedure.mutation(async ({ ctx }) => {
+    return ctx.auth.invalidateSession(ctx.userInfo.session.sessionId);
+  }),
+
+  getUser: protectedProcedure.mutation(({ ctx }) => {
+    return ctx.userInfo.user;
+  }),
+
+  startOAuthSignIn: publicProcedure
+    .input(z.enum(["google"]))
+    .mutation(async ({ ctx, input }) => {
+      if (ctx.userInfo.session) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Already signed in",
+        });
+      }
+
+      if (input === "google") {
+        const [url, oauth_state] = await ctx.googleAuth.getAuthorizationUrl();
+        return {
+          url: url.toString(),
+          oauth_state,
+        };
+      }
+
+      if (ctx.userInfo.session) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "No provider found for given input",
+        });
+      }
+    }),
+
   signIn: publicProcedure
     .input(
       z.object({
@@ -71,44 +105,42 @@ export const authRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      try {
-        // may throw:
-        const key = await ctx.auth.useKey("email", input.email, input.password);
-
-        const session = await ctx.auth.createSession(key.userId);
-
-        return {
-          user: await ctx.auth.getUser(session.userId),
-          session: session,
-        };
-      } catch (e) {
-        const error = e as LuciaError;
-        if (
-          error.message === "AUTH_INVALID_KEY_ID" ||
-          error.message === "AUTH_INVALID_PASSWORD"
-        ) {
-          throw new TRPCError({
-            code: "UNAUTHORIZED",
-            message: "Incorrect email or password",
-          });
-        }
-
-        // database connection error
-        // console.log(error);
+      if (ctx.userInfo.session) {
         throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Unexpected server error",
+          code: "BAD_REQUEST",
+          message: "Already signed in",
         });
       }
+
+      const key = await ctx.auth
+        .useKey("email", input.email, input.password)
+        .catch((e) => {
+          const error = e as LuciaError;
+          if (
+            error.message === "AUTH_INVALID_KEY_ID" ||
+            error.message === "AUTH_INVALID_PASSWORD"
+          ) {
+            throw new TRPCError({
+              code: "UNAUTHORIZED",
+              message: "Incorrect email or password",
+            });
+          }
+
+          // database connection error
+          // console.log(error);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Unexpected server error",
+          });
+        });
+
+      const session = await ctx.auth.createSession(key.userId);
+
+      return {
+        user: await ctx.auth.getUser(session.userId),
+        session: session,
+      };
     }),
-
-  signOut: protectedProcedure.mutation(async ({ ctx }) => {
-    return ctx.auth.invalidateSession(ctx.authInfo.session.sessionId);
-  }),
-
-  getUser: protectedProcedure.mutation(({ ctx }) => {
-    return ctx.authInfo.user;
-  }),
 
   getSecretMessage: protectedProcedure.query(() => {
     // testing type validation of overridden next-auth Session in @struct/auth package

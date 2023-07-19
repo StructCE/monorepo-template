@@ -7,7 +7,6 @@
  * The pieces you will need to use are documented accordingly near the end
  */
 
-import type { NextApiRequest, NextApiResponse } from "next/types";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import type { Session, User } from "lucia-auth";
@@ -16,7 +15,7 @@ import { ZodError } from "zod";
 
 import { prisma } from "@struct/db";
 
-import { auth } from "./lucia";
+import { auth, googleAuth } from "./lucia";
 
 /**
  * 1. CONTEXT
@@ -29,7 +28,7 @@ import { auth } from "./lucia";
  */
 
 type CreateContextOptions = {
-  authInfo: { user: User | null; session: Session | null };
+  userInfo: { user: User | null; session: Session | null };
   authRequest: ReturnType<typeof auth.handleRequest>;
 };
 
@@ -45,9 +44,10 @@ type CreateContextOptions = {
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     authRequest: opts.authRequest,
-    authInfo: opts.authInfo,
+    userInfo: opts.userInfo,
     prisma,
     auth,
+    googleAuth,
   };
 };
 
@@ -75,14 +75,14 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
 
   // NOTE: this is where you would add any other context you need
   const authRequest = auth.handleRequest({ req, res });
-  const authInfo = await auth.validateSessionUser(sessionId).catch(() => ({
+  const userInfo = await auth.validateSessionUser(sessionId).catch(() => ({
     user: null,
     session: null,
   }));
 
   return createInnerTRPCContext({
     authRequest,
-    authInfo,
+    userInfo,
   });
 };
 
@@ -133,13 +133,13 @@ export const publicProcedure = t.procedure;
  * procedure
  */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.authInfo.user || !ctx.authInfo.session) {
+  if (!ctx.userInfo.user || !ctx.userInfo.session) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({
     ctx: {
       // infers `user` and `session` as non-nullable
-      authInfo: { user: ctx.authInfo.user, session: ctx.authInfo.session },
+      userInfo: { user: ctx.userInfo.user, session: ctx.userInfo.session },
     },
   });
 });

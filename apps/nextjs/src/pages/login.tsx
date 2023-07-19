@@ -6,7 +6,7 @@ import * as Tabs from "@radix-ui/react-tabs";
 import { useAuthContext } from "@struct/auth-context";
 
 const Home: NextPage = () => {
-  const { signIn, user, signUp } = useAuthContext();
+  const { signIn, user, signUp, startOAuthSignIn } = useAuthContext();
 
   const router = useRouter();
 
@@ -21,6 +21,10 @@ const Home: NextPage = () => {
     passwordConfirmation: "",
   });
 
+  function handleOAuthSignIn() {
+    startOAuthSignIn("google").then((res) => res && router.push(res.url));
+  }
+
   function handleChange(key: keyof typeof userInfo, value: string) {
     setUserInfo((p) => ({ ...p, [key]: value }));
   }
@@ -34,7 +38,7 @@ const Home: NextPage = () => {
       });
   };
 
-  const handleLogin: FormEventHandler<HTMLFormElement> = (e) => {
+  const handleEmailLogin: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
     signIn(userInfo)
@@ -119,7 +123,7 @@ const Home: NextPage = () => {
           className="p-10 outline-1 outline-offset-1 outline-white focus-visible:outline"
           value="signIn"
         >
-          <form className="flex flex-col" onSubmit={handleLogin}>
+          <form className="flex flex-col" onSubmit={handleEmailLogin}>
             <h2 className="mx-auto text-xl opacity-90">Faça Login</h2>
             {(
               [
@@ -151,6 +155,17 @@ const Home: NextPage = () => {
             <button className="group mt-10 rounded py-3 text-right focus-visible:outline-none">
               <span className="rounded bg-white/50 p-3 font-bold text-zinc-950 outline-1 outline-offset-2 outline-gray-300 hover:bg-white/60 group-focus-visible:outline">
                 Entrar
+              </span>
+            </button>
+            <br />
+            <br />
+            <br />
+            <span className="relative z-0 my-8 flex justify-center after:absolute after:top-1/2 after:-z-10 after:w-full after:border-b-2 after:border-zinc-600">
+              <div className="bg-zinc-900 p-2 text-zinc-300">Ou entre com</div>
+            </span>
+            <button type="button" onClick={handleOAuthSignIn}>
+              <span className="rounded bg-white/50 p-3 font-bold text-zinc-950 outline-1 outline-offset-2 outline-gray-300 hover:bg-white/60 group-focus-visible:outline">
+                Google
               </span>
             </button>
           </form>
