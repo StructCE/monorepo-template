@@ -45,6 +45,8 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     authRequest: opts.authRequest,
     userInfo: opts.userInfo,
+    req: opts.req,
+    res: opts.res,
     prisma,
     auth,
     googleAuth,
@@ -81,6 +83,8 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   }));
 
   return createInnerTRPCContext({
+    req,
+    res,
     authRequest,
     userInfo,
   });
