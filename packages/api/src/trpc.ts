@@ -30,6 +30,7 @@ import { auth, googleAuth } from "./lucia";
 type CreateContextOptions = {
   userInfo: { user: User | null; session: Session | null };
   authRequest: ReturnType<typeof auth.handleRequest>;
+  requestInfo: CreateNextContextOptions;
 };
 
 /**
@@ -45,8 +46,7 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     authRequest: opts.authRequest,
     userInfo: opts.userInfo,
-    req: opts.req,
-    res: opts.res,
+    requestInfo: opts.requestInfo,
     prisma,
     auth,
     googleAuth,
@@ -83,8 +83,7 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   }));
 
   return createInnerTRPCContext({
-    req,
-    res,
+    requestInfo: opts,
     authRequest,
     userInfo,
   });

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
-import { GetServerSidePropsContext } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 
 import { useAuthContext } from "@struct/auth-context";
 
@@ -8,25 +9,34 @@ export default function ReceiveOAuthInfo() {
   const router = useRouter();
   const { finishOAuth } = useAuthContext();
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const { user, auth_session } = router.query;
+    if (typeof window !== "undefined" && router.isReady) {
+      const { user } = router.query;
+      console.log("user", user);
 
-      const userJson: unknown = JSON.parse(user as string);
+      const auth_session = Cookies.get("auth_session");
+      if (!auth_session) {
+        throw new Error(
+          "auth_session cookie not found. Error on OAuth callback.",
+        );
+      }
+
+      const userJson = JSON.parse(user as string) as Lucia.UserAttributes;
 
       finishOAuth({
-        user: userJson as Lucia.UserAttributes,
+        user: userJson,
         session: auth_session as string,
       });
-      //   console.log(auth_session);
+
       router.replace("/");
     }
-  }, [router]);
+  }, [router, router.isReady]);
 
-  return <div>Autenticado com sucesso!</div>;
-}
-
-export function getServerSideProps() {
-  return {
-    props: {},
-  };
+  return (
+    <>
+      <Head>
+        {/* scraping engines should ignore the page: */}
+        <meta name="robots" content="noindex" />
+      </Head>
+    </>
+  );
 }

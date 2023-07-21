@@ -9,7 +9,6 @@ import { api, defaultHeaders } from "~/utils/api";
 
 const sessionHandler: LocalSessionHandler = {
   get: async (name: string) => {
-    console.log(name);
     return Cookie.get(name) || null;
   },
   set: ({ name, value }) => {

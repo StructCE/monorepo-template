@@ -83,9 +83,17 @@ export const authRouter = createTRPCRouter({
 
       if (input === "google") {
         const [url, oauth_state] = await ctx.googleAuth.getAuthorizationUrl();
+
+        // to later verify the state is correct on server
+        ctx.requestInfo.res.setHeader(
+          "Set-Cookie",
+          `oauth_state=${oauth_state}; Path=/; Max-Age=${
+            10 * 60 // in seconds
+          }`,
+        );
+
         return {
           url: url.toString(),
-          oauth_state,
         };
       }
 

@@ -104,15 +104,7 @@ export const AuthContextProvider = ({
   async function startOAuthSignIn(
     provider: RouterInputs["auth"]["startOAuthSignIn"],
   ) {
-    return startOAuthSignInMutation(provider).then((res) => {
-      if (res) {
-        localSessionHandler.set({
-          name: "oauth_state",
-          value: res.oauth_state,
-        });
-      }
-      return res;
-    });
+    return startOAuthSignInMutation(provider);
   }
 
   function finishOAuth({
