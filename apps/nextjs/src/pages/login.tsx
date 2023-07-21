@@ -21,7 +21,10 @@ const Home: NextPage = () => {
     passwordConfirmation: "",
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   function handleOAuthSignIn() {
+    setIsLoading(true);
     startOAuthSignIn("google").then((res) => res && router.push(res.url));
   }
 
@@ -31,9 +34,14 @@ const Home: NextPage = () => {
   const handleRegister: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
+    setIsLoading(true);
     signUp(userInfo)
-      .then((res) => alert(`Usuário de email ${res.email} criado`))
+      .then((res) => {
+        setIsLoading(false);
+        alert(`Usuário de email ${res.email} criado`);
+      })
       .catch((er) => {
+        setIsLoading(false);
         if (er instanceof Error) alert(er.message);
       });
   };
@@ -41,9 +49,14 @@ const Home: NextPage = () => {
   const handleEmailLogin: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
+    setIsLoading(true);
+
     signIn(userInfo)
-      .then((usr) => alert(JSON.stringify(usr)))
-      .catch(() => alert("Email ou usuário incorreto(s)!"));
+      .then(() => router.replace("/"))
+      .catch(async () => {
+        setIsLoading(false);
+        alert("Email ou usuário incorreto(s)!");
+      });
   };
 
   return (
@@ -74,49 +87,51 @@ const Home: NextPage = () => {
           value="register"
         >
           <form className="flex flex-col" onSubmit={handleRegister}>
-            <h2 className="mx-auto text-xl opacity-90">
-              Registre uma nova conta
-            </h2>
-            {(
-              [
-                {
-                  attrName: "username",
-                  label: "Nome",
-                },
-                {
-                  attrName: "email",
-                  label: "Email",
-                },
-                {
-                  attrName: "password",
-                  label: "Senha",
-                },
-                {
-                  attrName: "passwordConfirmation",
-                  label: "Confirme sua Senha",
-                },
-              ] as const
-            ).map(({ label, attrName }) => (
-              <>
-                <label
-                  className="pr-3 pt-10 text-sky-100 opacity-80"
-                  htmlFor={attrName}
-                >
-                  {label}
-                </label>
-                <br />
-                <input
-                  onChange={(e) => handleChange(attrName, e.target.value)}
-                  className="rounded border border-white/50 bg-transparent p-2 text-lg outline-1 outline-current focus-visible:outline"
-                  id={attrName}
-                />
-              </>
-            ))}
-            <button className="group mt-10 rounded py-3 text-right focus-visible:outline-none">
-              <span className="rounded bg-white/50 p-3 font-bold text-zinc-950 outline-1 outline-offset-2 outline-gray-300 hover:bg-white/60 group-focus-visible:outline">
-                Criar
-              </span>
-            </button>
+            <fieldset className="contents" disabled={isLoading}>
+              <h2 className="mx-auto text-xl opacity-90">
+                Registre uma nova conta
+              </h2>
+              {(
+                [
+                  {
+                    attrName: "username",
+                    label: "Nome",
+                  },
+                  {
+                    attrName: "email",
+                    label: "Email",
+                  },
+                  {
+                    attrName: "password",
+                    label: "Senha",
+                  },
+                  {
+                    attrName: "passwordConfirmation",
+                    label: "Confirme sua Senha",
+                  },
+                ] as const
+              ).map(({ label, attrName }) => (
+                <div className="contents" key={attrName}>
+                  <label
+                    className="pr-3 pt-10 text-sky-100 opacity-80"
+                    htmlFor={attrName}
+                  >
+                    {label}
+                  </label>
+                  <br />
+                  <input
+                    onChange={(e) => handleChange(attrName, e.target.value)}
+                    className="rounded border border-white/50 bg-transparent p-2 text-lg outline-1 outline-current focus-visible:outline disabled:cursor-default disabled:opacity-50"
+                    id={attrName}
+                  />
+                </div>
+              ))}
+              <button className="group mt-10 rounded py-3 text-right focus-visible:outline-none disabled:cursor-default disabled:opacity-50">
+                <span className="rounded bg-white/50 p-3 font-bold text-zinc-950 outline-1 outline-offset-2 outline-gray-300 hover:bg-white/60 group-focus-visible:outline">
+                  Criar
+                </span>
+              </button>
+            </fieldset>
           </form>
         </Tabs.Content>
         <Tabs.Content
@@ -124,50 +139,58 @@ const Home: NextPage = () => {
           value="signIn"
         >
           <form className="flex flex-col" onSubmit={handleEmailLogin}>
-            <h2 className="mx-auto text-xl opacity-90">Faça Login</h2>
-            {(
-              [
-                {
-                  attrName: "email",
-                  label: "Email",
-                },
-                {
-                  attrName: "password",
-                  label: "Senha",
-                },
-              ] as const
-            ).map(({ label, attrName }) => (
-              <>
-                <label
-                  className="pr-3 pt-10 text-sky-100 opacity-80"
-                  htmlFor={attrName}
-                >
-                  {label}
-                </label>
-                <br />
-                <input
-                  onChange={(e) => handleChange(attrName, e.target.value)}
-                  className="rounded border border-white/50 bg-transparent p-2 text-lg outline-1 outline-current focus-visible:outline"
-                  id={attrName}
-                />
-              </>
-            ))}
-            <button className="group mt-10 rounded py-3 text-right focus-visible:outline-none">
-              <span className="rounded bg-white/50 p-3 font-bold text-zinc-950 outline-1 outline-offset-2 outline-gray-300 hover:bg-white/60 group-focus-visible:outline">
-                Entrar
+            <fieldset className="contents" disabled={isLoading}>
+              <h2 className="mx-auto text-xl opacity-90">Faça Login</h2>
+              {(
+                [
+                  {
+                    attrName: "email",
+                    label: "Email",
+                  },
+                  {
+                    attrName: "password",
+                    label: "Senha",
+                  },
+                ] as const
+              ).map(({ label, attrName }) => (
+                <div className="contents" key={attrName}>
+                  <label
+                    className="pr-3 pt-10 text-sky-100 opacity-80"
+                    htmlFor={attrName}
+                  >
+                    {label}
+                  </label>
+                  <br />
+                  <input
+                    onChange={(e) => handleChange(attrName, e.target.value)}
+                    className="rounded border border-white/50 bg-transparent p-2 text-lg outline-1 outline-current focus-visible:outline disabled:cursor-default disabled:opacity-50"
+                    id={attrName}
+                  />
+                </div>
+              ))}
+              <button className="group mt-10 rounded py-3 text-right focus-visible:outline-none disabled:cursor-default disabled:opacity-50">
+                <span className="rounded bg-white/50 p-3 font-bold text-zinc-950 outline-1 outline-offset-2 outline-gray-300 hover:bg-white/60 group-focus-visible:outline">
+                  Entrar
+                </span>
+              </button>
+              <br />
+              <br />
+              <br />
+              <span className="relative z-0 my-8 flex justify-center after:absolute after:top-1/2 after:-z-10 after:w-full after:border-b-2 after:border-zinc-600">
+                <div className="bg-zinc-900 p-2 text-zinc-300">
+                  Ou entre com
+                </div>
               </span>
-            </button>
-            <br />
-            <br />
-            <br />
-            <span className="relative z-0 my-8 flex justify-center after:absolute after:top-1/2 after:-z-10 after:w-full after:border-b-2 after:border-zinc-600">
-              <div className="bg-zinc-900 p-2 text-zinc-300">Ou entre com</div>
-            </span>
-            <button type="button" onClick={handleOAuthSignIn}>
-              <span className="rounded bg-white/50 p-3 font-bold text-zinc-950 outline-1 outline-offset-2 outline-gray-300 hover:bg-white/60 group-focus-visible:outline">
-                Google
-              </span>
-            </button>
+              <button
+                type="button"
+                className="disabled:cursor-default disabled:opacity-50"
+                onClick={handleOAuthSignIn}
+              >
+                <span className="rounded bg-white/50 p-3 font-bold text-zinc-950 outline-1 outline-offset-2 outline-gray-300 hover:bg-white/60 group-focus-visible:outline">
+                  Google
+                </span>
+              </button>
+            </fieldset>
           </form>
         </Tabs.Content>
       </Tabs.Root>
