@@ -72,7 +72,7 @@ export const authRouter = createTRPCRouter({
   }),
 
   startOAuthSignIn: publicProcedure
-    .input(z.enum(["google"]))
+    .input(z.enum(["google", "github"]))
     .mutation(async ({ ctx, input }) => {
       if (ctx.userInfo.session) {
         throw new TRPCError({
@@ -81,28 +81,21 @@ export const authRouter = createTRPCRouter({
         });
       }
 
-      if (input === "google") {
-        const [url, oauth_state] = await ctx.googleAuth.getAuthorizationUrl();
+      const [url, oauth_state] = await ctx.authMethods[
+        input
+      ].getAuthorizationUrl();
 
-        // to later verify the state is correct on server
-        ctx.requestInfo.res.setHeader(
-          "Set-Cookie",
-          `oauth_state=${oauth_state}; Path=/; Max-Age=${
-            10 * 60 // in seconds
-          }`,
-        );
+      // to later verify the state is correct on server
+      ctx.requestInfo.res.setHeader(
+        "Set-Cookie",
+        `oauth_state=${oauth_state}; Path=/; Max-Age=${
+          10 * 60 // in seconds
+        }`,
+      );
 
-        return {
-          url: url.toString(),
-        };
-      }
-
-      if (ctx.userInfo.session) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "No provider found for given input",
-        });
-      }
+      return {
+        url: url.toString(),
+      };
     }),
 
   signIn: publicProcedure

@@ -15,7 +15,7 @@ import { ZodError } from "zod";
 
 import { prisma } from "@struct/db";
 
-import { auth, googleAuth } from "./lucia";
+import { auth, githubAuth, googleAuth } from "./lucia";
 
 /**
  * 1. CONTEXT
@@ -31,6 +31,11 @@ type CreateContextOptions = {
   userInfo: { user: User | null; session: Session | null };
   authRequest: ReturnType<typeof auth.handleRequest>;
   requestInfo: CreateNextContextOptions;
+};
+
+const authMethods = {
+  google: googleAuth,
+  github: githubAuth,
 };
 
 /**
@@ -49,7 +54,7 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
     requestInfo: opts.requestInfo,
     prisma,
     auth,
-    googleAuth,
+    authMethods,
   };
 };
 

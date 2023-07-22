@@ -7,7 +7,7 @@ import { env } from "../../env.mjs";
 
 import "lucia-auth/polyfill/node";
 
-import { google } from "@lucia-auth/oauth/providers";
+import { github, google } from "@lucia-auth/oauth/providers";
 
 import { prisma as prismaDb } from "@struct/db";
 
@@ -30,7 +30,19 @@ export const googleAuth = google(auth, {
   ],
   clientId: env.WEB_GOOGLE_CLIENT_ID,
   clientSecret: env.WEB_GOOGLE_CLIENT_SECRET,
-  redirectUri: env.WEB_OAUTH_DEFAULT_REDIRECT_URL,
+  redirectUri: env.WEB_OAUTH_DEFAULT_REDIRECT_URL + "/google",
+});
+
+export const githubAuth = github(auth, {
+  scope: [
+    /*
+      https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps
+    */
+    "user:email",
+  ],
+  clientId: env.WEB_GITHUB_CLIENT_ID,
+  clientSecret: env.WEB_GITHUB_CLIENT_SECRET,
+  redirectUri: env.WEB_OAUTH_DEFAULT_REDIRECT_URL + "/github",
 });
 
 export type Auth = typeof auth;

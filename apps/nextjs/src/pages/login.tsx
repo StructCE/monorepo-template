@@ -23,9 +23,9 @@ const Home: NextPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  function handleOAuthSignIn() {
+  function handleOAuthSignIn(provider: "google" | "github") {
     setIsLoading(true);
-    startOAuthSignIn("google").then((res) => res && router.push(res.url));
+    startOAuthSignIn(provider).then((res) => res && router.push(res.url));
   }
 
   function handleChange(key: keyof typeof userInfo, value: string) {
@@ -183,11 +183,20 @@ const Home: NextPage = () => {
               </span>
               <button
                 type="button"
-                className="disabled:cursor-default disabled:opacity-50"
-                onClick={handleOAuthSignIn}
+                className="my-2 flex justify-center disabled:cursor-default disabled:opacity-50"
+                onClick={() => handleOAuthSignIn("google")}
               >
                 <span className="rounded bg-white/50 p-3 font-bold text-zinc-950 outline-1 outline-offset-2 outline-gray-300 hover:bg-white/60 group-focus-visible:outline">
                   Google
+                </span>
+              </button>
+              <button
+                type="button"
+                className="my-2 flex justify-center disabled:cursor-default disabled:opacity-50"
+                onClick={() => handleOAuthSignIn("github")}
+              >
+                <span className="rounded bg-white/50 p-3 font-bold text-zinc-950 outline-1 outline-offset-2 outline-gray-300 hover:bg-white/60 group-focus-visible:outline">
+                  Github
                 </span>
               </button>
             </fieldset>
