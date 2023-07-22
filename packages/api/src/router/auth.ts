@@ -90,7 +90,7 @@ export const authRouter = createTRPCRouter({
         "Set-Cookie",
         `oauth_state=${oauth_state}; Path=/; Max-Age=${
           10 * 60 // in seconds
-        }`,
+        }; HttpOnly; ${process.env.NODE_ENV === "production" ? "Secure" : ""}`,
       );
 
       return {
