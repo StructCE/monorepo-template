@@ -12,7 +12,6 @@ export const authRouter = createTRPCRouter({
       z
         .object({
           email: z.string().email(),
-          username: z.string(),
           password: z.string().min(6),
           passwordConfirmation: z.string().min(6),
         })
@@ -22,17 +21,40 @@ export const authRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        return await ctx.auth.createUser({
-          primaryKey: {
-            providerId: "email",
-            providerUserId: input.email,
-            password: input.password,
-          },
-          attributes: {
-            username: input.username,
-            email: input.email,
-          },
+        const prismaUser = await ctx.prisma.authUser
+          .findUnique({
+            where: {
+              email: input.email,
+            },
+            select: {
+              id: true,
+              email: true,
+              username: true,
+            },
+          })
+          .catch(() => null);
+
+        if (!prismaUser) {
+          return await ctx.auth.createUser({
+            primaryKey: {
+              providerId: "email",
+              providerUserId: input.email,
+              password: input.password,
+            },
+            attributes: {
+              email: input.email,
+            },
+          });
+        }
+
+        await ctx.auth.createKey(prismaUser.id, {
+          type: "persistent",
+          providerId: "email",
+          providerUserId: input.email,
+          password: input.password,
         });
+
+        return prismaUser;
       } catch (error) {
         if (
           error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -101,7 +123,7 @@ export const authRouter = createTRPCRouter({
   signIn: publicProcedure
     .input(
       z.object({
-        email: z.string(),
+        email: z.string().email(),
         password: z.string(),
       }),
     )
@@ -123,7 +145,8 @@ export const authRouter = createTRPCRouter({
           ) {
             throw new TRPCError({
               code: "UNAUTHORIZED",
-              message: "Incorrect email or password",
+              message:
+                "Incorrect email or password. Verify your login method and details.",
             });
           }
 

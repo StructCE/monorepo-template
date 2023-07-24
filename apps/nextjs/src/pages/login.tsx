@@ -1,9 +1,26 @@
+import { error } from "console";
 import { useEffect, useState, type FormEventHandler } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import * as Tabs from "@radix-ui/react-tabs";
+import { z } from "zod";
 
 import { useAuthContext } from "@struct/auth-context";
+
+const signUpSchema = z
+  .object({
+    email: z.string().email(),
+    password: z.string().min(6),
+    passwordConfirmation: z.string().min(6),
+  })
+  .refine((inp) => inp.password === inp.passwordConfirmation, {
+    message: "Password must be equal to its confirmation.",
+  });
+
+const signInSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6),
+});
 
 const Home: NextPage = () => {
   const { signIn, user, signUp, startOAuthSignIn } = useAuthContext();
@@ -15,11 +32,16 @@ const Home: NextPage = () => {
   }, [user, router]);
 
   const [userInfo, setUserInfo] = useState({
-    username: "",
     email: "",
     password: "",
     passwordConfirmation: "",
   });
+
+  const [errors, setErrors] = useState<{
+    email?: string[];
+    password?: string[];
+    passwordConfirmation?: string[];
+  }>({});
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -29,13 +51,23 @@ const Home: NextPage = () => {
   }
 
   function handleChange(key: keyof typeof userInfo, value: string) {
+    setErrors((p) => ({ ...p, [key]: undefined }));
     setUserInfo((p) => ({ ...p, [key]: value }));
   }
   const handleRegister: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
     setIsLoading(true);
-    signUp(userInfo)
+
+    const parsed = signUpSchema.safeParse(userInfo);
+    if (!parsed.success) {
+      setIsLoading(false);
+      setErrors(parsed.error.flatten().fieldErrors);
+      return;
+    }
+    setErrors({});
+
+    signUp(parsed.data)
       .then((res) => {
         setIsLoading(false);
         alert(`Usuário de email ${res.email} criado`);
@@ -51,6 +83,15 @@ const Home: NextPage = () => {
 
     setIsLoading(true);
 
+    const parsed = signInSchema.safeParse(userInfo);
+
+    if (!parsed.success) {
+      setIsLoading(false);
+      setErrors(parsed.error.flatten().fieldErrors);
+      return;
+    }
+    setErrors({});
+
     signIn(userInfo)
       .then(() => router.replace("/"))
       .catch(async () => {
@@ -64,6 +105,7 @@ const Home: NextPage = () => {
       <Tabs.Root
         defaultValue="signIn"
         className="h-max w-full max-w-xl rounded bg-zinc-900"
+        onValueChange={() => setErrors({})}
       >
         <Tabs.List
           aria-label="Faça signIn ou registre uma conta"
@@ -94,10 +136,6 @@ const Home: NextPage = () => {
               {(
                 [
                   {
-                    attrName: "username",
-                    label: "Nome",
-                  },
-                  {
                     attrName: "email",
                     label: "Email",
                   },
@@ -124,6 +162,13 @@ const Home: NextPage = () => {
                     className="rounded border border-white/50 bg-transparent p-2 text-lg outline-1 outline-current focus-visible:outline disabled:cursor-default disabled:opacity-50"
                     id={attrName}
                   />
+                  {errors[attrName] && (
+                    <span className="text-red-500">
+                      {errors[attrName]?.map((er) => (
+                        <p key={er}>{er}</p>
+                      ))}
+                    </span>
+                  )}
                 </div>
               ))}
               <button className="group mt-10 rounded py-3 text-right focus-visible:outline-none disabled:cursor-default disabled:opacity-50">
@@ -166,6 +211,14 @@ const Home: NextPage = () => {
                     className="rounded border border-white/50 bg-transparent p-2 text-lg outline-1 outline-current focus-visible:outline disabled:cursor-default disabled:opacity-50"
                     id={attrName}
                   />
+
+                  {errors[attrName] && (
+                    <span className="text-red-500">
+                      {errors[attrName]?.map((er) => (
+                        <p key={er}>{er}</p>
+                      ))}
+                    </span>
+                  )}
                 </div>
               ))}
               <button className="group mt-10 rounded py-3 text-right focus-visible:outline-none disabled:cursor-default disabled:opacity-50">
