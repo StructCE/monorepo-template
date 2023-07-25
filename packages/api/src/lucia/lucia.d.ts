@@ -6,6 +6,6 @@ declare namespace Lucia {
   type UserAttributes = {
     // Adicionar atributos "públicos" do schema de usuário aqui
     email: string;
-    username?: string;
+    emailSignInVerified: boolean;
   };
 }

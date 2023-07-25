@@ -2,22 +2,21 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
-    previewFeatures = ["jsonProtocol"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["jsonProtocol"]
 }
 
 datasource db {
-    provider = "sqlite"
-    url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
-
 
 // lucia auth models:
 model AuthUser {
-  id           String        @id @unique
-  email        String        @unique
-// can add user fields:
-  username     String
+  id                  String  @id @unique
+  email               String  @unique
+  emailSignInVerified Boolean @default(false)
+  // can add user fields:
 
   auth_session AuthSession[]
   auth_key     AuthKey[]

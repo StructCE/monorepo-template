@@ -29,7 +29,7 @@ export const authRouter = createTRPCRouter({
             select: {
               id: true,
               email: true,
-              username: true,
+              emailSignInVerified: true,
             },
           })
           .catch(() => null);
@@ -43,10 +43,12 @@ export const authRouter = createTRPCRouter({
             },
             attributes: {
               email: input.email,
+              emailSignInVerified: false,
             },
           });
         }
 
+        // throws if user already has a key with "email"
         await ctx.auth.createKey(prismaUser.id, {
           type: "persistent",
           providerId: "email",
@@ -157,6 +159,15 @@ export const authRouter = createTRPCRouter({
             message: "Unexpected server error",
           });
         });
+
+      const user = await ctx.auth.getUser(key.userId);
+
+      if (!user.emailSignInVerified) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Email not verified",
+        });
+      }
 
       const session = await ctx.auth.createSession(key.userId);
 

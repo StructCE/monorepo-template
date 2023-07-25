@@ -6,13 +6,13 @@ import { prisma } from "@struct/db";
 import { cors } from "~/utils/cors";
 import { env } from "~/env.mjs";
 
+const failureRedirectUrl = "/oauth/error";
+const successRedirectUrl = "/oauth/success";
+
 const handler = async (request: NextApiRequest, res: NextApiResponse) => {
   cors(res);
 
   const { provider } = request.query;
-
-  const failureRedirectUrl = "/oauth/error";
-  const successRedirectUrl = "/oauth/success";
 
   const session = await auth
     .validateSession((request.headers["auth_session"] as string) || "")
@@ -59,14 +59,16 @@ const handler = async (request: NextApiRequest, res: NextApiResponse) => {
               select: {
                 id: true,
                 email: true,
-                username: true,
+                emailSignInVerified: true,
                 auth_key: true,
               },
             })
             .catch(() => null);
 
           const email = providerUser.email;
-          if (!email) throw new Error("Email not provided");
+          if (!email) throw new Error(`Email not provided by ${provider}`);
+          if (!providerUser.email_verified)
+            throw new Error(`Email not verified by ${provider}`);
           if (dbUser) {
             if (!dbUser.auth_key.find((key) => key.id.startsWith("google:")))
               await createPersistentKey(dbUser.id);
@@ -74,14 +76,14 @@ const handler = async (request: NextApiRequest, res: NextApiResponse) => {
             return {
               id: dbUser.id,
               email: dbUser.email,
-              username: dbUser.username,
+              emailSignInVerified: dbUser.emailSignInVerified,
             };
           }
 
           // this createUser automatically creates a key
           const user = await createUser({
             email: email,
-            username: providerUser.name,
+            emailSignInVerified: false,
           });
 
           return user;
@@ -112,8 +114,10 @@ const handler = async (request: NextApiRequest, res: NextApiResponse) => {
 
           const primaryEmail = emails.find((email) => email.primary);
 
-          if (!primaryEmail) throw new Error("Email not provided");
-          // if (!primaryEmail.verified) throw new Error("Email not verified");
+          if (!primaryEmail)
+            throw new Error(`Email not provided by ${provider}`);
+          if (!primaryEmail.verified)
+            throw new Error(`Email not verified by ${provider}`);
 
           const dbUser = await prisma.authUser
             .findUnique({
@@ -123,7 +127,7 @@ const handler = async (request: NextApiRequest, res: NextApiResponse) => {
               select: {
                 id: true,
                 email: true,
-                username: true,
+                emailSignInVerified: true,
                 auth_key: true,
               },
             })
@@ -136,14 +140,14 @@ const handler = async (request: NextApiRequest, res: NextApiResponse) => {
             return {
               id: dbUser.id,
               email: dbUser.email,
-              username: dbUser.username,
+              emailSignInVerified: dbUser.emailSignInVerified,
             };
           }
 
           // this createUser automatically creates a key
           const user = await createUser({
             email: primaryEmail.email,
-            username: providerUser.login,
+            emailSignInVerified: true,
           });
 
           return user;
