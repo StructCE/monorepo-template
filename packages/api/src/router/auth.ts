@@ -21,7 +21,7 @@ export const authRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        return await ctx.auth.createUser({
+        const user = await ctx.auth.createUser({
           key: {
             providerId: "email",
             providerUserId: input.email,
@@ -32,6 +32,8 @@ export const authRouter = createTRPCRouter({
             emailVerified: false,
           },
         });
+
+        return user;
       } catch (error) {
         if (
           error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -117,7 +119,10 @@ export const authRouter = createTRPCRouter({
         });
       }
 
-      const session = await ctx.auth.createSession({userId: key.userId, attributes: {}});
+      const session = await ctx.auth.createSession({
+        userId: key.userId,
+        attributes: {},
+      });
 
       return {
         user: await ctx.auth.getUser(session.userId),

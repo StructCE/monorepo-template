@@ -9,19 +9,15 @@ import type { NextPageContext } from "next";
 import type { CreateTRPCNext } from "@trpc/next/dist/createTRPCNext";
 import type { CreateTRPCReact } from "@trpc/react-query/dist/createTRPCReact";
 
-import type { AppRouter, RouterInputs } from "@struct/api";
+import type { AppRouter, RouterInputs, RouterOutputs } from "@struct/api";
 
 const DEFAULT_SESSION_STORED_NAME = "auth_session";
 
-type UserAttributes = {
-  id: string;
-  email: string;
-  emailVerified: boolean;
-};
+type UserAttributes = RouterOutputs["auth"]["getUser"];
 
 // interface instead of type for better intellisense
 interface AuthContextT {
-  user: null | UserAttributes;
+  user: null | RouterOutputs["auth"]["getUser"];
   signIn: (arg: RouterInputs["auth"]["signIn"]) => Promise<UserAttributes>;
   signOut: () => Promise<unknown>;
   signUp: (arg: RouterInputs["auth"]["signUp"]) => Promise<UserAttributes>;
@@ -56,21 +52,24 @@ export const AuthContextProvider = ({
 
   const { mutateAsync: getUser } = api.auth.getUser.useMutation();
   useEffect(() => {
-    localSessionHandler.get(DEFAULT_SESSION_STORED_NAME).then((authSession) => {
-      if (authSession) {
-        localSessionHandler.set({
-          name: DEFAULT_SESSION_STORED_NAME,
-          value: authSession,
-        });
-        getUser()
-          .then((usr) => setUser(usr))
-          .catch(() => {
-            setUser(null);
-            localSessionHandler.remove(DEFAULT_SESSION_STORED_NAME);
+    // void because we should error handle this in another layer
+    void localSessionHandler
+      .get(DEFAULT_SESSION_STORED_NAME)
+      .then((authSession) => {
+        if (authSession) {
+          localSessionHandler.set({
+            name: DEFAULT_SESSION_STORED_NAME,
+            value: authSession,
           });
-      }
-    });
-  }, []);
+          getUser()
+            .then((usr) => setUser(usr))
+            .catch(() => {
+              setUser(null);
+              localSessionHandler.remove(DEFAULT_SESSION_STORED_NAME);
+            });
+        }
+      });
+  }, [localSessionHandler, getUser]);
 
   // usando mutateAsync porque fica mais fácil de lidar com o retorno da api,
   // já que o retorno é uma Promise e basta usar .then().catch()
@@ -96,7 +95,6 @@ export const AuthContextProvider = ({
       return res;
     });
   }
-
 
   const { mutateAsync: signUpMutation } = api.auth.signUp.useMutation();
   async function signUp(signUpInfo: RouterInputs["auth"]["signUp"]) {
