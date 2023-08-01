@@ -78,6 +78,8 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const authRequest = auth.handleRequest({ req, res });
   const session = await auth.validateSession(sessionId).catch(() => null);
 
+  console.log("user", session?.user);
+
   return createInnerTRPCContext({
     requestInfo: opts,
     authRequest,

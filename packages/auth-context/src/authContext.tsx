@@ -17,7 +17,7 @@ type UserAttributes = RouterOutputs["auth"]["getUser"];
 
 // interface instead of type for better intellisense
 interface AuthContextT {
-  user: null | RouterOutputs["auth"]["getUser"];
+  user: null | UserAttributes;
   signIn: (arg: RouterInputs["auth"]["signIn"]) => Promise<UserAttributes>;
   signOut: () => Promise<unknown>;
   signUp: (arg: RouterInputs["auth"]["signUp"]) => Promise<UserAttributes>;
