@@ -22,6 +22,7 @@
     "@trpc/next": "^10.27.1",
     "@trpc/react-query": "^10.27.1",
     "@trpc/server": "^10.27.1",
+    "js-cookie": "^3.0.5",
     "next": "^13.4.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@struct/eslint-config": "^0.1.0",
     "@struct/tailwind-config": "^0.1.0",
+    "@types/js-cookie": "^3.0.3",
     "@types/node": "^18.16.5",
     "@types/react": "^18.2.8",
     "@types/react-dom": "^18.2.4",

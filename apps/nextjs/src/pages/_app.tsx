@@ -1,4 +1,4 @@
-import { WebAuthContextProvider } from "~/utils/webAuthContext";
+import { WebAuthContextProvider } from "~/utils/WebAuthContextProvider";
 import "../styles/globals.css";
 
 import type { AppType } from "next/app";

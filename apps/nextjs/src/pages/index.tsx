@@ -1,18 +1,31 @@
-import { useAuthContext } from "@struct/auth-context";
-import type { NextPage } from "next";
 import React from "react";
+import type { NextPage } from "next";
 
-const AuthShowcase : React.FC = () => {
+import { useAuthContext } from "@struct/auth-context";
+
+const AuthShowcase: React.FC = () => {
   const { user } = useAuthContext();
 
-  return <></>
-}
-
-const Home: NextPage = () => {
-
   return (
-    <h1>ava</h1>
-  )
-}
+    <div>
+      {user ? (
+        <div>
+          <p>Logged in as {user.email}</p>
+        </div>
+      ) : (
+        <p>Not logged in</p>
+      )}
+    </div>
+  );
+};
 
-export default Home;
+const HomePage: NextPage = () => {
+  return (
+    <section>
+      <h1>HomePage</h1>
+      <AuthShowcase />
+    </section>
+  );
+};
+
+export default HomePage;

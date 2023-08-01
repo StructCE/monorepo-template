@@ -10,6 +10,8 @@ const getBaseUrl = () => {
   return `http://localhost:3000`; // dev SSR should use localhost
 };
 
+export const defaultHeaders : Record<string, string> = {};
+
 export const api = createTRPCNext<AppRouter>({
   config() {
     return {
@@ -22,6 +24,7 @@ export const api = createTRPCNext<AppRouter>({
         }),
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
+          headers: () => defaultHeaders,
         }),
       ],
     };
