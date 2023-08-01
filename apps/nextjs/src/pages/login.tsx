@@ -64,7 +64,8 @@ const Home: NextPage = () => {
 
     signUp(parsed.data)
       .then((res) => {
-        router.push(`/verify-email?sentEmailTo=${res.user}`);
+        alert(JSON.stringify(res, null, 2));
+        router.push(`/verify-email?sentEmailTo=${res.email}`);
       })
       .catch((er) => {
         setIsLoading(false);

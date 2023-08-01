@@ -314,22 +314,6 @@ importers:
         specifier: ^5.1.3
         version: 5.1.3
 
-  packages/config/global-types:
-    dependencies:
-      lucia:
-        specifier: ^2.0.0
-        version: 2.0.0
-    devDependencies:
-      '@struct/api':
-        specifier: ^0.1.0
-        version: link:../../api
-      '@struct/db':
-        specifier: ^0.1.0
-        version: link:../../db
-      typescript:
-        specifier: ^5.1.3
-        version: 5.1.3
-
   packages/config/tailwind:
     devDependencies:
       autoprefixer:

@@ -15,7 +15,7 @@ import { ZodError } from "zod";
 
 import { prisma } from "@struct/db";
 
-import { auth } from "./lucia";
+import { auth } from "../lucia";
 
 /**
  * 1. CONTEXT

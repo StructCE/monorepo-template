@@ -18,5 +18,5 @@ export type RouterInputs = inferRouterInputs<AppRouter>;
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
 
 // for global typing:
-export { type Auth } from "./src/lucia/index";
+export { type Auth } from "./lucia";
 export type { Session, User } from "lucia";

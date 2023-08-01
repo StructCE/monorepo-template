@@ -9,18 +9,16 @@ import type { NextPageContext } from "next";
 import type { CreateTRPCNext } from "@trpc/next/dist/createTRPCNext";
 import type { CreateTRPCReact } from "@trpc/react-query/dist/createTRPCReact";
 
-import type { AppRouter, RouterInputs, RouterOutputs } from "@struct/api";
+import type { AppRouter, RouterInputs, User } from "@struct/api";
 
 const DEFAULT_SESSION_STORED_NAME = "auth_session";
 
-type UserAttributes = RouterOutputs["auth"]["getUser"];
-
 // interface instead of type for better intellisense
 interface AuthContextT {
-  user: null | UserAttributes;
-  signIn: (arg: RouterInputs["auth"]["signIn"]) => Promise<UserAttributes>;
+  user: null | User;
+  signIn: (arg: RouterInputs["auth"]["signIn"]) => Promise<User>;
   signOut: () => Promise<unknown>;
-  signUp: (arg: RouterInputs["auth"]["signUp"]) => Promise<UserAttributes>;
+  signUp: (arg: RouterInputs["auth"]["signUp"]) => Promise<User>;
 }
 
 const AuthContext = createContext<null | AuthContextT>(null);
@@ -48,7 +46,7 @@ export const AuthContextProvider = ({
   // pass the client cookie setter to the context provider:
   localSessionHandler,
 }: AuthContextProviderProps) => {
-  const [user, setUser] = useState<UserAttributes | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   const { mutateAsync: getUser } = api.auth.getUser.useMutation();
   useEffect(() => {
@@ -98,7 +96,7 @@ export const AuthContextProvider = ({
 
   const { mutateAsync: signUpMutation } = api.auth.signUp.useMutation();
   async function signUp(signUpInfo: RouterInputs["auth"]["signUp"]) {
-    return signUpMutation(signUpInfo);
+    return signUpMutation(signUpInfo).then((res) => res);
   }
 
   return (
