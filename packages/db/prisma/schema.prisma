@@ -13,9 +13,9 @@ datasource db {
 
 // lucia auth models:
 model AuthUser {
-  id                  String  @id @unique
-  email               String  @unique
-  emailSignInVerified Boolean @default(false)
+  id            String  @id @unique
+  email         String  @unique
+  emailVerified Boolean @default(false)
   // can add user fields:
 
   auth_session AuthSession[]

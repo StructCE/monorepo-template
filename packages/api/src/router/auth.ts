@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { LuciaError } from "lucia-auth";
+import { LuciaError } from "lucia";
 import { z } from "zod";
 
 import { Prisma } from "@struct/db";
@@ -22,7 +22,7 @@ export const authRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       try {
         return await ctx.auth.createUser({
-          primaryKey: {
+          key: {
             providerId: "email",
             providerUserId: input.email,
             password: input.password,
@@ -63,11 +63,11 @@ export const authRouter = createTRPCRouter({
     }),
 
   signOut: protectedProcedure.mutation(async ({ ctx }) => {
-    return ctx.auth.invalidateSession(ctx.userInfo.session.sessionId);
+    return ctx.auth.invalidateSession(ctx.session.sessionId);
   }),
 
   getUser: protectedProcedure.mutation(({ ctx }) => {
-    return ctx.userInfo.user;
+    return ctx.session.user;
   }),
 
   signIn: publicProcedure
@@ -78,7 +78,7 @@ export const authRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      if (ctx.userInfo.session) {
+      if (ctx.session) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Already signed in",
@@ -117,7 +117,7 @@ export const authRouter = createTRPCRouter({
         });
       }
 
-      const session = await ctx.auth.createSession(key.userId);
+      const session = await ctx.auth.createSession({userId: key.userId, attributes: {}});
 
       return {
         user: await ctx.auth.getUser(session.userId),

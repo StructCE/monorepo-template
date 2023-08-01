@@ -1,8 +1,9 @@
+import { useAuthContext } from "@struct/auth-context";
 import type { NextPage } from "next";
 import React from "react";
 
 const AuthShowcase : React.FC = () => {
-  const { user,  }
+  const { user } = useAuthContext();
 
   return <></>
 }

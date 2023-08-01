@@ -9,7 +9,7 @@
 
 import { initTRPC, TRPCError } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import type { Session, User } from "lucia-auth";
+import type { Session } from "lucia";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
@@ -28,7 +28,7 @@ import { auth } from "./lucia";
  */
 
 type CreateContextOptions = {
-  userInfo: { user: User | null; session: Session | null };
+  session: Session | null;
   authRequest: ReturnType<typeof auth.handleRequest>;
   requestInfo: CreateNextContextOptions;
 };
@@ -45,7 +45,7 @@ type CreateContextOptions = {
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     authRequest: opts.authRequest,
-    userInfo: opts.userInfo,
+    session: opts.session,
     requestInfo: opts.requestInfo,
     prisma,
     auth,
@@ -76,15 +76,12 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
 
   // NOTE: this is where you would add any other context you need
   const authRequest = auth.handleRequest({ req, res });
-  const userInfo = await auth.validateSessionUser(sessionId).catch(() => ({
-    user: null,
-    session: null,
-  }));
+  const session = await auth.validateSession(sessionId).catch(() => null);
 
   return createInnerTRPCContext({
     requestInfo: opts,
     authRequest,
-    userInfo,
+    session,
   });
 };
 
@@ -135,13 +132,14 @@ export const publicProcedure = t.procedure;
  * procedure
  */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.userInfo.user || !ctx.userInfo.session) {
+  if (!ctx.session || !ctx.session.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({
     ctx: {
-      // infers `user` and `session` as non-nullable
-      userInfo: { user: ctx.userInfo.user, session: ctx.userInfo.session },
+      ...ctx,
+      // infers `session` as non-nullable
+      session: ctx.session,
     },
   });
 });

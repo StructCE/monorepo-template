@@ -9,7 +9,7 @@ import type { NextPageContext } from "next";
 import type { CreateTRPCNext } from "@trpc/next/dist/createTRPCNext";
 import type { CreateTRPCReact } from "@trpc/react-query/dist/createTRPCReact";
 
-import type { AppRouter, RouterInputs, RouterOutputs } from "@struct/api";
+import type { AppRouter, RouterInputs } from "@struct/api";
 
 const DEFAULT_SESSION_STORED_NAME = "auth_session";
 
@@ -25,10 +25,6 @@ interface AuthContextT {
   signIn: (arg: RouterInputs["auth"]["signIn"]) => Promise<UserAttributes>;
   signOut: () => Promise<unknown>;
   signUp: (arg: RouterInputs["auth"]["signUp"]) => Promise<UserAttributes>;
-  startOAuthSignIn: (
-    provider: RouterInputs["auth"]["startOAuthSignIn"],
-  ) => Promise<RouterOutputs["auth"]["startOAuthSignIn"]>;
-  finishOAuth: (args: { user: UserAttributes; session: string }) => void;
 }
 
 const AuthContext = createContext<null | AuthContextT>(null);
@@ -101,28 +97,6 @@ export const AuthContextProvider = ({
     });
   }
 
-  const { mutateAsync: startOAuthSignInMutation } =
-    api.auth.startOAuthSignIn.useMutation();
-  async function startOAuthSignIn(
-    provider: RouterInputs["auth"]["startOAuthSignIn"],
-  ) {
-    return startOAuthSignInMutation(provider);
-  }
-
-  function finishOAuth({
-    user,
-    session,
-  }: {
-    user: UserAttributes;
-    session: string;
-  }) {
-    setUser(user);
-
-    localSessionHandler.set({
-      name: DEFAULT_SESSION_STORED_NAME,
-      value: session,
-    });
-  }
 
   const { mutateAsync: signUpMutation } = api.auth.signUp.useMutation();
   async function signUp(signUpInfo: RouterInputs["auth"]["signUp"]) {
@@ -136,8 +110,6 @@ export const AuthContextProvider = ({
         signIn,
         signOut,
         signUp,
-        startOAuthSignIn,
-        finishOAuth,
       }}
     >
       {children}

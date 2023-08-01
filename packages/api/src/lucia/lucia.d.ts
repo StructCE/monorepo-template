@@ -1,11 +1,7 @@
 // lucia.d.ts
 /// <reference types="lucia" />
 declare namespace Lucia {
-  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-  type Auth = import("./index").Auth;
-  type UserAttributes = {
-    // Adicionar atributos "públicos" do schema de usuário aqui
-    email: string;
-    emailVerified: boolean;
-  };
+	type Auth = import("./index.ts").Auth;
+	type DatabaseUserAttributes = Omit<import("@struct/db").AuthUser, "id">;
+	type DatabaseSessionAttributes = {};
 }
