@@ -5,6 +5,8 @@ import { z } from "zod";
 import { Prisma } from "@struct/db";
 
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { mailer } from "../utils/mailjet";
+import { generateEmailVerificationToken } from "../utils/token";
 
 export const authRouter = createTRPCRouter({
   signUp: publicProcedure
@@ -29,9 +31,19 @@ export const authRouter = createTRPCRouter({
           },
           attributes: {
             email: input.email,
-            emailVerified: true,
+            emailVerified: false,
           },
         });
+
+        const token = await generateEmailVerificationToken(user.userId);
+        await mailer
+          .sendVerificationEmail({
+            to: user.email,
+            token,
+          })
+          .catch(() => {
+            // Ainda não sei se tá funfando direito
+          });
 
         return user;
       } catch (error) {
@@ -93,7 +105,7 @@ export const authRouter = createTRPCRouter({
         const user = await ctx.auth.getUser(key.userId);
 
         if (!user.emailVerified) {
-          throw new Error("AUTH_INVALID_PASSWORD");
+          throw new Error("Email not verified");
         }
 
         const session = await ctx.auth.createSession({
@@ -106,7 +118,7 @@ export const authRouter = createTRPCRouter({
           session: session,
         };
       } catch (e) {
-        const error = e as LuciaError;
+        const error = e as Error;
         if (
           error.message === "AUTH_INVALID_KEY_ID" ||
           error.message === "AUTH_INVALID_PASSWORD"
@@ -115,6 +127,13 @@ export const authRouter = createTRPCRouter({
             code: "UNAUTHORIZED",
             message:
               "Incorrect email or password. Verify your login method and details.",
+          });
+        }
+
+        if (error.message === "Email not verified") {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "Email not verified",
           });
         }
 
