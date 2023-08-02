@@ -6,7 +6,7 @@ import { env } from "../env.mjs";
 
 const mailjet = new Mailjet({
   apiKey: env.MAILJET_API_KEY,
-  apiSecret: env.MAILJET_API_SECRET,
+  apiSecret: env.MAILJET_SECRET_KEY,
   config: {
     version: "v3.1",
   },

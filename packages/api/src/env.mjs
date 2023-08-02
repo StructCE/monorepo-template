@@ -9,7 +9,7 @@ export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url(),
     MAILJET_API_KEY: z.string(),
-    MAILJET_API_SECRET: z.string(),
+    MAILJET_SECRET_KEY: z.string(),
     BASE_WEB_URL: z.string().url(),
   },
   /**
@@ -25,7 +25,7 @@ export const env = createEnv({
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     MAILJET_API_KEY: process.env.MAILJET_API_KEY,
-    MAILJET_API_SECRET: process.env.MAILJET_API_SECRET,
+    MAILJET_SECRET_KEY: process.env.MAILJET_SECRET_KEY,
     BASE_WEB_URL: process.env.BASE_WEB_URL,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },

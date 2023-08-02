@@ -36,14 +36,10 @@ export const authRouter = createTRPCRouter({
         });
 
         const token = await generateEmailVerificationToken(user.userId);
-        await mailer
-          .sendVerificationEmail({
-            to: user.email,
-            token,
-          })
-          .catch(() => {
-            // Ainda não sei se tá funfando direito
-          });
+        await mailer.sendVerificationEmail({
+          to: user.email,
+          token,
+        });
 
         return user;
       } catch (error) {
