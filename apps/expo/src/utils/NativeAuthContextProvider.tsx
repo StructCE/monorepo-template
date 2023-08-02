@@ -1,13 +1,16 @@
 import React from "react";
 import * as SecureStore from "expo-secure-store";
 
-import { AuthContextProvider, LocalSessionHandler } from "@struct/auth-context";
+import {
+  AuthContextProvider,
+  type LocalSessionHandler,
+} from "@struct/auth-context";
 
 import { api, defaultHeaders } from "./api";
 
 const sessionHandler: LocalSessionHandler = {
   get: async (name) => {
-    const session = await SecureStore.getItemAsync(name);
+    const session = await SecureStore.getItemAsync(name).catch(() => null);
     if (session) {
       defaultHeaders[name] = session;
     }
