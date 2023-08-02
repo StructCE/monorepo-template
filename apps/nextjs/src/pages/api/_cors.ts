@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 export function cors(req: NextApiRequest, res: NextApiResponse) {
   res.setHeader("Access-Control-Allow-Origin", "*");
