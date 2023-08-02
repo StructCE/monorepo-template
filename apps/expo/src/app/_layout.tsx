@@ -23,6 +23,8 @@ const RootLayout = () => {
                 backgroundColor: "rgb(20,31,49)",
               },
               headerTintColor: "#ccc",
+              statusBarStyle: "light",
+              statusBarTranslucent: true,
             }}
           />
           <StatusBar />
