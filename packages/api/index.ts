@@ -16,3 +16,7 @@ export type RouterInputs = inferRouterInputs<AppRouter>;
  * @example type HelloOutput = RouterOutputs['example']['hello']
  **/
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
+
+// for global typing:
+export { type Auth } from "./lucia";
+export type { Session, User } from "lucia";

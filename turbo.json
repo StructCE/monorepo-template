@@ -14,6 +14,10 @@
       "persistent": true,
       "cache": false
     },
+    "dev:email": {
+      "persistent": true,
+      "cache": false
+    },
     "build": {
       "dependsOn": ["^build", "^db:generate"],
       "outputs": [".next/**", ".expo/**"]
@@ -34,11 +38,9 @@
   "globalEnv": [
     "CI",
     "DATABASE_URL",
-    "DISCORD_CLIENT_ID",
-    "DISCORD_CLIENT_SECRET",
+    "MAILJET_API_KEY",
+    "MAILJET_SECRET_KEY",
     "EXPO_ROUTER_APP_ROOT",
-    "NEXTAUTH_SECRET",
-    "NEXTAUTH_URL",
     "NODE_ENV",
     "SKIP_ENV_VALIDATION",
     "VERCEL",

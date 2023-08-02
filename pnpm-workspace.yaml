@@ -2,6 +2,7 @@ packages:
   - apps/expo
   - apps/nextjs
   - packages/api
-  - packages/auth
+  - packages/auth-context
   - packages/db
+  - packages/email-templates
   - packages/config/*
