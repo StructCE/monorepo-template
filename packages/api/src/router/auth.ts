@@ -29,7 +29,7 @@ export const authRouter = createTRPCRouter({
           },
           attributes: {
             email: input.email,
-            emailVerified: false,
+            emailVerified: true,
           },
         });
 

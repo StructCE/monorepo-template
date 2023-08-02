@@ -18,5 +18,5 @@
     "noUncheckedIndexedAccess": true
   },
   "include": [".eslintrc.js", "prettier.config.cjs"],
-  "files": ["global-types/**/*"]
+  "files": ["global-types/lucia.d.ts"]
 }
