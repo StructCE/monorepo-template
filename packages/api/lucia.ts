@@ -8,7 +8,11 @@ import "lucia/polyfill/node";
 import { prisma as prismaDb } from "@struct/db";
 
 export const auth = lucia({
-  adapter: prisma(prismaDb),
+  adapter: prisma(prismaDb, {
+    key: "key",
+    session: "session",
+    user: "user",
+  }),
   env: process.env.NODE_ENV === "production" ? "PROD" : "DEV", // "PROD" if prod
   middleware: nextjs(),
   getUserAttributes(databaseUser) {

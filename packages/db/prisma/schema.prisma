@@ -18,8 +18,8 @@ model User {
   emailVerified Boolean @default(false)
   // can add user fields:
 
-  auth_session Session[]
-  auth_key     Key[]
+  session Session[]
+  key     Key[]
 
   @@map("user")
 }

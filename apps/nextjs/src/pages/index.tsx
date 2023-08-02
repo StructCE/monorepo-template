@@ -14,9 +14,7 @@ const Home: NextPage = () => {
           {user && (
             <h2>
               Logado como <br />
-              <span className="ml-4 text-xl">
-                {user.username || user.email}
-              </span>
+              <span className="ml-4 text-xl">{user.email}</span>
             </h2>
           )}
           {user ? (

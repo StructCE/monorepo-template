@@ -87,47 +87,44 @@ export const authRouter = createTRPCRouter({
         });
       }
 
-      const key = await ctx.auth
-        .useKey("email", input.email, input.password)
-        .catch((e) => {
-          const error = e as LuciaError;
-          if (
-            error.message === "AUTH_INVALID_KEY_ID" ||
-            error.message === "AUTH_INVALID_PASSWORD"
-          ) {
-            throw new TRPCError({
-              code: "UNAUTHORIZED",
-              message:
-                "Incorrect email or password. Verify your login method and details.",
-            });
-          }
+      try {
+        const key = await ctx.auth.useKey("email", input.email, input.password);
 
-          // database connection error
-          // console.log(error);
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Unexpected server error",
-          });
+        const user = await ctx.auth.getUser(key.userId);
+
+        if (!user.emailVerified) {
+          throw new Error("AUTH_INVALID_PASSWORD");
+        }
+
+        const session = await ctx.auth.createSession({
+          userId: key.userId,
+          attributes: {},
         });
 
-      const user = await ctx.auth.getUser(key.userId);
+        return {
+          user: user,
+          session: session,
+        };
+      } catch (e) {
+        const error = e as LuciaError;
+        if (
+          error.message === "AUTH_INVALID_KEY_ID" ||
+          error.message === "AUTH_INVALID_PASSWORD"
+        ) {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message:
+              "Incorrect email or password. Verify your login method and details.",
+          });
+        }
 
-      if (!user.emailVerified) {
+        // database connection error
+        console.log("error", error);
         throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "Email not verified",
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Unexpected server error",
         });
       }
-
-      const session = await ctx.auth.createSession({
-        userId: key.userId,
-        attributes: {},
-      });
-
-      return {
-        user: await ctx.auth.getUser(session.userId),
-        session: session,
-      };
     }),
 
   getSecretMessage: protectedProcedure.query(() => {
