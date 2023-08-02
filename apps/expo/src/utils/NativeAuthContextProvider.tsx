@@ -17,12 +17,15 @@ const sessionHandler: LocalSessionHandler = {
     return session;
   },
   remove: (name) => {
-    SecureStore.deleteItemAsync(name);
+    SecureStore.deleteItemAsync(name).catch(() => null);
     delete defaultHeaders[name];
   },
   set: ({ name, value }) => {
-    SecureStore.setItemAsync(name, value);
-    defaultHeaders[name] = value;
+    SecureStore.setItemAsync(name, value)
+      .then(() => {
+        defaultHeaders[name] = value;
+      })
+      .catch(() => null);
   },
 };
 

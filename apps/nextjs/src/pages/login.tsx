@@ -64,7 +64,7 @@ const Home: NextPage = () => {
     signUp(parsed.data)
       .then((res) => {
         alert(JSON.stringify(res, null, 2));
-        router.push(`/verify-email?sentEmailTo=${res.email}`);
+        void router.push(`/verify-email?sentEmailTo=${res.email}`);
       })
       .catch((er) => {
         setIsLoading(false);
@@ -88,10 +88,10 @@ const Home: NextPage = () => {
 
     signIn(userInfo)
       .then(() => router.replace("/"))
-      .catch(async (er) => {
+      .catch((er) => {
         setIsLoading(false);
         if (er instanceof Error && er.message.includes("verified")) {
-          router.push(`/verify-email?sentEmailTo=${userInfo.email}`);
+          void router.push(`/verify-email?sentEmailTo=${userInfo.email}`);
         } else alert("Email ou usuário incorreto(s)!");
       });
   };
