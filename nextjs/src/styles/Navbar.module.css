@@ -1,0 +1,51 @@
+.nav_div {
+  width: 100%;
+  height: 10rem;
+  background-color: #d3fad6;
+  display: inline-flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  align-items: center;
+  align-self: flex-start;
+  justify-content: space-around;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 50px;
+}
+
+.link {color: #000;
+  text-align: center;
+  font-family: Roboto;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 700;
+  display: flex;
+  text-decoration: none;
+}
+
+.button {
+  color: #000;
+  text-align: center;
+  font-family: Roboto;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 700;
+  display: flex;
+}
+
+.login_button {
+  display: flex;
+}
+
+.login_icon {
+  display: flex;
+}
