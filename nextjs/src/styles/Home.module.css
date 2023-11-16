@@ -1,0 +1,87 @@
+.home {
+  width: 100%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background-color: #f1f1f1;
+}
+
+.p {
+  width: 575px;
+  color: #000;
+  font-family: RobotoSlab;
+  font-size: 36px;
+  font-style: normal;
+  text-align: justify;
+  margin: 4px;
+}
+.h1 {
+  width: 525px;
+  color: #000;
+  font-family: Caveat;
+  font-size: 5rem;
+  font-style: normal;
+  font-weight: 700;
+  /* 100% */
+}
+
+.h2 {
+  width: 36rem;
+  color: #000;
+  font-family: Caveat;
+  font-size: 4rem;
+  margin: 4px;
+  /* 100% */
+}
+
+.ul {
+  width: 885px;
+  flex-shrink: 0;
+  color: #000;
+  font-family: RobotoSlab;
+  font-size: 32px;
+  font-style: normal;
+}
+
+.ol {
+  flex-shrink: 0;
+  color: #000;
+  font-family: RobotoSlab;
+  font-size: 32px;
+  font-style: normal;
+}
+
+.sec1 {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: space-around;
+}
+.sec2 {
+  /* background-image; */
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+}
+
+.sec3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+}
+
+.sec4 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.separator {
+  width: 100%;
+  height: auto;
+  /* color: ; */
+  /* max-height: ; */
+}
