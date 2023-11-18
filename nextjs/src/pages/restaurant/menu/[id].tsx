@@ -1,7 +1,6 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
 import { Menu, Category, Product, prisma } from "../../../../prisma/prisma";
-import ShowMenu from "@/components/ShowMenu";
 import Card from "@/components/Card";
 
 export const getServerSideProps: GetServerSideProps<{
