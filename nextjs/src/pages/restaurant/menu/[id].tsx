@@ -1,7 +1,7 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
 import { Menu, Category, Product, prisma } from "../../../../prisma/prisma";
-import Card from "@/components/Card";
+import ShowProduct from "@/components/ShowProduct";
 
 export const getServerSideProps: GetServerSideProps<{
   restaurantMenu: any;
@@ -23,8 +23,7 @@ export default function MenuPage({
   const router = useRouter();
 
   return (
-    <>
-      {console.log(restaurantMenu.categories)}
+    <div>
       <div className="menu">
         <h1>{restaurantMenu.name}</h1>
         <h1>Restaurante: {router.query.id}</h1>
@@ -37,7 +36,7 @@ export default function MenuPage({
               {categoria.products.map((produto: any) => {
                 return (
                   <div>
-                    <Card
+                    <ShowProduct
                       name={produto.name}
                       description={produto.description}
                       ingredients={produto.ingredients}
@@ -51,6 +50,6 @@ export default function MenuPage({
           );
         })}
       </div>
-    </>
+    </div>
   );
 }

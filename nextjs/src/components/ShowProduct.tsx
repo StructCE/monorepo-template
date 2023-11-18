@@ -1,6 +1,6 @@
-import styles from "@/styles/Card.module.css";
+import styles from "@/styles/ShowProduct.module.css";
 
-export default function Card(produto: {
+export default function ShowProduct(produto: {
   name: string;
   description: string;
   ingredients: string;
