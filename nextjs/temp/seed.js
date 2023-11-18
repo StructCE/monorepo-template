@@ -68,7 +68,7 @@ function seed() {
                                 name: restaurantNames[i],
                                 location: "Location ".concat(i + 1),
                                 schedule: "Schedule ".concat(i + 1),
-                                phone: i + 61912345678,
+                                phone: "".concat(i + 61912345678),
                                 description: "Description ".concat(i + 1),
                                 contacts: "Contacts ".concat(i + 1),
                             },
@@ -105,6 +105,8 @@ function seed() {
                                 name: productNames[i][j][k],
                                 ingredients: "Ingredients ".concat(k + 1),
                                 price: k + 10,
+                                description: "Description ".concat(k + 1, "\""),
+                                discount: 0
                             },
                         })];
                 case 7:
