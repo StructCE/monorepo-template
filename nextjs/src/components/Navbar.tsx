@@ -10,7 +10,7 @@ export default function Navbar() {
       <div className={styles.logo_div}>
         <Link href="/">
           <img
-            src="images/logomark.png"
+            src="/images/logomark.png"
             alt="fazgostoso"
             className={styles.logomark}
           />

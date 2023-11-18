@@ -42,15 +42,15 @@ export default function Footer() {
         <h1 className={styles.h1}>Contate-nos</h1>
         <ul className={styles.ul}>
           <li className={styles.li}>
-            {/* <img className={styles.contact_icon} src="images/phone.png" alt="phone_icon" /> */}
+            {/* <img className={styles.contact_icon} src="/images/phone.png" alt="phone_icon" /> */}
             +55 61 91234-5678
           </li>
           <li className={styles.li}>
-            {/* <img className={styles.contact_icon} src="images/email.png" alt="email_icon" /> */}
+            {/* <img className={styles.contact_icon} src="/images/email.png" alt="email_icon" /> */}
             fazgostoso.help@gmail.com
           </li>
           <li className={styles.li}>
-            {/* <img className={styles.contact_icon} src="images/place.png" alt="place_icon" /> */}
+            {/* <img className={styles.contact_icon} src="/images/place.png" alt="place_icon" /> */}
             SQN 406 Bloco A, Brasília, DF
           </li>
         </ul>
@@ -61,21 +61,21 @@ export default function Footer() {
           <li className={styles.li}>
             <img
               className={styles.social_media_icon}
-              src="images/whatsapp.png"
+              src="/images/whatsapp.png"
               alt=""
             />
           </li>
           <li className={styles.li}>
             <img
               className={styles.social_media_icon}
-              src="images/instagram.png"
+              src="/images/instagram.png"
               alt=""
             />
           </li>
           <li className={styles.li}>
             <img
               className={styles.social_media_icon}
-              src="images/facebook.png"
+              src="/images/facebook.png"
               alt=""
             />
           </li>

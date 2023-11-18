@@ -24,7 +24,7 @@ async function seed() {
         name: restaurantNames[i],
         location: `Location ${i + 1}`,
         schedule: `Schedule ${i + 1}`,
-        phone: i + 61912345678,
+        phone: `${i + 61912345678}`,
         description: `Description ${i + 1}`,
         contacts: `Contacts ${i + 1}`,
       },
@@ -52,6 +52,8 @@ async function seed() {
             name: productNames[i][j][k],
             ingredients: `Ingredients ${k + 1}`,
             price: k + 10,
+            description: `Description ${k + 1}"`,
+            discount: 0
           },
         });
       }
