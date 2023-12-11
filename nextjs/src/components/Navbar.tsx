@@ -1,10 +1,12 @@
 import styles from "@/styles/Navbar.module.css";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
 import LoginGoogle from "./LoginGoogle";
+import { prisma } from "../../prisma/prisma";
+import { useRouter } from "next/router";
 
 export default function Navbar() {
   const { data: session } = useSession();
+  const router = useRouter();
 
   return (
     <nav className={styles.nav_div}>
@@ -14,26 +16,36 @@ export default function Navbar() {
           alt="fazgostoso"
           className={styles.logo}
           onClick={() => {
-            window.location.href = `/`;
+            router.push(`/`);
           }}
         />
       </div>
       <div className={styles.actions_div}>
-        <ul className={styles.actions}>
-          <li>
-            <button onClick={() => {}} className={styles.button}>
-              Sobre
-            </button>
-          </li>
-          <li>
-            <button onClick={() => {}} className={styles.button}>
-              Contato
-            </button>
-          </li>
-          <li>
-            <LoginGoogle />
-          </li>
-        </ul>
+        <div className={styles.actions}>
+          <button onClick={() => {}} className={styles.button}>
+            Sobre
+          </button>
+
+          <button onClick={() => {}} className={styles.button}>
+            Contato
+          </button>
+
+          <button
+            onClick={() => {
+              if (session && session.user) {
+                router.push(`/user/menu/${session.user.email}`);
+              } else {
+                alert("Faça login para acessar seu restaurante!")
+                router.push(`/user/login`);
+              }
+            }}
+            className={styles.button}
+          >
+            Restaurante
+          </button>
+
+          <LoginGoogle />
+        </div>
       </div>
     </nav>
   );

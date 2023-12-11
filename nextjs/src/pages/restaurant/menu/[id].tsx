@@ -8,9 +8,7 @@ export const getServerSideProps: GetServerSideProps<{
   const menuId = context.query.id;
   const res = await fetch(
     `http://localhost:3000/api/restaurant/menu/${menuId}`,
-    {
-      method: "GET",
-    }
+    { method: "GET" }
   );
   const restaurantMenu = await res.json();
   return { props: { restaurantMenu } };

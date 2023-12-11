@@ -1,24 +1,4 @@
-// export const getServerSideProps: GetServerSideProps<{
-//   restaurantMenu: any;
-// }> = async (context) => {
-//   const menuId = context.query.id;
-//   const res = await fetch(
-//     `http://localhost:3000/api/restaurant/menu/${menuId}`,
-//     {
-//       method: "GET",
-//     }
-//   );
-//   const restaurantMenu = await res.json();
-//   return { props: { restaurantMenu } };
-// };
-// export default function MenuPage({
-//   restaurantMenu,
-// }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-//   const router = useRouter();
-// }
-
 import CartProduct from "@/components/CartProduct";
-import { Product } from "../../../../prisma/prisma";
 import styles from "@/styles/Cart.module.css";
 
 export default function CartPage() {

@@ -1,0 +1,1 @@
+{"c":["pages/_app","pages/index","pages/restaurant/menu/[id]","webpack"],"r":[],"m":["./node_modules/.prisma/client/index-browser.js","./node_modules/@prisma/client/index-browser.js","./node_modules/@prisma/client/runtime/index-browser.js","./prisma/prisma.ts","./src/lib/restaurant.ts"]}

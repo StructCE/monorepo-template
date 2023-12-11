@@ -1,4 +1,6 @@
+import { useSession } from "next-auth/react";
 import { prisma } from "../../prisma/prisma";
+import { useRouter } from "next/router";
 
 export async function getRestaurant(restaurantId: string) {
   const restaurant = await prisma.restaurant.findUnique({
@@ -6,4 +8,4 @@ export async function getRestaurant(restaurantId: string) {
   });
   return restaurant;
 }
-    
+

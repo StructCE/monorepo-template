@@ -7,10 +7,9 @@ export default function SubscriptionCard() {
   const [name, setName] = useState("");
   const router = useRouter();
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    console.log("registrar");
-    router.push("/menu")
+  function handleSubmit() {
+    if (name && email) router.push(`/register`);
+    else alert ("Preencha todos os campos!")
   }
 
   return (
@@ -18,7 +17,10 @@ export default function SubscriptionCard() {
       <form
         className={styles.form}
         action="subscription_start"
-        onSubmit={(e) => handleSubmit(e)}
+        onSubmit={(event) => {
+          event.preventDefault();
+          handleSubmit();
+        }}
       >
         <div className={styles.formInput}>
           <label className={styles.label} htmlFor="name">
@@ -30,7 +32,7 @@ export default function SubscriptionCard() {
             aria-label="Seu nome:"
             placeholder="Clique para escrever"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(event) => setName(event.target.value)}
           />
         </div>
         <div className={styles.formInput}>
@@ -42,7 +44,7 @@ export default function SubscriptionCard() {
             type="email"
             placeholder="Clique para escrever"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(event) => setEmail(event.target.value)}
           />
         </div>
         <button className={styles.button} type="submit">
