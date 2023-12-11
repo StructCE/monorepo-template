@@ -8,12 +8,43 @@ export default async function handler(
   const menuId = req.query.id;
 
   switch (req.method) {
-    // case "CREATE": {
-    //   await prisma.restaurant.create({});
+    case "CREATE": {
+      try {
+        const newMenu = await prisma.menu.create({ data: req.body });
+        if (newMenu) {
+          res.status(200).json(newMenu);
+        } else {
+          const message: string = "Couldn't create menu";
+          res.status(400).json(message);
+        }
+      } catch (error) {
+        const message: string = "Error trying to create the menu";
+        res.status(500).json(message);
+      } finally {
+        await prisma.$disconnect();
+      }
+    }
 
-    // }
+    case "UPDATE": {
+      try {
+        const newMenu = await prisma.menu.update({
+          where: { id: Number(menuId) },
+          data: req.body,
+        });
 
-    // will return a json with all menu data
+        if (newMenu) {
+          res.status(200).json(newMenu);
+        } else {
+          const message: string = "Couldn't update menu";
+          res.status(400).json(message);
+        }
+      } catch (error) {
+        const message: string = "Error trying to update the menu";
+        res.status(500).json(message);
+      } finally {
+        await prisma.$disconnect();
+      }
+    }
 
     case "GET": {
       try {

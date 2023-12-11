@@ -6,3 +6,4 @@ export async function getRestaurant(restaurantId: string) {
   });
   return restaurant;
 }
+    

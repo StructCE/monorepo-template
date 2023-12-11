@@ -1,6 +1,6 @@
 import styles from "@/styles/ShowProduct.module.css";
 
-export default function ShowProduct(produto: {
+export default function ShowProduct(props: {
   name: string;
   description: string;
   ingredients: string;
@@ -8,16 +8,16 @@ export default function ShowProduct(produto: {
 }) {
   return (
     <div className={styles.card}>
-      {/* <img src={produto.image} alt={produto.name} className={styles.img} /> */}
+      {/* <img src={props.image} alt={props.name} className={styles.img} /> */}
       <div className={styles.info}>
-        <h1 className={styles.nome}>{produto.name}</h1>
-        <p className={styles.descricao}>{produto.description}</p>
-        <p className={styles.ingredientes}>{produto.ingredients}</p>
+        <h1 className={styles.nome}>{props.name}</h1>
+        <p className={styles.descricao}>{props.description}</p>
+        <p className={styles.ingredientes}>{props.ingredients}</p>
         {/* <p className={styles.ingredientes}>
-          {Array.from(produto.ingredients).join(", ")}
+          {Array.from(props.ingredients).join(", ")}
         </p> */}
       </div>
-      <h2 className={styles.preco}>R$ {produto.price}</h2>
+      <h2 className={styles.preco}>R$ {props.price}</h2>
     </div>
   );
 }

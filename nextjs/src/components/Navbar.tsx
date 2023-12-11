@@ -1,46 +1,37 @@
 import styles from "@/styles/Navbar.module.css";
-import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
+import LoginGoogle from "./LoginGoogle";
 
 export default function Navbar() {
-  const [loginButton, setLoginButton] = useState(false);
+  const { data: session } = useSession();
 
   return (
     <nav className={styles.nav_div}>
       <div className={styles.logo_div}>
-        <Link href="/">
-          <img
-            src="/images/logomark.png"
-            alt="fazgostoso"
-            className={styles.logomark}
-          />
-        </Link>
+        <img
+          src="/images/assets/logomark.png"
+          alt="fazgostoso"
+          className={styles.logo}
+          onClick={() => {
+            window.location.href = `/`;
+          }}
+        />
       </div>
       <div className={styles.actions_div}>
         <ul className={styles.actions}>
           <li>
-            <Link href="/sobre" className={styles.link}>
+            <button onClick={() => {}} className={styles.button}>
               Sobre
-            </Link>
+            </button>
           </li>
           <li>
-            <Link href="/contato" className={styles.link}>
+            <button onClick={() => {}} className={styles.button}>
               Contato
-            </Link>
+            </button>
           </li>
           <li>
-            {!loginButton && (
-              <span>
-                <Link href="/user" className={styles.link}>Login</Link>
-              </span>
-            )}
-            {loginButton && (
-              <span>
-                <Link href="/restaurant" className={styles.link}>
-                  Meu Restaurante
-                </Link>{" "}
-              </span>
-            )}
+            <LoginGoogle />
           </li>
         </ul>
       </div>

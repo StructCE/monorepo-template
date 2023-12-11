@@ -19,8 +19,7 @@ model Restaurant {
   phone       String
   description String
   contacts    String
-
-  menu  Menu?
+  menu        Menu?
 }
 
 model Menu {
@@ -33,22 +32,41 @@ model Menu {
 }
 
 model Category {
-  id     Int    @id @unique @default(autoincrement())
-  menuId Int
-  name   String @unique
-
-  Menu     Menu?     @relation(fields: [menuId], references: [id])
+  id       Int       @id @unique @default(autoincrement())
+  menuId   Int
+  name     String    @unique
+  Menu     Menu      @relation(fields: [menuId], references: [id])
   products Product[]
 }
 
 model Product {
-  id          Int    @id @unique @default(autoincrement())
+  id          Int           @id @unique @default(autoincrement())
   categoryId  Int
   name        String
   ingredients String
   price       Float
   discount    Int
   description String
+  category    Category      @relation(fields: [categoryId], references: [id])
+  CartProduct CartProduct[]
+}
 
-  Category Category? @relation(fields: [categoryId], references: [id])
+model User {
+  id     Int    @id @unique @default(autoincrement())
+  name   String
+  cart   Cart?
+}
+
+model Cart {
+  id          Int           @id @unique //same as the user's
+  user        User          @relation(fields: [id], references: [id])
+  cartProduct CartProduct[]
+}
+
+model CartProduct {
+  productId Int @id @unique
+  cartId    Int
+  quantity  Int
+  cart      Cart    @relation(fields: [cartId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
 }
