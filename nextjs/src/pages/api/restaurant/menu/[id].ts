@@ -25,7 +25,7 @@ export default async function handler(
       }
     }
 
-    case "UPDATE": {
+    case "PUT": {
       try {
         const newMenu = await prisma.menu.update({
           where: { id: Number(menuId) },

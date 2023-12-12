@@ -1,7 +1,25 @@
 import CartProduct from "@/components/CartProduct";
 import styles from "@/styles/Cart.module.css";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { useRouter } from "next/router";
 
-export default function CartPage() {
+export const getServerSideProps: GetServerSideProps<{
+  restaurantMenu: any;
+}> = async (context) => {
+  const menuId = context.query.id;
+  const res = await fetch(
+    `http://localhost:3000/api/restaurant/menu/${menuId}`,
+    { method: "GET" }
+  );
+  const restaurantMenu = await res.json();
+  return { props: { restaurantMenu } };
+};
+
+export default function CartPage({
+  restaurantMenu,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const router = useRouter();
+
   return (
     <div className={styles.page}>
       <div>
@@ -25,6 +43,7 @@ export default function CartPage() {
                 </button>
               </th>
             </tr>
+            
             <CartProduct
               name="Pizza de Calabresa completa"
               description="A melhor pizza de calabresa do DF."
