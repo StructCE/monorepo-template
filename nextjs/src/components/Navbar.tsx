@@ -1,48 +1,51 @@
 import styles from "@/styles/Navbar.module.css";
-import Link from "next/link";
-import { useState } from "react";
+import { useSession } from "next-auth/react";
+import LoginGoogle from "./LoginGoogle";
+import { prisma } from "../../prisma/prisma";
+import { useRouter } from "next/router";
 
 export default function Navbar() {
-  const [loginButton, setLoginButton] = useState(false);
+  const { data: session } = useSession();
+  const router = useRouter();
 
   return (
     <nav className={styles.nav_div}>
       <div className={styles.logo_div}>
-        <Link href="/">
-          <img
-            src="/images/logomark.png"
-            alt="fazgostoso"
-            className={styles.logomark}
-          />
-        </Link>
+        <img
+          src="/images/assets/logomark.png"
+          alt="fazgostoso"
+          className={styles.logo}
+          onClick={() => {
+            router.push(`/`);
+          }}
+        />
       </div>
       <div className={styles.actions_div}>
-        <ul className={styles.actions}>
-          <li>
-            <Link href="/sobre" className={styles.link}>
-              Sobre
-            </Link>
-          </li>
-          <li>
-            <Link href="/contato" className={styles.link}>
-              Contato
-            </Link>
-          </li>
-          <li>
-            {!loginButton && (
-              <span>
-                <Link href="/user" className={styles.link}>Login</Link>
-              </span>
-            )}
-            {loginButton && (
-              <span>
-                <Link href="/restaurant" className={styles.link}>
-                  Meu Restaurante
-                </Link>{" "}
-              </span>
-            )}
-          </li>
-        </ul>
+        <div className={styles.actions}>
+          <button onClick={() => {}} className={styles.button}>
+            Sobre
+          </button>
+
+          <button onClick={() => {}} className={styles.button}>
+            Contato
+          </button>
+
+          <button
+            onClick={() => {
+              if (session && session.user) {
+                router.push(`/user/menu/${session.user.email}`);
+              } else {
+                alert("Faça login para acessar seu restaurante!")
+                router.push(`/user/login`);
+              }
+            }}
+            className={styles.button}
+          >
+            Restaurante
+          </button>
+
+          <LoginGoogle />
+        </div>
       </div>
     </nav>
   );

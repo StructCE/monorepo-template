@@ -61,21 +61,21 @@ export default function Footer() {
           <li className={styles.li}>
             <img
               className={styles.social_media_icon}
-              src="/images/whatsapp.png"
+              src="/images/icons/whatsapp.png"
               alt=""
             />
           </li>
           <li className={styles.li}>
             <img
               className={styles.social_media_icon}
-              src="/images/instagram.png"
+              src="/images/icons/instagram.png"
               alt=""
             />
           </li>
           <li className={styles.li}>
             <img
               className={styles.social_media_icon}
-              src="/images/facebook.png"
+              src="/images/icons/facebook.png"
               alt=""
             />
           </li>

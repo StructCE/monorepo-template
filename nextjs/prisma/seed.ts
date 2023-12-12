@@ -13,12 +13,32 @@ async function seed() {
       ["Leite condensado", "Paçoca", "Leite ninho", "Granola"],
     ],
     [
-      ["Calabresa", "Quatro queijos", "Portuguesa", "Frango com catupiry"],
-      ["Coca-cola", "Suco", "Água", "Guaraná"],
+      ["Pizza Calabresa", "Pizza Quatro queijos", "Pizza Portuguesa", "Pizza Frango com catupiry"],
+      ["Coca-cola", "Suco Vale", "Água Mineral", "Guaraná"],
     ],
+  ];
+  const owners = ["Willyan", "João"];
+  const ownersEmail = [
+    "willyanmarquesmelo@gmail.com",
+    "joaogamer123@gmail.com",
   ];
 
   for (let i = 0; i < 2; i++) {
+    const user = await prisma.user.create({
+      data: {
+        name: owners[i],
+        email: ownersEmail[i],
+        password: "123456",
+
+      },
+    });
+
+    const cart = await prisma.cart.create({
+      data: {
+        userId: user.id
+      },
+    });
+
     const restaurant = await prisma.restaurant.create({
       data: {
         name: restaurantNames[i],
@@ -27,6 +47,7 @@ async function seed() {
         phone: `${i + 61912345678}`,
         description: `Description ${i + 1}`,
         contacts: `Contacts ${i + 1}`,
+        ownerEmail: user.email,
       },
     });
 
@@ -53,7 +74,8 @@ async function seed() {
             ingredients: `Ingredients ${k + 1}`,
             price: k + 10,
             description: `Description ${k + 1}"`,
-            discount: 0
+            discount: 0,
+            image: "",
           },
         });
       }

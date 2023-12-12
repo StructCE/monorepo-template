@@ -12,7 +12,7 @@ datasource db {
 }
 
 model Restaurant {
-  id          Int    @id @unique @default(autoincrement())
+  id          Int    @id @default(autoincrement())
   name        String @unique
   location    String
   schedule    String
@@ -20,35 +20,68 @@ model Restaurant {
   description String
   contacts    String
 
-  menu  Menu?
+  ownerEmail String @unique
+
+  user User? @relation(fields: [ownerEmail], references: [email])
+  menu Menu?
 }
 
 model Menu {
-  id           Int    @id @unique @default(autoincrement())
-  restaurantId Int    @unique
-  name         String
+  id   Int    @id @default(autoincrement())
+  name String
+
+  restaurantId Int @unique
 
   restaurant Restaurant @relation(fields: [restaurantId], references: [id])
   categories Category[]
 }
 
 model Category {
-  id     Int    @id @unique @default(autoincrement())
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
   menuId Int
-  name   String @unique
 
   Menu     Menu?     @relation(fields: [menuId], references: [id])
   products Product[]
 }
 
 model Product {
-  id          Int    @id @unique @default(autoincrement())
-  categoryId  Int
+  id          Int    @id @default(autoincrement())
   name        String
   ingredients String
   price       Float
   discount    Int
   description String
+  image       String
 
-  Category Category? @relation(fields: [categoryId], references: [id])
+  categoryId Int
+
+  category    Category?     @relation(fields: [categoryId], references: [id])
+  CartProduct CartProduct[]
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  name     String
+  password String
+
+  restaurant Restaurant?
+  cart       Cart?
+}
+
+model Cart {
+  id          Int           @id @default(autoincrement())
+  userId      Int           @unique
+  user        User          @relation(fields: [userId], references: [id])
+  cartProduct CartProduct[]
+}
+
+model CartProduct {
+  productId Int     @id
+  cartId    Int
+  quantity  Int     @default(1)
+  cart      Cart    @relation(fields: [cartId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
 }

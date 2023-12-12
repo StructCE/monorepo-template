@@ -1,0 +1,70 @@
+.line {
+  background-color: #fff;
+}
+
+.image {
+  width: 175px;
+  height: 175px;
+  /* padding: 1 5px; */
+}
+
+.cell_product {
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+}
+
+.name {
+  margin: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: 42px;
+}
+
+.description {
+  margin: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.ingredients {
+  margin: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  font-size: 24px;
+  font-weight: normal;
+
+}
+
+.trash {
+  width: 25px;
+  height: 25px;
+  background-color: transparent;
+}
+
+.trash_button {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+}
+
+.quantifier {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  border: 10px;
+  width: 30px;
+  height: 30px;
+}

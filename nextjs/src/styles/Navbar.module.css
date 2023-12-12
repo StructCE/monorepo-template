@@ -22,25 +22,19 @@
   gap: 50px;
 }
 
-.link {color: #000;
+.button {
+  color: #000;
   text-align: center;
-  font-family: Roboto;
   font-size: 1.5rem;
   font-style: normal;
   font-weight: 700;
   display: flex;
-  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
 }
 
-.button {
-  color: #000;
-  text-align: center;
-  font-family: Roboto;
-  font-size: 26px;
-  font-style: normal;
-  font-weight: 700;
-  display: flex;
-}
+
 
 .login_button {
   display: flex;
@@ -48,4 +42,9 @@
 
 .login_icon {
   display: flex;
+}
+
+.logo {
+  height: 100px;
+  cursor: pointer;
 }

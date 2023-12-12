@@ -1,6 +1,5 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
-import { Menu, Category, Product, prisma } from "../../../../prisma/prisma";
 import ShowProduct from "@/components/ShowProduct";
 
 export const getServerSideProps: GetServerSideProps<{
@@ -9,9 +8,7 @@ export const getServerSideProps: GetServerSideProps<{
   const menuId = context.query.id;
   const res = await fetch(
     `http://localhost:3000/api/restaurant/menu/${menuId}`,
-    {
-      method: "GET",
-    }
+    { method: "GET" }
   );
   const restaurantMenu = await res.json();
   return { props: { restaurantMenu } };
@@ -36,13 +33,7 @@ export default function MenuPage({
               {categoria.products.map((produto: any) => {
                 return (
                   <div>
-                    <ShowProduct
-                      name={produto.name}
-                      description={produto.description}
-                      ingredients={produto.ingredients}
-                      price={produto.price}
-                    />
-                    ;
+                    <ShowProduct product={produto} />;
                   </div>
                 );
               })}

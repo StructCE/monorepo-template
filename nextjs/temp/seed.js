@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var prisma_1 = require("./prisma");
 function seed() {
     return __awaiter(this, void 0, void 0, function () {
-        var restaurantNames, menuNames, categoryNames, productNames, i, restaurant, menu, j, category, k;
+        var restaurantNames, menuNames, categoryNames, productNames, owners, ownersEmail, i, user, cart, restaurant, menu, j, category, k;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -59,10 +59,31 @@ function seed() {
                             ["Coca-cola", "Suco", "Água", "Guaraná"],
                         ],
                     ];
+                    owners = ["Willyan", "João"];
+                    ownersEmail = [
+                        "willyanmarquesmelo@gmail.com",
+                        "joaogamer123@gmail.com",
+                    ];
                     i = 0;
                     _a.label = 1;
                 case 1:
-                    if (!(i < 2)) return [3 /*break*/, 11];
+                    if (!(i < 2)) return [3 /*break*/, 13];
+                    return [4 /*yield*/, prisma_1.prisma.user.create({
+                            data: {
+                                name: owners[i],
+                                email: ownersEmail[i],
+                                password: "123456",
+                            },
+                        })];
+                case 2:
+                    user = _a.sent();
+                    return [4 /*yield*/, prisma_1.prisma.cart.create({
+                            data: {
+                                userId: user.id
+                            },
+                        })];
+                case 3:
+                    cart = _a.sent();
                     return [4 /*yield*/, prisma_1.prisma.restaurant.create({
                             data: {
                                 name: restaurantNames[i],
@@ -71,9 +92,10 @@ function seed() {
                                 phone: "".concat(i + 61912345678),
                                 description: "Description ".concat(i + 1),
                                 contacts: "Contacts ".concat(i + 1),
+                                ownerEmail: user.email,
                             },
                         })];
-                case 2:
+                case 4:
                     restaurant = _a.sent();
                     return [4 /*yield*/, prisma_1.prisma.menu.create({
                             data: {
@@ -81,24 +103,24 @@ function seed() {
                                 name: menuNames[i],
                             },
                         })];
-                case 3:
+                case 5:
                     menu = _a.sent();
                     j = 0;
-                    _a.label = 4;
-                case 4:
-                    if (!(j < 2)) return [3 /*break*/, 10];
+                    _a.label = 6;
+                case 6:
+                    if (!(j < 2)) return [3 /*break*/, 12];
                     return [4 /*yield*/, prisma_1.prisma.category.create({
                             data: {
                                 menuId: menu.id,
                                 name: categoryNames[i][j],
                             },
                         })];
-                case 5:
+                case 7:
                     category = _a.sent();
                     k = 0;
-                    _a.label = 6;
-                case 6:
-                    if (!(k < 4)) return [3 /*break*/, 9];
+                    _a.label = 8;
+                case 8:
+                    if (!(k < 4)) return [3 /*break*/, 11];
                     return [4 /*yield*/, prisma_1.prisma.product.create({
                             data: {
                                 categoryId: category.id,
@@ -106,22 +128,23 @@ function seed() {
                                 ingredients: "Ingredients ".concat(k + 1),
                                 price: k + 10,
                                 description: "Description ".concat(k + 1, "\""),
-                                discount: 0
+                                discount: 0,
+                                image: "",
                             },
                         })];
-                case 7:
-                    _a.sent();
-                    _a.label = 8;
-                case 8:
-                    k++;
-                    return [3 /*break*/, 6];
                 case 9:
-                    j++;
-                    return [3 /*break*/, 4];
+                    _a.sent();
+                    _a.label = 10;
                 case 10:
+                    k++;
+                    return [3 /*break*/, 8];
+                case 11:
+                    j++;
+                    return [3 /*break*/, 6];
+                case 12:
                     i++;
                     return [3 /*break*/, 1];
-                case 11:
+                case 13:
                     console.log("Seed completed successfully");
                     return [2 /*return*/];
             }
