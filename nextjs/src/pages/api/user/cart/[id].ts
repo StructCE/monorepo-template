@@ -8,76 +8,98 @@ export default async function handler(
   const cartId = Number(req.query.id);
 
   switch (req.method) {
-    // case "CREATE": {
-    //   try {
-    //     const newMenu = await prisma.menu.create({ data: req.body });
-    //     if (newMenu) {
-    //       res.status(200).json(newMenu);
-    //     } else {
-    //       res.status(400)
-    //     }
-    //   } catch (error) {
-    //     res.status(500)
-    //   } finally {
-    //     await prisma.$disconnect();
-    //   }
-    // }
-
-    // case "PUT": {
-    //   try {
-    //     const cartProduct = await prisma.cartProduct.update({
-    //       where: { productId: 0 },
-    //       data: {quantity: req.body.quantity},
-    //     });
-
-    //     if (cartProduct) {
-    //       res.status(200);
-    //     } else {
-    //       res.status(400).json("Couldn't update cart product data");
-    //     }
-    //   } catch (error) {
-    //     res.status(500);
-    //   } finally {
-    //     await prisma.$disconnect();
-    //   }
-    // }
-
-    case "GET": {
-      try {
-        const cartProducts = await prisma.cartProduct.findMany({
-          where: { cartId: cartId },
-          include: { product: true },
-        });
-
-        if (cartProducts) {
-          res.status(200);
-        } else {
-          res.status(400);
+    case "POST":
+      {
+        try {
+          const newMenu = await prisma.cart.create({
+            data: {
+              id: req.body.id,
+              userId: req.body.userID,
+            },
+          });
+          if (newMenu) {
+            res.status(200).json(newMenu);
+          } else {
+            const message: string = "Couldn't create cart";
+            res.status(400).json(message);
+          }
+        } catch (error) {
+          const message: string = "Error trying to create the menu";
+          res.status(500).json(message);
+        } finally {
+          await prisma.$disconnect();
         }
-      } catch (error) {
-        res.status(500);
-      } finally {
-        await prisma.$disconnect();
       }
-    }
+      break;
 
-    case "DELETE": {
-      try {
-        const cartProducts = await prisma.cartProduct.deleteMany({
-          where: { cartId: cartId },
-        });
+    // case "PUT":
+    //   {
+    //     try {
+    //       const newMenu = await prisma.menu.update({
+    //         where: { id: cartId },
+    //         data: req.body,
+    //       });
 
-        if (cartProducts) {
-          res.status(200);
-        } else {
-          res.status(400);
+    //       if (newMenu) {
+    //         res.status(200).json(newMenu);
+    //       } else {
+    //         const message: string = "Couldn't update cart";
+    //         res.status(400).json(message);
+    //       }
+    //     } catch (error) {
+    //       const message: string = "Error trying to update the cart";
+    //       res.status(500).json(message);
+    //     } finally {
+    //       await prisma.$disconnect();
+    //     }
+    //   }
+    //   break;
+
+    case "GET":
+      {
+        try {
+          const menu = await prisma.cart.findUnique({
+            where: { id: cartId },
+            include: { cartProduct: { include: { product: true } } },
+          });
+
+          if (menu) {
+            res.status(200).json(menu);
+          } else {
+            const message: string = "Cart not found";
+            res.status(400).json(message);
+          }
+        } catch (error) {
+          const message: string = "Error trying to acess the database";
+          res.status(500).json(message);
+        } finally {
+          await prisma.$disconnect();
         }
-      } catch (error) {
-        res.status(500);
-      } finally {
-        await prisma.$disconnect();
       }
-    }
+      break;
+
+    case "DELETE":
+      {
+        //schema alredy set to cascade delete
+        try {
+          const deleteMenu = await prisma.menu.delete({
+            where: { id: cartId },
+          });
+
+          if (deleteMenu) {
+            res.status(200).json(deleteMenu);
+          } else {
+            const message: string = "Cart not found";
+            res.status(400).json(message);
+          }
+        } catch (error) {
+          const message: string = "Error trying to acess the database";
+          res.status(500).json(message);
+        } finally {
+          await prisma.$disconnect();
+        }
+      }
+      break;
 
     default:
       throw new Error(`The HTTP ${req.method} method is not supported`);

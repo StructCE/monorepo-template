@@ -13,8 +13,8 @@ async function seed() {
       ["Leite condensado", "Paçoca", "Leite ninho", "Granola"],
     ],
     [
-      ["Calabresa", "Quatro queijos", "Portuguesa", "Frango com catupiry"],
-      ["Coca-cola", "Suco", "Água", "Guaraná"],
+      ["Pizza Calabresa", "Pizza Quatro queijos", "Pizza Portuguesa", "Pizza Frango com catupiry"],
+      ["Coca-cola", "Suco Vale", "Água Mineral", "Guaraná"],
     ],
   ];
   const owners = ["Willyan", "João"];
@@ -29,6 +29,13 @@ async function seed() {
         name: owners[i],
         email: ownersEmail[i],
         password: "123456",
+
+      },
+    });
+
+    const cart = await prisma.cart.create({
+      data: {
+        userId: user.id
       },
     });
 
@@ -68,6 +75,7 @@ async function seed() {
             price: k + 10,
             description: `Description ${k + 1}"`,
             discount: 0,
+            image: "",
           },
         });
       }

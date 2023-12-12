@@ -33,13 +33,7 @@ export default function MenuPage({
               {categoria.products.map((produto: any) => {
                 return (
                   <div>
-                    <ShowProduct
-                      name={produto.name}
-                      description={produto.description}
-                      ingredients={produto.ingredients}
-                      price={produto.price}
-                    />
-                    ;
+                    <ShowProduct product={produto} />;
                   </div>
                 );
               })}

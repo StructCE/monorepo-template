@@ -1,71 +1,89 @@
 .card {
-    /* display: flex; */
-    /* flex-direction:row; */
+  /* display: flex; */
+  /* flex-direction:row; */
 
-    border: 2px solid #666;
-    /* padding: 10px; */
-    margin: 10px;
-    width: 500px;
-    height: fit-content;
+  border: 2px solid #666;
+  /* padding: 10px; */
+  margin: 10px;
+  width: 500px;
+  height: fit-content;
 
-    display: flex;
-    /* flex: 1;     */
+  display: flex;
+  /* flex: 1;     */
 }
 
 .img {
-    width: 20%;
-    height: 100%;
-    display: flex;
-    justify-self: flex-start;
-    display: flex;
-    align-self: center;
-    align-items: center;
+  width: 20%;
+  height: 100%;
+  display: flex;
+  justify-self: flex-start;
+  display: flex;
+  align-self: center;
+  align-items: center;
 }
 
 .info {
-    width: 60%;
-    height: 100%;
-    gap: 30px;
-    margin-left: 5px;
-    /* display: flex;
+  width: 70%;
+  height: 100%;
+  gap: 30px;
+  margin-left: 5px;
+  /* display: flex;
     flex-direction: column; */
-    /* flex: 1; */
+  /* flex: 1; */
 }
 
 .nome {
-    font-size: 30px;
-    margin: 5px;
-    font-weight: bold;
-    height: 25%;
-    /* display: flex;
+  font-size: 30px;
+  margin: 5px;
+  font-weight: bold;
+  height: 25%;
+  /* display: flex;
     align-items: flex-end; */
 }
 
 .descricao {
-    font-size: 18px;
-    margin: 5px;
-    height: 60%;
-    color: #222;
-    /* display: flex;
+  font-size: 18px;
+  margin: 5px;
+  height: 60%;
+  color: #222;
+  /* display: flex;
     justify-self: flex-end; */
 }
 
 .ingredientes {
-    font-size: 16px ;
-    margin: 5px;
-    height: 60%;
-    color: #666;
-    /* display: flex;
+  font-size: 16px;
+  margin: 5px;
+  height: 60%;
+  color: #666;
+  /* display: flex;
     justify-self: flex-end; */
 }
 
 .preco {
-    width: 20%;
-    height: 100%;
-    margin: auto;
-    font-size: 24px;
-    color: #008000;
-    display: flex;
-    align-items: center;
-    justify-self: flex-end;
+  width: 20%;
+  height: 100%;
+  margin: auto;
+  font-size: 24px;
+  color: #008000;
+  display: flex;
+  align-items: center;
+  justify-self: flex-end;
+}
+
+.action {
+  width: 10%;
+  /* height: 100%; */
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.action_icon {
+  width: 30px;
+  height: 30px;
 }
