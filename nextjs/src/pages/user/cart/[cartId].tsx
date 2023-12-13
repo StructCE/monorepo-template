@@ -1,6 +1,7 @@
 import CartProduct from "@/components/CartProduct";
 import styles from "@/styles/Cart.module.css";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 export const getServerSideProps: GetServerSideProps<{
@@ -15,63 +16,64 @@ export const getServerSideProps: GetServerSideProps<{
   return { props: { cart } };
 };
 
+async function deleteAllCartProducts(cartId: number) {
+  const res = await fetch(`http://localhost:3000/api/user/cart/${cartId}`, {
+    method: "DELETE",
+  });
+}
+
 export default function CartPage({
   cart,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
-  // console.log(cart);
-  return (
-    <div className={styles.page}>
-      <div>
-        <h1>MEU CARRINHO</h1>
-      </div>
-      <div className={styles.produtos}>
-        <table className={styles.table}>
-          <tbody>
-            <tr className={styles.table_header}>
-              <th className={styles.coluna1}>PRODUTO</th>
-              <th className={styles.coluna2}>PREÇO</th>
-              <th className={styles.coluna3}>QUANTIDADE</th>
-              <th className={styles.coluna4}>TOTAL</th>
-              <th className={styles.coluna5}>
-                <button className={styles.trash_button}>
-                  <img
-                    src="/images/icons/trash.png"
-                    alt="lixo"
-                    className={styles.trash}
-                  />
-                </button>
-              </th>
-            </tr>
+  const { data: session } = useSession();
 
-            {cart.cartProduct.map((cartProduct: any) => {
-              return <CartProduct cartProduct={cartProduct} />;
-            })}
+  if (!session || !session.user) {
+    router.push(`/login`);
+  }
 
-            {/* <CartProduct
-              name="Pizza de Calabresa completa"
-              description="A melhor pizza de calabresa do DF."
-              ingredients="Queijo, Calabresa, Orégano, Cebola, Azeitona"
-              price={34.99}
-              quantity={3}
-            />
-            <CartProduct
-              name="Pizza de Calabresa completa"
-              ingredients="Queijo, Calabresa, Orégano, Cebola, Azeitona"
-              price={34.99}
-              quantity={3}
-              description="A melhor pizza de calabresa do DF."
-            />
-            <CartProduct
-              name="Pizza de Calabresa completa"
-              ingredients="Queijo, Calabresa, Orégano, Cebola, Azeitona"
-              price={34.99}
-              quantity={3}
-              description="A melhor pizza de calabresa do DF."
-            /> */}
-          </tbody>
-        </table>
+  if (JSON.stringify(cart) !== "{}") {
+    return (
+      <div className={styles.page}>
+        <div>
+          <h1>MEU CARRINHO</h1>
+        </div>
+        <div className={styles.produtos}>
+          <table className={styles.table}>
+            <tbody>
+              <tr className={styles.table_header}>
+                <th className={styles.coluna1}>PRODUTO</th>
+                <th className={styles.coluna2}>PREÇO</th>
+                <th className={styles.coluna3}>QUANTIDADE</th>
+                <th className={styles.coluna4}>TOTAL</th>
+                <th className={styles.coluna5}>
+                  <button
+                    className={styles.trash_button}
+                    onClick={() => {
+                      if (
+                        confirm("Deseja remover todos produtos do carrinho?")
+                      ) {
+                        deleteAllCartProducts(cart.id);
+                        router.reload();
+                      }
+                    }}
+                  >
+                    <img
+                      src="/images/icons/trash.png"
+                      alt="lixo"
+                      className={styles.trash}
+                    />
+                  </button>
+                </th>
+              </tr>
+
+              {cart.cartProduct.map((cartProduct: any) => {
+                return <CartProduct cartProduct={cartProduct} />;
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }

@@ -80,10 +80,9 @@ export default async function handler(
 
     case "DELETE":
       {
-        //schema alredy set to cascade delete
         try {
-          const deleteMenu = await prisma.menu.delete({
-            where: { id: cartId },
+          const deleteMenu = await prisma.cartProduct.deleteMany({
+            where: { cartId: cartId },
           });
 
           if (deleteMenu) {
