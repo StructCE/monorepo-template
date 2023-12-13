@@ -1,0 +1,87 @@
+.nav_div {
+  width: 100%;
+  height: 10rem;
+  background-color: #d3fad6;
+  display: inline-flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  align-items: center;
+  align-self: flex-start;
+  justify-content: space-around;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 50px;
+}
+
+.button {
+  color: #000;
+  text-align: center;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 700;
+  display: flex;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+}
+
+.login_button {
+  display: flex;
+}
+
+.login_icon {
+  display: flex;
+}
+
+.logo {
+  height: 100px;
+  cursor: pointer;
+}
+
+.icon_div {
+  display: flex;
+  flex-direction: column;
+}
+
+.user_icon {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.dropDownProfile {
+  position: absolute;
+  top: 120px;
+  right: 255px;
+  /* width: ; */
+}
+
+.dropDownContent{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  padding: 5px;
+  border-radius: 2px;
+  background-color: #ffe2e2;
+}
+
+.dropDownItem{
+  cursor: pointer;
+  width: 150px;
+  padding-left: 10px;
+  font-family: RobotoSlab;
+
+  text-align: left;
+  font-size: 16px;
+}

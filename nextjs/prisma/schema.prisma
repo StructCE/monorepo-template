@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "sqlite"
+  url          = env("DATABASE_URL")
+  relationMode = "foreignKeys"
+}
+
+model Restaurant {
+  id          Int    @id @default(autoincrement())
+  name        String @unique
+  location    String
+  schedule    String
+  phone       String
+  description String
+  contacts    String
+
+  ownerEmail String @unique
+
+  user User? @relation(fields: [ownerEmail], references: [email])
+  menu Menu?
+}
+
+model Menu {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  restaurantId Int @unique
+
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id])
+  categories Category[]
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  menuId Int
+
+  Menu     Menu?     @relation(fields: [menuId], references: [id])
+  products Product[]
+}
+
+model Product {
+  id          Int    @id @default(autoincrement())
+  name        String
+  ingredients String
+  price       Float
+  discount    Int
+  description String
+  image       String
+
+  categoryId Int
+
+  category    Category?     @relation(fields: [categoryId], references: [id])
+  CartProduct CartProduct[]
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  name     String
+  password String
+
+  restaurant Restaurant?
+  cart       Cart?
+}
+
+model Cart {
+  id          Int           @id @default(autoincrement())
+  userId      Int           @unique
+  user        User          @relation(fields: [userId], references: [id])
+  cartProduct CartProduct[]
+}
+
+model CartProduct {
+  productId Int     @id
+  cartId    Int
+  quantity  Int     @default(1)
+  cart      Cart    @relation(fields: [cartId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
