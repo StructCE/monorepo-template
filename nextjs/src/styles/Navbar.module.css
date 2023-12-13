@@ -34,8 +34,6 @@
   background-color: transparent;
 }
 
-
-
 .login_button {
   display: flex;
 }
@@ -47,4 +45,43 @@
 .logo {
   height: 100px;
   cursor: pointer;
+}
+
+.icon_div {
+  display: flex;
+  flex-direction: column;
+}
+
+.user_icon {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.dropDownProfile {
+  position: absolute;
+  top: 120px;
+  right: 255px;
+  /* width: ; */
+}
+
+.dropDownContent{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  padding: 5px;
+  border-radius: 2px;
+  background-color: #ffe2e2;
+}
+
+.dropDownItem{
+  cursor: pointer;
+  width: 150px;
+  padding-left: 10px;
+  font-family: RobotoSlab;
+
+  text-align: left;
+  font-size: 16px;
 }

@@ -35,8 +35,8 @@ export default function Navbar() {
               if (session && session.user) {
                 router.push(`/user/menu/${session.user.email}`);
               } else {
-                alert("Faça login para acessar seu restaurante!")
-                router.push(`/user/login`);
+                alert("Faça login para acessar seu restaurante!");
+                router.push(`/login`);
               }
             }}
             className={styles.button}
