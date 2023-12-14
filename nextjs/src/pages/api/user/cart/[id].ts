@@ -60,7 +60,10 @@ export default async function handler(
         try {
           const menu = await prisma.cart.findUnique({
             where: { id: cartId },
-            include: { cartProduct: { include: { product: true } } },
+            include: {
+              user: true,
+              cartProduct: { include: { product: true } },
+            },
           });
 
           if (menu) {

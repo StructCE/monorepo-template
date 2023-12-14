@@ -1,8 +1,10 @@
 import CartProduct from "@/components/CartProduct";
+import { getCartId } from "@/components/ShowProduct";
 import styles from "@/styles/Cart.module.css";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export const getServerSideProps: GetServerSideProps<{
   cart: any;
@@ -12,7 +14,11 @@ export const getServerSideProps: GetServerSideProps<{
     method: "GET",
   });
 
-  const cart = await res.json(); // Call response.json() to parse JSON
+  let cart = {};
+  if (res.ok) {
+    cart = await res.json(); // Call response.json() to parse JSON
+  }
+
   return { props: { cart } };
 };
 
@@ -28,16 +34,40 @@ export default function CartPage({
   const router = useRouter();
   const { data: session } = useSession();
 
-  // if (!session || !session.user) {
-  //   {router.push(`/login`)}
+  // if (session && session.user) {
+  //   if (session.user.email !== cart.user.email){
+  //     router.push(`/user/cart/${cart.id}`)
+  //   }
+  // } else {
+  //   router.push(`/login`);
   // }
 
-  if (JSON.stringify(cart) !== "{}") {
+  if (JSON.stringify(cart) === "{}") {
     return (
-      <div className={styles.page}>
-        <div>
-          <h1>MEU CARRINHO</h1>
-        </div>
+      <div>
+        <h1>Carrinho não encontrado</h1>
+      </div>
+    );
+  }
+
+  useState(async () => {
+    if (!session || !session.user) {
+      router.push(`/login`);
+    } else {
+      // console.log(cart.user.email, session.user.email, cart.id)
+      if (session.user.email !== cart.user.email) {
+        const cartId = Number(await getCartId(String(session.user.email)));
+        router.push(`/user/cart/${cartId}`);
+      }
+    }
+  });
+
+  return (
+    <div className={styles.page}>
+      <div>
+        <h1>MEU CARRINHO</h1>
+      </div>
+      {JSON.stringify(cart.cartProduct) !== "[]" ? (
         <div className={styles.produtos}>
           <table className={styles.table}>
             <tbody>
@@ -73,7 +103,12 @@ export default function CartPage({
             </tbody>
           </table>
         </div>
-      </div>
-    );
-  }
+      ) : (
+        <div>
+          <h2>Adicione produtos ao carrinho</h2>
+          <button>Pesquisar restaurantes</button>
+        </div>
+      )}
+    </div>
+  );
 }

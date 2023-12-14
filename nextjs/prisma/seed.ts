@@ -27,18 +27,12 @@ async function seed() {
     "willyanmarquesmelo@gmail.com",
     "joaogamer123@gmail.com",
   ];
+
   const users = ["Kleber", "Paulão"];
-  const usersEmail = ["willyanmarquesmelo@gmail.com", "joaogamer123@gmail.com"];
+  const usersEmail = ["klebinho@gmail.com", "paulo.tejanno@gmail.com"];
 
+  //----------------------------------------------------------------------------//
   for (let i = 0; i < 2; i++) {
-    const owner = await prisma.owner.create({
-      data: {
-        name: owners[i],
-        email: ownersEmail[i],
-        password: "123456",
-      },
-    });
-
     const user = await prisma.user.create({
       data: {
         name: users[i],
@@ -50,6 +44,24 @@ async function seed() {
     const cart = await prisma.cart.create({
       data: {
         userId: user.id,
+      },
+    });
+  }
+
+  //----------------------------------------------------------------------------//
+  for (let i = 0; i < 2; i++) {
+    const owner = await prisma.user.create({
+      data: {
+        name: owners[i],
+        email: ownersEmail[i],
+        password: "123456",
+        isOwner: true,
+      },
+    });
+
+    const cart = await prisma.cart.create({
+      data: {
+        userId: owner.id,
       },
     });
 

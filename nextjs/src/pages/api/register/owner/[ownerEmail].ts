@@ -11,11 +11,12 @@ export default async function handler(
     case "POST":
       {
         try {
-          const user = await prisma.owner.create({
+          const user = await prisma.user.create({
             data: {
               email: ownerEmail,
               name: req.body.owner.name,
               password: req.body.owner.password,
+              isOwner: true,
             },
           });
 
@@ -53,7 +54,7 @@ export default async function handler(
     case "PUT":
       {
         try {
-          const owner = await prisma.owner.update({
+          const owner = await prisma.user.update({
             where: { email: ownerEmail },
             data: {
               email: req.body.email,
@@ -80,8 +81,8 @@ export default async function handler(
     case "GET":
       {
         try {
-          const owner = await prisma.owner.findUnique({
-            where: { email: ownerEmail },
+          const owner = await prisma.user.findUnique({
+            where: { email: ownerEmail, isOwner: true },
           });
 
           if (owner) {
@@ -103,7 +104,7 @@ export default async function handler(
       {
         //schema alredy set to cascade delete
         try {
-          const owner = await prisma.owner.delete({
+          const owner = await prisma.user.delete({
             where: { email: ownerEmail },
           });
 

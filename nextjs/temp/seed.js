@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var prisma_1 = require("./prisma");
 function seed() {
     return __awaiter(this, void 0, void 0, function () {
-        var restaurantNames, menuNames, categoryNames, productNames, owners, ownersEmail, users, usersEmail, i, owner, user, cart, restaurant, menu, j, category, k;
+        var restaurantNames, menuNames, categoryNames, productNames, owners, ownersEmail, users, usersEmail, i, user, cart, i, owner, cart, restaurant, menu, j, category, k;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -70,20 +70,11 @@ function seed() {
                         "joaogamer123@gmail.com",
                     ];
                     users = ["Kleber", "Paulão"];
-                    usersEmail = ["willyanmarquesmelo@gmail.com", "joaogamer123@gmail.com"];
+                    usersEmail = ["klebinho@gmail.com", "paulo.tejanno@gmail.com"];
                     i = 0;
                     _a.label = 1;
                 case 1:
-                    if (!(i < 2)) return [3 /*break*/, 14];
-                    return [4 /*yield*/, prisma_1.prisma.owner.create({
-                            data: {
-                                name: owners[i],
-                                email: ownersEmail[i],
-                                password: "123456",
-                            },
-                        })];
-                case 2:
-                    owner = _a.sent();
+                    if (!(i < 2)) return [3 /*break*/, 5];
                     return [4 /*yield*/, prisma_1.prisma.user.create({
                             data: {
                                 name: users[i],
@@ -91,14 +82,40 @@ function seed() {
                                 password: "123456",
                             },
                         })];
-                case 3:
+                case 2:
                     user = _a.sent();
                     return [4 /*yield*/, prisma_1.prisma.cart.create({
                             data: {
                                 userId: user.id,
                             },
                         })];
+                case 3:
+                    cart = _a.sent();
+                    _a.label = 4;
                 case 4:
+                    i++;
+                    return [3 /*break*/, 1];
+                case 5:
+                    i = 0;
+                    _a.label = 6;
+                case 6:
+                    if (!(i < 2)) return [3 /*break*/, 18];
+                    return [4 /*yield*/, prisma_1.prisma.user.create({
+                            data: {
+                                name: owners[i],
+                                email: ownersEmail[i],
+                                password: "123456",
+                                isOwner: true,
+                            },
+                        })];
+                case 7:
+                    owner = _a.sent();
+                    return [4 /*yield*/, prisma_1.prisma.cart.create({
+                            data: {
+                                userId: owner.id,
+                            },
+                        })];
+                case 8:
                     cart = _a.sent();
                     return [4 /*yield*/, prisma_1.prisma.restaurant.create({
                             data: {
@@ -111,7 +128,7 @@ function seed() {
                                 ownerEmail: owner.email,
                             },
                         })];
-                case 5:
+                case 9:
                     restaurant = _a.sent();
                     return [4 /*yield*/, prisma_1.prisma.menu.create({
                             data: {
@@ -119,24 +136,24 @@ function seed() {
                                 name: menuNames[i],
                             },
                         })];
-                case 6:
+                case 10:
                     menu = _a.sent();
                     j = 0;
-                    _a.label = 7;
-                case 7:
-                    if (!(j < 2)) return [3 /*break*/, 13];
+                    _a.label = 11;
+                case 11:
+                    if (!(j < 2)) return [3 /*break*/, 17];
                     return [4 /*yield*/, prisma_1.prisma.category.create({
                             data: {
                                 menuId: menu.id,
                                 name: categoryNames[i][j],
                             },
                         })];
-                case 8:
+                case 12:
                     category = _a.sent();
                     k = 0;
-                    _a.label = 9;
-                case 9:
-                    if (!(k < 4)) return [3 /*break*/, 12];
+                    _a.label = 13;
+                case 13:
+                    if (!(k < 4)) return [3 /*break*/, 16];
                     return [4 /*yield*/, prisma_1.prisma.product.create({
                             data: {
                                 categoryId: category.id,
@@ -148,19 +165,19 @@ function seed() {
                                 image: "",
                             },
                         })];
-                case 10:
-                    _a.sent();
-                    _a.label = 11;
-                case 11:
-                    k++;
-                    return [3 /*break*/, 9];
-                case 12:
-                    j++;
-                    return [3 /*break*/, 7];
-                case 13:
-                    i++;
-                    return [3 /*break*/, 1];
                 case 14:
+                    _a.sent();
+                    _a.label = 15;
+                case 15:
+                    k++;
+                    return [3 /*break*/, 13];
+                case 16:
+                    j++;
+                    return [3 /*break*/, 11];
+                case 17:
+                    i++;
+                    return [3 /*break*/, 6];
+                case 18:
                     console.log("Seed completed successfully");
                     return [2 /*return*/];
             }
