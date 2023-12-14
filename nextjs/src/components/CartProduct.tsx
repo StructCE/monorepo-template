@@ -24,7 +24,7 @@ export default function CartProduct({ cartProduct }: any) {
   var quantity = Number(cartProduct.quantity);
   const price = Number(cartProduct.product.price);
   const [count, setCount] = useState(quantity);
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <tr className={styles.line}>
@@ -74,12 +74,9 @@ export default function CartProduct({ cartProduct }: any) {
           <button
             className={styles.quatifier_button}
             onClick={() => {
-              if (count < 10) {
-                const newCount = count + 1;
-                setCount(newCount);
-                console.log(cartProduct.productId);
-                upateQuantityDB(cartProduct.productId, newCount);
-              }
+              const newCount = count + 1;
+              setCount(newCount);
+              upateQuantityDB(cartProduct.productId, newCount);
             }}
           >
             +
@@ -95,7 +92,7 @@ export default function CartProduct({ cartProduct }: any) {
           onClick={() => {
             if (confirm("Remover produto do carrinho?")) {
               deleteCartProduct(cartProduct.productId);
-              router.reload()
+              router.reload();
             }
           }}
         >

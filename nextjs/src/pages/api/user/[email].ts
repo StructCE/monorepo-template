@@ -60,7 +60,7 @@ export default async function handler(
         try {
           const user = await prisma.user.findUnique({
             where: { email: userEmail },
-            include: { cart: true },
+            include: { cart: true},
           });
 
           if (user) {
