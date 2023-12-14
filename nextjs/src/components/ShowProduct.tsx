@@ -49,7 +49,7 @@ export default function ShowProduct({ product }: any) {
             }
           } else {
             alert("Faça login para acessar adicionar produtos ao carrinho!");
-            router.push(`/user/login`);
+            router.push(`/login`);
           }
         }}
       >

@@ -1,8 +1,7 @@
 import styles from "@/styles/Navbar.module.css";
 import { useSession } from "next-auth/react";
-import LoginGoogle from "./LoginGoogle";
-import { prisma } from "../../prisma/prisma";
 import { useRouter } from "next/router";
+import NavbarLogin from "./NavbarLogin";
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -44,7 +43,7 @@ export default function Navbar() {
             Restaurante
           </button>
 
-          <LoginGoogle />
+          <NavbarLogin />
         </div>
       </div>
     </nav>

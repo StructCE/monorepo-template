@@ -1,0 +1,64 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.register_div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #ffb8b7;
+  padding: 50px;
+  margin: 50px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.span_input {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  width: 500px;
+}
+
+.h1 {
+  margin: 0;
+}
+
+.submit_button {
+  width: 350px;
+  height: 50px;
+  padding: 25px;
+  background-color: #d3fad6;
+  cursor: pointer;
+  border-radius: 30px;
+
+  font-size: 25px;
+  font-family: RobotoSlab;
+  text-align: center;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+}
+
+.submit_button:hover {
+  background-color: #b5f1ba;
+}
+
+.user_info{
+
+}
+
+.restaurant_info{}

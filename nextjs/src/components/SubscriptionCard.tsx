@@ -8,15 +8,20 @@ export default function SubscriptionCard() {
   const router = useRouter();
 
   function handleSubmit() {
-    if (name && email) router.push(`/register`);
-    else alert ("Preencha todos os campos!")
+    if (name && email) {
+      // alert(`/register?email=${email}&name=${name}`);
+      router.push({
+        pathname: `/register`,
+        query: { name, email },
+      });
+    } else alert("Preencha todos os campos!");
   }
 
   return (
     <div>
       <form
         className={styles.form}
-        action="subscription_start"
+        action=""
         onSubmit={(event) => {
           event.preventDefault();
           handleSubmit();

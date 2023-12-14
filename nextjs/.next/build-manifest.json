@@ -27,10 +27,20 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/user/profile": [
+    "/login": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/user/profile.js"
+      "static/chunks/pages/login.js"
+    ],
+    "/restaurant/menu/[id]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/restaurant/menu/[id].js"
+    ],
+    "/user/cart/[cartId]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/user/cart/[cartId].js"
     ]
   },
   "ampFirstPages": []

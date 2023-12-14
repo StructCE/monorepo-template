@@ -51,7 +51,7 @@ export default function Home() {
             </li>
           </ul>
         </div>
-      </section>{" "}
+      </section>
       <Separator variation={2} />
       <section>
         <div className={styles.sec3}>
@@ -67,7 +67,7 @@ export default function Home() {
             </ol>
           </div>
         </div>
-      </section>{" "}
+      </section>
       <Separator variation={3} />
       <section>
         <div className={styles.sec4}>
