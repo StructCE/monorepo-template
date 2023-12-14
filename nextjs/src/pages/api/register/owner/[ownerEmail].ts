@@ -23,11 +23,11 @@ export default async function handler(
             const restaurant = await prisma.restaurant.create({
               data: {
                 ownerEmail: ownerEmail,
+                name: req.body.restaurant.name,
+                location: req.body.restaurant.location,
+                phone: req.body.restaurant.phone,
                 contacts: req.body.restaurant.contacts,
                 description: req.body.restaurant.description,
-                location: req.body.restaurant.location,
-                name: req.body.restaurant.name,
-                phone: req.body.restaurant.phone,
                 schedule: req.body.restaurant.schedule,
               },
             });

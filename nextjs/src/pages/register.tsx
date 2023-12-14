@@ -13,18 +13,21 @@ async function handleRegister(props: {
     name: string;
     location: string;
     phone: string;
-    contact: string;
+    contacts: string;
     description: string;
+    schedule: string;
   };
 }) {
+  console.log(props.owner.email);
   const res = await fetch(
     `http://localhost:3000/api/register/owner/${props.owner.email}`,
     {
       method: "POST",
-      body: JSON.stringify({ props }),
+      body: JSON.stringify(props),
       headers: { "Content-Type": "application/json" },
     }
   );
+  console.log(JSON.stringify(res));
 }
 
 export default function RegisterPage() {
@@ -38,11 +41,34 @@ export default function RegisterPage() {
   const [phone, setPhone] = useState("");
   const [contact, setContact] = useState("");
   const [description, setDescription] = useState("");
+  const [schedule, setSchedule] = useState("");
 
   return (
     <div className={styles.page}>
       <div className={styles.register_div}>
-        <form className={styles.form} action="">
+        <form
+          className={styles.form}
+          action=""
+          onSubmit={(event) => {
+            event.preventDefault();
+            handleRegister({
+              owner: {
+                email: String(email),
+                name: String(name),
+                password: String(password),
+                confirmPassword: String(confirmPassword),
+              },
+              restaurant: {
+                name: String(restaurantName),
+                location: String(location),
+                phone: String(phone),
+                contacts: String(contact),
+                description: String(description),
+                schedule: String(schedule),
+              },
+            });
+          }}
+        >
           <div className={styles.user_info}>
             <h1 className={styles.h1}>Informações pessoais</h1>
             <span className={styles.span_input}>
@@ -144,6 +170,17 @@ export default function RegisterPage() {
               <input
                 onChange={(event) => {
                   setDescription(event.target.value);
+                }}
+                className={styles.input}
+                type="text"
+                placeholder="Digite aqui"
+              />
+            </span>{" "}
+            <span className={styles.span_input}>
+              <label htmlFor="">Horário:</label>
+              <input
+                onChange={(event) => {
+                  setSchedule(event.target.value);
                 }}
                 className={styles.input}
                 type="text"

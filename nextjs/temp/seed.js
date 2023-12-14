@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var prisma_1 = require("./prisma");
 function seed() {
     return __awaiter(this, void 0, void 0, function () {
-        var restaurantNames, menuNames, categoryNames, productNames, owners, ownersEmail, i, user, cart, restaurant, menu, j, category, k;
+        var restaurantNames, menuNames, categoryNames, productNames, owners, ownersEmail, users, usersEmail, i, owner, user, cart, restaurant, menu, j, category, k;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -55,8 +55,13 @@ function seed() {
                             ["Leite condensado", "Paçoca", "Leite ninho", "Granola"],
                         ],
                         [
-                            ["Calabresa", "Quatro queijos", "Portuguesa", "Frango com catupiry"],
-                            ["Coca-cola", "Suco", "Água", "Guaraná"],
+                            [
+                                "Pizza Calabresa",
+                                "Pizza Quatro queijos",
+                                "Pizza Portuguesa",
+                                "Pizza Frango com catupiry",
+                            ],
+                            ["Coca-cola", "Suco Vale", "Água Mineral", "Guaraná"],
                         ],
                     ];
                     owners = ["Willyan", "João"];
@@ -64,11 +69,13 @@ function seed() {
                         "willyanmarquesmelo@gmail.com",
                         "joaogamer123@gmail.com",
                     ];
+                    users = ["Kleber", "Paulão"];
+                    usersEmail = ["willyanmarquesmelo@gmail.com", "joaogamer123@gmail.com"];
                     i = 0;
                     _a.label = 1;
                 case 1:
-                    if (!(i < 2)) return [3 /*break*/, 13];
-                    return [4 /*yield*/, prisma_1.prisma.user.create({
+                    if (!(i < 2)) return [3 /*break*/, 14];
+                    return [4 /*yield*/, prisma_1.prisma.owner.create({
                             data: {
                                 name: owners[i],
                                 email: ownersEmail[i],
@@ -76,13 +83,22 @@ function seed() {
                             },
                         })];
                 case 2:
-                    user = _a.sent();
-                    return [4 /*yield*/, prisma_1.prisma.cart.create({
+                    owner = _a.sent();
+                    return [4 /*yield*/, prisma_1.prisma.user.create({
                             data: {
-                                userId: user.id
+                                name: users[i],
+                                email: usersEmail[i],
+                                password: "123456",
                             },
                         })];
                 case 3:
+                    user = _a.sent();
+                    return [4 /*yield*/, prisma_1.prisma.cart.create({
+                            data: {
+                                userId: user.id,
+                            },
+                        })];
+                case 4:
                     cart = _a.sent();
                     return [4 /*yield*/, prisma_1.prisma.restaurant.create({
                             data: {
@@ -92,10 +108,10 @@ function seed() {
                                 phone: "".concat(i + 61912345678),
                                 description: "Description ".concat(i + 1),
                                 contacts: "Contacts ".concat(i + 1),
-                                ownerEmail: user.email,
+                                ownerEmail: owner.email,
                             },
                         })];
-                case 4:
+                case 5:
                     restaurant = _a.sent();
                     return [4 /*yield*/, prisma_1.prisma.menu.create({
                             data: {
@@ -103,24 +119,24 @@ function seed() {
                                 name: menuNames[i],
                             },
                         })];
-                case 5:
+                case 6:
                     menu = _a.sent();
                     j = 0;
-                    _a.label = 6;
-                case 6:
-                    if (!(j < 2)) return [3 /*break*/, 12];
+                    _a.label = 7;
+                case 7:
+                    if (!(j < 2)) return [3 /*break*/, 13];
                     return [4 /*yield*/, prisma_1.prisma.category.create({
                             data: {
                                 menuId: menu.id,
                                 name: categoryNames[i][j],
                             },
                         })];
-                case 7:
+                case 8:
                     category = _a.sent();
                     k = 0;
-                    _a.label = 8;
-                case 8:
-                    if (!(k < 4)) return [3 /*break*/, 11];
+                    _a.label = 9;
+                case 9:
+                    if (!(k < 4)) return [3 /*break*/, 12];
                     return [4 /*yield*/, prisma_1.prisma.product.create({
                             data: {
                                 categoryId: category.id,
@@ -132,19 +148,19 @@ function seed() {
                                 image: "",
                             },
                         })];
-                case 9:
-                    _a.sent();
-                    _a.label = 10;
                 case 10:
-                    k++;
-                    return [3 /*break*/, 8];
+                    _a.sent();
+                    _a.label = 11;
                 case 11:
-                    j++;
-                    return [3 /*break*/, 6];
+                    k++;
+                    return [3 /*break*/, 9];
                 case 12:
+                    j++;
+                    return [3 /*break*/, 7];
+                case 13:
                     i++;
                     return [3 /*break*/, 1];
-                case 13:
+                case 14:
                     console.log("Seed completed successfully");
                     return [2 /*return*/];
             }

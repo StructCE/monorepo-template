@@ -28,9 +28,9 @@ export default function CartPage({
   const router = useRouter();
   const { data: session } = useSession();
 
-  if (!session || !session.user) {
-    router.push(`/login`);
-  }
+  // if (!session || !session.user) {
+  //   {router.push(`/login`)}
+  // }
 
   if (JSON.stringify(cart) !== "{}") {
     return (
