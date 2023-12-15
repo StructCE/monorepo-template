@@ -27,11 +27,6 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/restaurant/menu/[id]": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/restaurant/menu/[id].js"
-    ],
     "/user/cart/[cartId]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",

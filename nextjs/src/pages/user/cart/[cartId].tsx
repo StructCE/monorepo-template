@@ -1,3 +1,5 @@
+`use client`;
+
 import CartProduct from "@/components/CartProduct";
 import { getCartId } from "@/components/ShowProduct";
 import styles from "@/styles/Cart.module.css";
@@ -33,81 +35,85 @@ export default function CartPage({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
   const { data: session } = useSession();
-  // if (session && session.user) {
-  //   if (session.user.email !== cart.user.email){
-  //     router.push(`/user/cart/${cart.id}`)
-  //   }
-  // } else {
-  //   router.push(`/api/auth/signin`);
-  // }
 
   if (JSON.stringify(cart) === "{}") {
+    // router.push(`/`)
+    // alert("Carrinho não encontrado")
     return (
       <div>
         <h1>Carrinho não encontrado</h1>
       </div>
     );
+    
   }
 
-  // useState(async () => {
-  //   if (!session || !session.user) {
-  //     router.push(`/api/auth/signin`);
-  //   } else {
-  //     // console.log(cart.user.email, session.user.email, cart.id)
-  //     if (session.user.email !== cart.user.email) {
-  //       const cartId = Number(await getCartId(String(session.user.email)));
-  //       router.push(`/user/cart/${cartId}`);
-  //     }
-  //   }
-  // });
+  const { status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      alert("Faça login para continuar!");
+      router.push(`/api/auth/signin`);
+    },
+  });
 
-  return (
-    <div className={styles.page}>
+  if (session && session.user && session.user.id !== cart.user.id) {
+    router.push(`/user/cart/${session.user.id}`);
+  }
+
+  if (status === `loading`) {
+    return (
       <div>
-        <h1>MEU CARRINHO</h1>
+        <h1>Faça Login!</h1>
       </div>
-      {JSON.stringify(cart.cartProduct) !== "[]" ? (
-        <div className={styles.produtos}>
-          <table className={styles.table}>
-            <tbody>
-              <tr className={styles.table_header}>
-                <th className={styles.coluna1}>PRODUTO</th>
-                <th className={styles.coluna2}>PREÇO</th>
-                <th className={styles.coluna3}>QUANTIDADE</th>
-                <th className={styles.coluna4}>TOTAL</th>
-                <th className={styles.coluna5}>
-                  <button
-                    className={styles.trash_button}
-                    onClick={() => {
-                      if (
-                        confirm("Deseja remover todos produtos do carrinho?")
-                      ) {
-                        deleteAllCartProducts(cart.id);
-                        router.reload();
-                      }
-                    }}
-                  >
-                    <img
-                      src="/images/icons/trash.png"
-                      alt="lixo"
-                      className={styles.trash}
-                    />
-                  </button>
-                </th>
-              </tr>
-
-              {cart.cartProduct.map((cartProduct: any) => {
-                return <CartProduct cartProduct={cartProduct} />;
-              })}
-            </tbody>
-          </table>
-        </div>
-      ) : (
+    );
+  } else {
+    return (
+      <div className={styles.page}>
         <div>
-          <h2>Adicione produtos ao carrinho</h2>
-          <button>Pesquisar restaurantes</button>
+          <h1>MEU CARRINHO</h1>
         </div>
-      )}
-    </div>
-  );
+        {JSON.stringify(cart.cartProduct) !== "[]" ? (
+          <div className={styles.produtos}>
+            <table className={styles.table}>
+              <tbody>
+                <tr className={styles.table_header}>
+                  <th className={styles.coluna1}>PRODUTO</th>
+                  <th className={styles.coluna2}>PREÇO</th>
+                  <th className={styles.coluna3}>QUANTIDADE</th>
+                  <th className={styles.coluna4}>TOTAL</th>
+                  <th className={styles.coluna5}>
+                    <button
+                      className={styles.trash_button}
+                      onClick={() => {
+                        if (
+                          confirm("Deseja remover todos produtos do carrinho?")
+                        ) {
+                          deleteAllCartProducts(cart.id);
+                          router.reload();
+                        }
+                      }}
+                    >
+                      <img
+                        src="/images/icons/trash.png"
+                        alt="lixo"
+                        className={styles.trash}
+                      />
+                    </button>
+                  </th>
+                </tr>
+
+                {cart.cartProduct.map((cartProduct: any) => {
+                  return <CartProduct cartProduct={cartProduct} />;
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div>
+            <h2>Adicione produtos ao carrinho</h2>
+            <button>Pesquisar restaurantes</button>
+          </div>
+        )}
+      </div>
+    );
+  }
 }
