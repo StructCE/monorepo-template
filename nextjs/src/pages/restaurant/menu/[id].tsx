@@ -1,6 +1,7 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
 import ShowProduct from "@/components/ShowProduct";
+import NavbarRestaurant from "@/components/NavbarRestaurant";
 
 export const getServerSideProps: GetServerSideProps<{
   restaurantMenu: any;
@@ -34,6 +35,7 @@ export default function MenuPage({
   } else
     return (
       <div>
+        <NavbarRestaurant restaurantData={restaurantMenu.restaurant} />
         <div className="menu">
           <h1>{restaurantMenu.name}</h1>
           <h1>Restaurante: {router.query.id}</h1>

@@ -55,7 +55,7 @@ export default async function handler(
         try {
           const menu = await prisma.menu.findUnique({
             where: { id: Number(menuId) },
-            include: { categories: { include: { products: true } } },
+            include: { categories: { include: { products: true } }, restaurant:true },
           });
 
           if (menu) {
