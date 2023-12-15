@@ -33,13 +33,12 @@ export default function CartPage({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
   const { data: session } = useSession();
-
   // if (session && session.user) {
   //   if (session.user.email !== cart.user.email){
   //     router.push(`/user/cart/${cart.id}`)
   //   }
   // } else {
-  //   router.push(`/login`);
+  //   router.push(`/api/auth/signin`);
   // }
 
   if (JSON.stringify(cart) === "{}") {
@@ -50,17 +49,17 @@ export default function CartPage({
     );
   }
 
-  useState(async () => {
-    if (!session || !session.user) {
-      router.push(`/login`);
-    } else {
-      // console.log(cart.user.email, session.user.email, cart.id)
-      if (session.user.email !== cart.user.email) {
-        const cartId = Number(await getCartId(String(session.user.email)));
-        router.push(`/user/cart/${cartId}`);
-      }
-    }
-  });
+  // useState(async () => {
+  //   if (!session || !session.user) {
+  //     router.push(`/api/auth/signin`);
+  //   } else {
+  //     // console.log(cart.user.email, session.user.email, cart.id)
+  //     if (session.user.email !== cart.user.email) {
+  //       const cartId = Number(await getCartId(String(session.user.email)));
+  //       router.push(`/user/cart/${cartId}`);
+  //     }
+  //   }
+  // });
 
   return (
     <div className={styles.page}>

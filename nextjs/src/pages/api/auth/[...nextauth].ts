@@ -1,7 +1,7 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { prisma } from "../../../../prisma/prisma";
+import { User, prisma } from "../../../../prisma/prisma";
 import { use } from "react";
 
 export const authOptions: NextAuthOptions = {
@@ -10,6 +10,7 @@ export const authOptions: NextAuthOptions = {
     strategy: `jwt`,
   },
 
+
   providers: [
     CredentialsProvider({
       name: `FazGostoso`,
@@ -17,11 +18,12 @@ export const authOptions: NextAuthOptions = {
         email: {
           label: `Email`,
           type: `email`,
-          placeholder: `hello@example.com`,
+          placeholder: `email@gmail.com`,
         },
         password: {
           label: `Password`,
           type: `password`,
+          placeholder: `password`,
         },
       },
       async authorize(credentials) {
@@ -36,14 +38,14 @@ export const authOptions: NextAuthOptions = {
 
         if (!user) return null;
 
-        const isPasswordValid = credentials.password === user.password;
-        if (!isPasswordValid) return null;
+        if (credentials.password !== user.password) return null;
 
         return {
           id: String(user.id),
           email: user.email,
           name: user.name,
-          isOwner: user.isOwner,
+          image: user.image,
+          isOwner: Boolean(user.isOwner),
         };
       },
     }),
@@ -53,6 +55,32 @@ export const authOptions: NextAuthOptions = {
     //   clientSecret: String(process.env.GOOGLE_SECRET),
     // }),
   ],
+  callbacks: {
+    session: ({ session, token }) => {
+      console.log(`Session Callback`, { session, token });
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+          isOwner: token.isOwner,
+        },
+      };
+    },
+
+    jwt: ({ user, token }) => {
+      console.log(`JWT Callback`, { user, token });
+      if (user) {
+        const prismaUser = user as unknown as User;
+        return {
+          ...token,
+          id: prismaUser.id,
+          isOwner: prismaUser.isOwner,
+        };
+      }
+      return token;
+    },
+  },
 };
 
 export default NextAuth(authOptions);

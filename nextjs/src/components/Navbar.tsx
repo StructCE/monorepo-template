@@ -9,7 +9,6 @@ export default function Navbar() {
 
   return (
     <nav className={styles.nav_div}>
-      {JSON.stringify(session)}
       <div className={styles.logo_div}>
         <img
           src="/images/assets/logomark.png"
@@ -30,19 +29,21 @@ export default function Navbar() {
             Contato
           </button>
 
-          <button
-            onClick={() => {
-              if (session && session.user) {
-                router.push(`/user/menu/${session.user.email}`);
-              } else {
-                alert("Faça login para acessar seu restaurante!");
-                router.push(`/login`);
-              }
-            }}
-            className={styles.button}
-          >
-            Restaurante
-          </button>
+          {session && session.user && session.user.isOwner && (
+            <button
+              onClick={() => {
+                if (session && session.user) {
+                  router.push(`/user/menu/${session.user.id}`);
+                } else {
+                  alert("Faça login para acessar seu restaurante!");
+                  router.push(`/login`);
+                }
+              }}
+              className={styles.button}
+            >
+              Restaurante
+            </button>
+          )}
 
           <NavbarLogin />
         </div>

@@ -22,22 +22,30 @@ async function seed() {
       ["Coca-cola", "Suco Vale", "Água Mineral", "Guaraná"],
     ],
   ];
-  const owners = ["Willyan", "João"];
-  const ownersEmail = [
-    "willyanmarquesmelo@gmail.com",
-    "joaogamer123@gmail.com",
-  ];
+  const owners = ["Dinda", "Zé"];
+  const ownersEmail = ["teste@teste.com", "joaogamer123@gmail.com"];
 
   const users = ["Kleber", "Paulão"];
   const usersEmail = ["klebinho@gmail.com", "paulo.tejanno@gmail.com"];
 
+  const images = {
+    users: [
+      "https://i.redd.it/qm2eo6qvlot51.jpg",
+      "https://external-preview.redd.it/TUdNAPOM04o9vbH77kRDRqn9WjpCSn27eNTbhikJcZM.jpg?auto=webp&s=c3c105ad95ed3af4a8931585d00cc18c837f9072",
+    ],
+    owners: [
+      "https://citizensketcher.files.wordpress.com/2022/05/thispersondoesnotexist_43-1.jpg",
+      "https://i.seadn.io/gae/7KTZ107oTbcCCWSs8M76vYd1b7gwth5AdHn6KR1HlfTxF0jgZugiVx6CdmYNw4OBtFJDNgQEizIkHzD5TUVmux0ppHGA-Ei5eG8k8Q?auto=format&dpr=1&w=1000",
+    ],
+  };
   //----------------------------------------------------------------------------//
   for (let i = 0; i < 2; i++) {
     const user = await prisma.user.create({
       data: {
         name: users[i],
         email: usersEmail[i],
-        password: "123456",
+        image: images.users[i],
+        password: "123",
       },
     });
 
@@ -54,6 +62,7 @@ async function seed() {
       data: {
         name: owners[i],
         email: ownersEmail[i],
+        image: images.owners[i],
         password: "123456",
         isOwner: true,
       },
