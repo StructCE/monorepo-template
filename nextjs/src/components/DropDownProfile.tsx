@@ -13,16 +13,6 @@ export default function DropDownProfile() {
         <button
           className={styles.dropDownItem}
           onClick={() => {
-            if (confirm("Deseja sair?")) {
-              signOut();
-            }
-          }}
-        >
-          Sair
-        </button>
-        <button
-          className={styles.dropDownItem}
-          onClick={() => {
             router.push(`/user/profile`);
           }}
         >
@@ -35,12 +25,22 @@ export default function DropDownProfile() {
               const cartId = Number(
                 await getCartId(String(session.user.email))
               );
-                
+
               router.push(`/user/cart/${cartId}`);
             }
           }}
         >
           Carrinho
+        </button>
+        <button
+          className={styles.dropDownItem}
+          onClick={() => {
+            if (confirm("Deseja sair?")) {
+              signOut();
+            }
+          }}
+        >
+          Sair
         </button>
       </div>
     </div>

@@ -42,8 +42,6 @@ export default function Navbar() {
           >
             Restaurante
           </button>
-
-          <NavbarLogin />
         </div>
       </div>
     </nav>

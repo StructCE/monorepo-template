@@ -15,6 +15,22 @@
   z-index: 1;
 }
 
+.nav_div_res {
+  width: 100%;
+  height: 10rem;
+  background-color: transparent;
+  display: inline-flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  align-items: center;
+  align-self: flex-start;
+  justify-content: space-around;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
 .actions {
   display: flex;
   align-items: center;
@@ -47,13 +63,24 @@
   cursor: pointer;
 }
 
+.logo_restaurant {
+  width: 252px;
+  height: 117px;
+  flex-shrink: 0;
+}
+
+.restaurant {
+  height: 100px;
+  cursor: pointer;
+}
+
 .icon_div {
   display: flex;
   flex-direction: column;
 }
 
 .user_icon {
-  width:  60px;
+  width: 60px;
   height: 60px;
   border-radius: 50%;
   cursor: pointer;
@@ -61,12 +88,12 @@
 
 .dropDownProfile {
   position: absolute;
-  top: 120px;
-  right: 255px;
+  top: 280px;
+  right: 105px;
   /* width: ; */
 }
 
-.dropDownContent{
+.dropDownContent {
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -76,7 +103,7 @@
   background-color: #ffe2e2;
 }
 
-.dropDownItem{
+.dropDownItem {
   cursor: pointer;
   width: 150px;
   padding-left: 10px;
