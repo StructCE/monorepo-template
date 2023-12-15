@@ -10,7 +10,6 @@ export const authOptions: NextAuthOptions = {
     strategy: `jwt`,
   },
 
-
   providers: [
     CredentialsProvider({
       name: `FazGostoso`,
@@ -27,17 +26,13 @@ export const authOptions: NextAuthOptions = {
         },
       },
       async authorize(credentials) {
-        // const user = { id: `2`, name: `Teste`, email: `teste@teste.com` };
-        if (!credentials?.email || !credentials.password) {
-          return null;
-        }
+        if (!credentials?.email || !credentials.password) return null;
 
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
-
+        
         if (!user) return null;
-
         if (credentials.password !== user.password) return null;
 
         return {
