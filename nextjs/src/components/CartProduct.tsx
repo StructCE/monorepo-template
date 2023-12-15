@@ -61,7 +61,7 @@ export default function CartProduct({ cartProduct }: any) {
               if (count > 1) {
                 const newCount = count - 1;
                 setCount(newCount);
-                console.log(cartProduct.productId);
+                // console.log(cartProduct.productId);
                 upateQuantityDB(cartProduct.productId, newCount);
               }
             }}

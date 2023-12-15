@@ -66,7 +66,7 @@ export default async function handler(
           if (user) {
             res.status(200).json(user);
           } else {
-            const message: string = "Cart not found";
+            const message: string = "Owner not found";
             res.status(400).json(message);
           }
         } catch (error) {

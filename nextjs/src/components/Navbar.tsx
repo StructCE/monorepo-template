@@ -9,6 +9,7 @@ export default function Navbar() {
 
   return (
     <nav className={styles.nav_div}>
+      {JSON.stringify(session)}
       <div className={styles.logo_div}>
         <img
           src="/images/assets/logomark.png"
@@ -42,6 +43,8 @@ export default function Navbar() {
           >
             Restaurante
           </button>
+
+          <NavbarLogin />
         </div>
       </div>
     </nav>
