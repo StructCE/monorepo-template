@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var prisma_1 = require("./prisma");
 function seed() {
     return __awaiter(this, void 0, void 0, function () {
-        var restaurantNames, menuNames, categoryNames, productNames, owners, ownersEmail, users, usersEmail, i, user, cart, i, owner, cart, restaurant, menu, j, category, k;
+        var restaurantNames, menuNames, categoryNames, productNames, owners, ownersEmail, users, usersEmail, images, i, user, cart, i, owner, cart, restaurant, menu, j, category, k;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -64,13 +64,23 @@ function seed() {
                             ["Coca-cola", "Suco Vale", "Água Mineral", "Guaraná"],
                         ],
                     ];
-                    owners = ["Willyan", "João"];
+                    owners = ["Teste", "João"];
                     ownersEmail = [
-                        "willyanmarquesmelo@gmail.com",
+                        "teste@teste.com",
                         "joaogamer123@gmail.com",
                     ];
                     users = ["Kleber", "Paulão"];
                     usersEmail = ["klebinho@gmail.com", "paulo.tejanno@gmail.com"];
+                    images = {
+                        users: [
+                            "https://i.redd.it/qm2eo6qvlot51.jpg",
+                            "https://external-preview.redd.it/TUdNAPOM04o9vbH77kRDRqn9WjpCSn27eNTbhikJcZM.jpg?auto=webp&s=c3c105ad95ed3af4a8931585d00cc18c837f9072",
+                        ],
+                        owners: [
+                            "https://citizensketcher.files.wordpress.com/2022/05/thispersondoesnotexist_43-1.jpg",
+                            "https://i.seadn.io/gae/7KTZ107oTbcCCWSs8M76vYd1b7gwth5AdHn6KR1HlfTxF0jgZugiVx6CdmYNw4OBtFJDNgQEizIkHzD5TUVmux0ppHGA-Ei5eG8k8Q?auto=format&dpr=1&w=1000",
+                        ],
+                    };
                     i = 0;
                     _a.label = 1;
                 case 1:
@@ -79,7 +89,8 @@ function seed() {
                             data: {
                                 name: users[i],
                                 email: usersEmail[i],
-                                password: "123456",
+                                image: images.users[i],
+                                password: "123",
                             },
                         })];
                 case 2:
@@ -104,6 +115,7 @@ function seed() {
                             data: {
                                 name: owners[i],
                                 email: ownersEmail[i],
+                                image: images.owners[i],
                                 password: "123456",
                                 isOwner: true,
                             },

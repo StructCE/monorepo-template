@@ -2,8 +2,11 @@ import styles from "@/styles/Home.module.css";
 import Head from "next/head";
 import SubscriptionCard from "@/components/SubscriptionCard";
 import Separator from "@/components/Separator";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
+  const { data: session } = useSession();
+  
   return (
     <div className={styles.home}>
       <Separator variation={1} />

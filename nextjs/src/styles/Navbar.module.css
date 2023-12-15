@@ -7,7 +7,7 @@
   flex-direction: row;
   align-items: center;
   align-self: flex-start;
-  justify-content: space-around;
+  justify-content: space-between;
   position: fixed;
   top: 0;
   left: 0;
@@ -38,6 +38,10 @@
   gap: 50px;
 }
 
+.actions_div{
+  padding-right: 100px;
+}
+
 .button {
   color: #000;
   text-align: center;
@@ -61,6 +65,10 @@
 .logo {
   height: 100px;
   cursor: pointer;
+}
+
+.logo_div{
+  padding-left: 100px;
 }
 
 .logo_restaurant {
@@ -88,10 +96,11 @@
 
 .dropDownProfile {
   position: absolute;
-  top: 280px;
-  right: 105px;
+  top: 115px;
+  right: 100px;
   /* width: ; */
 }
+
 
 .dropDownContent {
   display: flex;

@@ -25,7 +25,6 @@ export default function MenuPage({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
 
-  console.log(restaurantMenu);
   if (JSON.stringify(restaurantMenu) === "{}") {
     return (
       <div>

@@ -29,19 +29,23 @@ export default function Navbar() {
             Contato
           </button>
 
-          <button
-            onClick={() => {
-              if (session && session.user) {
-                router.push(`/user/menu/${session.user.email}`);
-              } else {
-                alert("Faça login para acessar seu restaurante!");
-                router.push(`/login`);
-              }
-            }}
-            className={styles.button}
-          >
-            Restaurante
-          </button>
+          {session && session.user && session.user.isOwner && (
+            <button
+              onClick={() => {
+                if (session && session.user) {
+                  router.push(`/user/menu/${session.user.id}`);
+                } else {
+                  alert("Faça login para acessar seu restaurante!");
+                  router.push(`/login`);
+                }
+              }}
+              className={styles.button}
+            >
+              Restaurante
+            </button>
+          )}
+
+          <NavbarLogin />
         </div>
       </div>
     </nav>

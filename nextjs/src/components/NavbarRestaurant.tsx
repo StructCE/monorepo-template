@@ -34,7 +34,7 @@ export default function NavbarRestaurant({ restaurantData }: any) {
         Contato
       </button>
 
-      <NavbarLogin />
+      {/* <NavbarLogin /> */}
     </nav>
   );
 }

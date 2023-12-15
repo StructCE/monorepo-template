@@ -29,7 +29,7 @@ export default function SigninButton() {
   return (
     <button
       onClick={() => {
-        router.push(`/login`);
+        router.push(`/api/auth/signin`);
       }}
       className={styles.button}
     >

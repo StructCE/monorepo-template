@@ -76,6 +76,7 @@ model User {
   email    String  @unique
   name     String
   password String
+  image    String
   isOwner  Boolean @default(false)
 
   cart       Cart?

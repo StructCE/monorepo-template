@@ -43,13 +43,13 @@ export default function ShowProduct({ product }: any) {
           if (session && session.user) {
             const productId = Number(product.id);
             const cartId = Number(await getCartId(String(session.user.email)));
-            console.log(productId, cartId);
+            // console.log(productId, cartId);
             if (confirm("Adicionar produto ao carrinho?")) {
               postCartProdut({ cartId: cartId, productId: productId });
             }
           } else {
             alert("Faça login para acessar adicionar produtos ao carrinho!");
-            router.push(`/login`);
+            router.push(`/api/auth/signin`);
           }
         }}
       >
