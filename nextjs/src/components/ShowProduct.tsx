@@ -13,7 +13,7 @@ async function postCartProdut(props: { productId: number; cartId: number }) {
   );
 }
 
-async function getCartId(userEmail: string) {
+export async function getCartId(userEmail: string) {
   const res = await fetch(`http://localhost:3000/api/user/${userEmail}`, {
     method: "GET",
   });

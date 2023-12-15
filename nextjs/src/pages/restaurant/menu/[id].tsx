@@ -10,7 +10,12 @@ export const getServerSideProps: GetServerSideProps<{
     `http://localhost:3000/api/restaurant/menu/${menuId}`,
     { method: "GET" }
   );
-  const restaurantMenu = await res.json();
+
+  let restaurantMenu = {};
+  if (res.ok) {
+    restaurantMenu = await res.json();
+  }
+
   return { props: { restaurantMenu } };
 };
 
@@ -19,28 +24,36 @@ export default function MenuPage({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
 
-  return (
-    <div>
-      <div className="menu">
-        <h1>{restaurantMenu.name}</h1>
-        <h1>Restaurante: {router.query.id}</h1>
-      </div>
+  console.log(restaurantMenu);
+  if (JSON.stringify(restaurantMenu) === "{}") {
+    return (
       <div>
-        {restaurantMenu.categories.map((categoria: any) => {
-          return (
-            <div>
-              <h2>{categoria.name}</h2>
-              {categoria.products.map((produto: any) => {
-                return (
-                  <div>
-                    <ShowProduct product={produto} />;
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
+        <h1>Cardápio não encontrado</h1>
       </div>
-    </div>
-  );
+    );
+  } else
+    return (
+      <div>
+        <div className="menu">
+          <h1>{restaurantMenu.name}</h1>
+          <h1>Restaurante: {router.query.id}</h1>
+        </div>
+        <div>
+          {restaurantMenu.categories.map((categoria: any) => {
+            return (
+              <div>
+                <h2>{categoria.name}</h2>
+                {categoria.products.map((produto: any) => {
+                  return (
+                    <div>
+                      <ShowProduct product={produto} />;
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
 }
