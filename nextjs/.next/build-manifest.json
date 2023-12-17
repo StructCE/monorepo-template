@@ -31,6 +31,11 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/user/cart/[cartId].js"
+    ],
+    "/user/menu/[ownerId]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/user/menu/[ownerId].js"
     ]
   },
   "ampFirstPages": []
