@@ -5,7 +5,7 @@ import NavbarRestaurant from "@/components/NavbarRestaurant";
 import { Category, Menu, Product, defaultMenu } from "@/types/types";
 
 export const getServerSideProps: GetServerSideProps<{
-  restaurantMenu: Menu;
+  menu: Menu;
 }> = async (context) => {
   const menuId = context.query.id;
   const res = await fetch(
@@ -13,37 +13,38 @@ export const getServerSideProps: GetServerSideProps<{
     { method: "GET" }
   );
 
-  let restaurantMenu = defaultMenu;
+  let menu = defaultMenu;
 
   if (res.ok) {
-    restaurantMenu = await res.json();
+    menu = await res.json();
   }
 
-  return { props: { restaurantMenu } };
+  return { props: { menu } };
 };
 
 export default function MenuPage({
-  restaurantMenu,
+  menu,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
 
-  if (restaurantMenu.id === 0) {
+  if (menu.id === 0 || !menu.restaurant) {
     return (
       <div>
         <h1>Cardápio não encontrado</h1>
       </div>
     );
-  } else
+  } else {
+    const restaurantId = Number(menu.restaurant.id);
     return (
       <div>
-        <NavbarRestaurant restaurant={restaurantMenu.restaurant} />
+        <NavbarRestaurant restaurant={menu.restaurant} />
         <div className="menu">
-          <h1>{restaurantMenu.name}</h1>
+          <h1>{menu.name}</h1>
           <h1>Restaurante: {router.query.id}</h1>
         </div>
         <div>
-          {restaurantMenu.categories &&
-            restaurantMenu.categories.map((categoria: Category) => {
+          {menu.categories &&
+            menu.categories.map((categoria: Category) => {
               return (
                 <div>
                   <h2>{categoria.name}</h2>
@@ -51,7 +52,10 @@ export default function MenuPage({
                     categoria.products.map((produto: Product) => {
                       return (
                         <div>
-                          <ShowProduct product={produto} />;
+                          <ShowProduct
+                            product={produto}
+                            restaurantId={Number(restaurantId)}
+                          />
                         </div>
                       );
                     })}
@@ -61,4 +65,5 @@ export default function MenuPage({
         </div>
       </div>
     );
+  }
 }

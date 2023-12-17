@@ -3,15 +3,25 @@ import { Product } from "@/types/types";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
-async function postCartProdut(props: { productId: number; cartId: number }) {
-  const res = await fetch(
-    `http://localhost:3000/api/user/cart/product/${props.productId}`,
-    {
-      method: "POST",
-      body: JSON.stringify({ cartId: props.cartId }),
-      headers: { "Content-Type": "application/json" },
-    }
-  );
+export async function postCartProdut(props: {
+  productId: number;
+  cartId: number;
+  restaurantId: number;
+}) {
+  const res = await fetch(`http://localhost:3000/api/user/cart/product/0`, {
+    method: "POST",
+    body: JSON.stringify({
+      productId: props.productId,
+      cartId: props.cartId,
+      restaurantId: props.restaurantId,
+    }),
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (res.ok) {
+    const data = await res.json();
+    alert(JSON.stringify(data));
+  }
 }
 
 export async function getCartId(userEmail: string) {
@@ -22,7 +32,10 @@ export async function getCartId(userEmail: string) {
   return Number(userData.cart.id);
 }
 
-export default function ShowProduct(props: { product: Product }) {
+export default function ShowProduct(props: {
+  product: Product;
+  restaurantId: number;
+}) {
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -38,10 +51,15 @@ export default function ShowProduct(props: { product: Product }) {
         className={styles.action}
         onClick={async () => {
           if (session && session.user) {
-            const productId = Number(props.product.id);
+            const productId = props.product.id;
+            const restaurantId = props.restaurantId;
             const cartId = Number(await getCartId(String(session.user.email)));
             if (confirm("Adicionar produto ao carrinho?")) {
-              postCartProdut({ cartId: cartId, productId: productId });
+              postCartProdut({
+                cartId: cartId,
+                productId: productId,
+                restaurantId: restaurantId,
+              });
             }
           } else {
             alert("Faça login para acessar adicionar produtos ao carrinho!");

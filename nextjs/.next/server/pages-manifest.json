@@ -1,9 +1,10 @@
 {
   "/_app": "pages/_app.js",
-  "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
+  "/_error": "pages/_error.js",
   "/user/cart/[cartId]": "pages/user/cart/[cartId].js",
+  "/user/menu/[ownerId]": "pages/user/menu/[ownerId].js",
+  "/restaurant/menu/[id]": "pages/restaurant/menu/[id].js",
   "/api/user/cart/[id]": "pages/api/user/cart/[id].js",
-  "/search": "pages/search.js"
+  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js"
 }

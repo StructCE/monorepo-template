@@ -10,14 +10,14 @@ import { useRouter } from "next/router";
 export const getServerSideProps: GetServerSideProps<{
   cart: Cart;
 }> = async (context) => {
-  const cartId = context.query.cartId;
+  const cartId = Number(context.query.cartId);
   const res = await fetch(`http://localhost:3000/api/user/cart/${cartId}`, {
     method: "GET",
   });
 
   let cart = defaultCart;
   if (res.ok) {
-    cart = await res.json(); // Call response.json() to parse JSON
+    cart = await res.json();
   }
 
   return { props: { cart } };
@@ -35,7 +35,8 @@ export default function CartPage({
   const router = useRouter();
   const { data: session } = useSession();
 
-  if (cart.id === 0) {
+  console.log(cart);
+  if (cart.id === 0 || !cart.user) {
     return (
       <div>
         <h1>Carrinho não encontrado</h1>
@@ -51,38 +52,37 @@ export default function CartPage({
     },
   });
 
-  if (session && session.user && session.user.id !== cart.user.id) {
-    router.push(`/user/cart/${session.user.id}`);
-  }
-
   if (status === `loading`) {
     return (
       <div>
         <h1>Faça Login!</h1>
       </div>
     );
-  } else {
-    return (
-      <div className={styles.page}>
+  }
+
+  return (
+    <div className={styles.page}>
+      <div>
+        <h1>MEU CARRINHO</h1>
+      </div>
+      {!cart.cartProduct || JSON.stringify(cart.cartProduct) === "[]" ? (
         <div>
-          <h1>MEU CARRINHO</h1>
+          <h2>Adicione produtos ao carrinho</h2>
+          <button
+            onClick={() => {
+              router.push(`/search`);
+            }}
+          >
+            Pesquisar restaurantes
+          </button>
         </div>
-        {JSON.stringify(cart.cartProduct) === "[]" ? (
-          <div>
-            <h2>Adicione produtos ao carrinho</h2>
-            <button
-              onClick={() => {
-                router.push(`/search`);
-              }}
-            >
-              Pesquisar restaurantes
-            </button>
-          </div>
-        ) : (
+      ) : (
+        cart.cartProduct && (
           <div className={styles.produtos}>
             <table className={styles.table}>
               <tbody>
                 <tr className={styles.table_header}>
+                  <th className={styles.coluna0}>RESTAURANTE</th>
                   <th className={styles.coluna1}>PRODUTO</th>
                   <th className={styles.coluna2}>PREÇO</th>
                   <th className={styles.coluna3}>QUANTIDADE</th>
@@ -115,8 +115,8 @@ export default function CartPage({
               </tbody>
             </table>
           </div>
-        )}
-      </div>
-    );
-  }
+        )
+      )}
+    </div>
+  );
 }

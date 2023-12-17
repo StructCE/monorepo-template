@@ -7,24 +7,24 @@ export type Restaurant = {
   description: string;
   contacts: string;
   ownerEmail: string;
-  user?: User;
-  menu?: Menu;
+  user: null | User;
+  menu: null | Menu;
 };
 
 export type Menu = {
   id: number;
   name: string;
   restaurantId: number;
-  restaurant?: Restaurant;
-  categories?: Category[];
+  restaurant: null | Restaurant;
+  categories: null | Category[];
 };
 
 export type Category = {
   id: number;
   name: string;
   menuId: number;
-  menu?: Menu;
-  products?: Product[];
+  menu: null | Menu;
+  products: null | Product[];
 };
 
 export type Product = {
@@ -36,8 +36,8 @@ export type Product = {
   description: string;
   image: string;
   categoryId: number;
-  category?: Category;
-  cartProduct?: CartProduct[];
+  category: null | Category;
+  cartProduct: null | CartProduct[];
 };
 
 export type User = {
@@ -47,23 +47,26 @@ export type User = {
   password: string;
   image: string;
   isOwner: Boolean;
-  cart?: Cart;
-  restaurant?: Restaurant;
+  cart: null | Cart;
+  restaurant: null | Restaurant;
 };
 
 export type Cart = {
   id: number;
   userId: number;
-  user?: User;
-  cartProduct?: CartProduct[];
+  user: null | User;
+  cartProduct: null | CartProduct[];
 };
 
 export type CartProduct = {
-  productId: number;
+  id: number;
   cartId: number;
+  productId: number;
+  restaurantId: number;
   quantity: number;
-  cart?: Cart;
-  product?: Product;
+  cart: null | Cart;
+  product: null | Product;
+  restaurant: null | Restaurant;
 };
 
 //----------------------------------------------------------------------------//
@@ -76,24 +79,24 @@ export const defaultRestaurant: Restaurant = {
   description: "",
   contacts: "",
   ownerEmail: "",
-  user: undefined,
-  menu: undefined,
+  user: null,
+  menu: null,
 };
 
 export const defaultMenu: Menu = {
   id: 0,
   name: "",
   restaurantId: 0,
-  restaurant: undefined,
-  categories: undefined,
+  restaurant: null,
+  categories: null,
 };
 
 export const defaultCategory: Category = {
   id: 0,
   name: "",
   menuId: 0,
-  menu: undefined,
-  products: undefined,
+  menu: null,
+  products: null,
 };
 
 export const defaultProduct: Product = {
@@ -105,8 +108,8 @@ export const defaultProduct: Product = {
   description: "",
   image: "",
   categoryId: 0,
-  category: undefined,
-  cartProduct: undefined,
+  category: null,
+  cartProduct: null,
 };
 
 export const defaultUser: User = {
@@ -116,21 +119,24 @@ export const defaultUser: User = {
   password: "",
   image: "",
   isOwner: false,
-  cart: undefined,
-  restaurant: undefined,
+  cart: null,
+  restaurant: null,
 };
 
 export const defaultCart: Cart = {
   id: 0,
   userId: 0,
-  user: undefined,
-  cartProduct: undefined,
+  user: null,
+  cartProduct: null,
 };
 
 export const defaultCartProduct: CartProduct = {
+  id: 0,
   productId: 0,
   cartId: 0,
+  restaurantId: 0,
   quantity: 0,
-  cart: undefined,
-  product: undefined,
+  cart: null,
+  product: null,
+  restaurant: null,
 };

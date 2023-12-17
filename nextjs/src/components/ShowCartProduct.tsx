@@ -3,9 +3,9 @@ import { CartProduct, defaultCartProduct } from "@/types/types";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-async function upateQuantityDB(productId: number, newQuantity: number) {
+async function upateQuantityDB(cartProductId: number, newQuantity: number) {
   const res = await fetch(
-    `http://localhost:3000/api/user/cart/product/${productId}`,
+    `http://localhost:3000/api/user/cart/product/${cartProductId}`,
     {
       method: "PUT",
       body: JSON.stringify({ quantity: newQuantity }),
@@ -22,7 +22,7 @@ async function deleteCartProduct(productId: number) {
 }
 
 export default function ShowCartProduct(props: { cartProduct: CartProduct }) {
-  if (!props.cartProduct.product) {
+  if (!props.cartProduct.product || !props.cartProduct.restaurant) {
     return (
       <>
         <h1>Produto não registrado</h1>
@@ -37,6 +37,17 @@ export default function ShowCartProduct(props: { cartProduct: CartProduct }) {
 
   return (
     <tr className={styles.line}>
+      <th>
+        <img
+          src={`/images/restaurants/${props.cartProduct.restaurant.name
+            .toLowerCase()
+            .replaceAll(" ", "_")}.png`}
+          alt={`/images/restaurants/${props.cartProduct.restaurant.name
+            .toLowerCase()
+            .replaceAll(" ", "_")}.png`}
+          className={styles.image}
+        />
+      </th>
       <th className={styles.cell_product}>
         <img
           src={`/images/products/${props.cartProduct.product.name
@@ -70,7 +81,7 @@ export default function ShowCartProduct(props: { cartProduct: CartProduct }) {
               if (count > 1) {
                 const newCount = count - 1;
                 setCount(newCount);
-                upateQuantityDB(props.cartProduct.productId, newCount);
+                upateQuantityDB(props.cartProduct.id, newCount);
               }
             }}
           >
