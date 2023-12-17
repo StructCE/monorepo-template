@@ -22,8 +22,9 @@ model Restaurant {
 
   ownerEmail String @unique
 
-  user User? @relation(fields: [ownerEmail], references: [email])
-  menu Menu?
+  user        User?         @relation(fields: [ownerEmail], references: [email])
+  menu        Menu?
+  cartProduct CartProduct[]
 }
 
 model Menu {
@@ -61,16 +62,6 @@ model Product {
   CartProduct CartProduct[]
 }
 
-// model Owner {
-//   id       Int     @id @default(autoincrement())
-//   email    String  @unique
-//   name     String
-//   password String
-//   isAdmin  Boolean @default(true)
-
-//   restaurant Restaurant?
-// }
-
 model User {
   id       Int     @id @default(autoincrement())
   email    String  @unique
@@ -91,9 +82,14 @@ model Cart {
 }
 
 model CartProduct {
-  productId Int     @id
-  cartId    Int
-  quantity  Int     @default(1)
-  cart      Cart    @relation(fields: [cartId], references: [id])
-  product   Product @relation(fields: [productId], references: [id])
+  id Int @id @default(autoincrement())
+
+  productId    Int
+  cartId       Int
+  restaurantId Int
+
+  quantity   Int         @default(1)
+  cart       Cart?       @relation(fields: [cartId], references: [id])
+  product    Product?    @relation(fields: [productId], references: [id])
+  restaurant Restaurant? @relation(fields: [restaurantId], references: [id])
 }

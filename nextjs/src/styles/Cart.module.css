@@ -27,8 +27,11 @@
   background-color: #f1f1f1;
 }
 
+.coluna0 {
+  width: 15%;
+}
 .coluna1 {
-  width: 50%;
+  width: 35%;
 }
 .coluna2 {
   width: 15%;

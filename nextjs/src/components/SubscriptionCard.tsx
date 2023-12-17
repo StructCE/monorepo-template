@@ -9,7 +9,6 @@ export default function SubscriptionCard() {
 
   function handleSubmit() {
     if (name && email) {
-      // alert(`/register?email=${email}&name=${name}`);
       router.push({
         pathname: `/register`,
         query: { name, email },

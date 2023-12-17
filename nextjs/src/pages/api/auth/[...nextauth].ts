@@ -45,10 +45,10 @@ export const authOptions: NextAuthOptions = {
       },
     }),
 
-    // GoogleProvider({
-    //   clientId: String(process.env.GOOGLE_ID),
-    //   clientSecret: String(process.env.GOOGLE_SECRET),
-    // }),
+    GoogleProvider({
+      clientId: String(process.env.GOOGLE_ID),
+      clientSecret: String(process.env.GOOGLE_SECRET),
+    }),
   ],
   callbacks: {
     session: ({ session, token }) => {

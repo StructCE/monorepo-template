@@ -11,14 +11,14 @@ export default async function handler(
     case "POST":
       {
         try {
-          const newMenu = await prisma.cart.create({
+          const newCart = await prisma.cart.create({
             data: {
               id: req.body.id,
               userId: req.body.userID,
             },
           });
-          if (newMenu) {
-            res.status(200).json(newMenu);
+          if (newCart) {
+            res.status(200).json(newCart);
           } else {
             const message: string = "Couldn't create cart";
             res.status(400).json(message);
@@ -58,16 +58,16 @@ export default async function handler(
     case "GET":
       {
         try {
-          const menu = await prisma.cart.findUnique({
+          const cart = await prisma.cart.findUnique({
             where: { id: cartId },
             include: {
               user: true,
-              cartProduct: { include: { product: true } },
+              cartProduct: { include: { product: true, restaurant: true } },
             },
           });
 
-          if (menu) {
-            res.status(200).json(menu);
+          if (cart) {
+            res.status(200).json(cart);
           } else {
             const message: string = "Cart not found";
             res.status(400).json(message);
@@ -84,12 +84,12 @@ export default async function handler(
     case "DELETE":
       {
         try {
-          const deleteMenu = await prisma.cartProduct.deleteMany({
+          const deleteCartProduct = await prisma.cartProduct.deleteMany({
             where: { cartId: cartId },
           });
 
-          if (deleteMenu) {
-            res.status(200).json(deleteMenu);
+          if (deleteCartProduct) {
+            res.status(200).json(deleteCartProduct);
           } else {
             const message: string = "Cart not found";
             res.status(400).json(message);

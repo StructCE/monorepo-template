@@ -5,23 +5,40 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const productId = Number(req.query.id);
+  const cartProductId = Number(req.query.id);
+  console.log(req);
 
   switch (req.method) {
     case "POST":
       {
         try {
-          const newMenu = await prisma.cartProduct.create({
-            data: {
-              productId: productId,
+          const cartProduct = await prisma.cartProduct.findMany({
+            where: {
+              productId: req.body.productId,
               cartId: req.body.cartId,
+              restaurantId: req.body.restaurantId,
             },
           });
-          if (newMenu) {
-            res.status(200).json(newMenu);
+
+          if (JSON.stringify(cartProduct) !== "[]") {
+            const message: string = "Product already in cart";
+            res.status(200).json(message);
           } else {
-            const message: string = "Couldn't create cart product";
-            res.status(400).json(message);
+            const newCartProduct = await prisma.cartProduct.create({
+              data: {
+                productId: req.body.productId,
+                cartId: req.body.cartId,
+                restaurantId: req.body.restaurantId,
+              },
+            });
+
+            if (newCartProduct) {
+              const message: string = "Product added to cart."
+              res.status(200).json(message);
+            } else {
+              const message: string = "Couldn't create cart product";
+              res.status(400).json(message);
+            }
           }
         } catch (error) {
           const message: string = "Error trying to create the menu";
@@ -36,7 +53,7 @@ export default async function handler(
       {
         try {
           const cartProduct = await prisma.cartProduct.update({
-            where: { productId: productId },
+            where: { id: cartProductId },
             data: { quantity: req.body.quantity },
           });
 
@@ -83,7 +100,7 @@ export default async function handler(
         //schema alredy set to cascade delete
         try {
           const cartProduct = await prisma.cartProduct.delete({
-            where: { productId: productId },
+            where: { id: cartProductId },
           });
 
           if (cartProduct) {
