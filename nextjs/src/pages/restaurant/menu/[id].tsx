@@ -2,9 +2,10 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
 import ShowProduct from "@/components/ShowProduct";
 import NavbarRestaurant from "@/components/NavbarRestaurant";
+import { Category, Menu, Product, defaultMenu } from "@/types/types";
 
 export const getServerSideProps: GetServerSideProps<{
-  restaurantMenu: any;
+  restaurantMenu: Menu;
 }> = async (context) => {
   const menuId = context.query.id;
   const res = await fetch(
@@ -12,7 +13,8 @@ export const getServerSideProps: GetServerSideProps<{
     { method: "GET" }
   );
 
-  let restaurantMenu = {};
+  let restaurantMenu = defaultMenu;
+
   if (res.ok) {
     restaurantMenu = await res.json();
   }
@@ -25,7 +27,7 @@ export default function MenuPage({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
 
-  if (JSON.stringify(restaurantMenu) === "{}") {
+  if (restaurantMenu.id === 0) {
     return (
       <div>
         <h1>Cardápio não encontrado</h1>
@@ -34,26 +36,28 @@ export default function MenuPage({
   } else
     return (
       <div>
-        <NavbarRestaurant restaurantData={restaurantMenu.restaurant} />
+        <NavbarRestaurant restaurant={restaurantMenu.restaurant} />
         <div className="menu">
           <h1>{restaurantMenu.name}</h1>
           <h1>Restaurante: {router.query.id}</h1>
         </div>
         <div>
-          {restaurantMenu.categories.map((categoria: any) => {
-            return (
-              <div>
-                <h2>{categoria.name}</h2>
-                {categoria.products.map((produto: any) => {
-                  return (
-                    <div>
-                      <ShowProduct product={produto} />;
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })}
+          {restaurantMenu.categories &&
+            restaurantMenu.categories.map((categoria: Category) => {
+              return (
+                <div>
+                  <h2>{categoria.name}</h2>
+                  {categoria.products &&
+                    categoria.products.map((produto: Product) => {
+                      return (
+                        <div>
+                          <ShowProduct product={produto} />;
+                        </div>
+                      );
+                    })}
+                </div>
+              );
+            })}
         </div>
       </div>
     );

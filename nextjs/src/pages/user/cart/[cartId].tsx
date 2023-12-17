@@ -1,22 +1,21 @@
 `use client`;
 
-import CartProduct from "@/components/CartProduct";
-import { getCartId } from "@/components/ShowProduct";
+import ShowCartProduct from "@/components/ShowCartProduct";
 import styles from "@/styles/Cart.module.css";
+import { Cart, defaultCart } from "@/types/types";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 
 export const getServerSideProps: GetServerSideProps<{
-  cart: any;
+  cart: Cart;
 }> = async (context) => {
   const cartId = context.query.cartId;
   const res = await fetch(`http://localhost:3000/api/user/cart/${cartId}`, {
     method: "GET",
   });
 
-  let cart = {};
+  let cart = defaultCart;
   if (res.ok) {
     cart = await res.json(); // Call response.json() to parse JSON
   }
@@ -36,15 +35,12 @@ export default function CartPage({
   const router = useRouter();
   const { data: session } = useSession();
 
-  if (JSON.stringify(cart) === "{}") {
-    // router.push(`/`)
-    // alert("Carrinho não encontrado")
+  if (cart.id === 0) {
     return (
       <div>
         <h1>Carrinho não encontrado</h1>
       </div>
     );
-    
   }
 
   const { status } = useSession({
@@ -71,7 +67,18 @@ export default function CartPage({
         <div>
           <h1>MEU CARRINHO</h1>
         </div>
-        {JSON.stringify(cart.cartProduct) !== "[]" ? (
+        {JSON.stringify(cart.cartProduct) === "[]" ? (
+          <div>
+            <h2>Adicione produtos ao carrinho</h2>
+            <button
+              onClick={() => {
+                router.push(`/search`);
+              }}
+            >
+              Pesquisar restaurantes
+            </button>
+          </div>
+        ) : (
           <div className={styles.produtos}>
             <table className={styles.table}>
               <tbody>
@@ -101,16 +108,12 @@ export default function CartPage({
                   </th>
                 </tr>
 
-                {cart.cartProduct.map((cartProduct: any) => {
-                  return <CartProduct cartProduct={cartProduct} />;
-                })}
+                {cart.cartProduct &&
+                  cart.cartProduct.map((cartProduct) => {
+                    return <ShowCartProduct cartProduct={cartProduct} />;
+                  })}
               </tbody>
             </table>
-          </div>
-        ) : (
-          <div>
-            <h2>Adicione produtos ao carrinho</h2>
-            <button>Pesquisar restaurantes</button>
           </div>
         )}
       </div>

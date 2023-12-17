@@ -52,7 +52,7 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     session: ({ session, token }) => {
-      console.log(`Session Callback`, { session, token });
+      // console.log(`Session Callback`, { session, token });
       return {
         ...session,
         user: {
@@ -64,7 +64,7 @@ export const authOptions: NextAuthOptions = {
     },
 
     jwt: ({ user, token }) => {
-      console.log(`JWT Callback`, { user, token });
+      // console.log(`JWT Callback`, { user, token });
       if (user) {
         const prismaUser = user as unknown as User;
         return {
