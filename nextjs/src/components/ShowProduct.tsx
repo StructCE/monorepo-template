@@ -1,4 +1,5 @@
 import styles from "@/styles/ShowProduct.module.css";
+import { Product } from "@/types/types";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
@@ -21,29 +22,24 @@ export async function getCartId(userEmail: string) {
   return Number(userData.cart.id);
 }
 
-export default function ShowProduct({ product }: any) {
+export default function ShowProduct(props: { product: Product }) {
   const { data: session } = useSession();
   const router = useRouter();
 
   return (
     <div className={styles.card}>
-      {/* <img src={product.image} alt={product.name} className={styles.img} /> */}
       <div className={styles.info}>
-        <h1 className={styles.nome}>{product.name}</h1>
-        <p className={styles.descricao}>{product.description}</p>
-        <p className={styles.ingredientes}>{product.ingredients}</p>
-        {/* <p className={styles.ingredientes}>
-          {Array.from(product.ingredients).join(", ")}
-        </p> */}
+        <h1 className={styles.nome}>{props.product.name}</h1>
+        <p className={styles.descricao}>{props.product.description}</p>
+        <p className={styles.ingredientes}>{props.product.ingredients}</p>
       </div>
-      <h2 className={styles.preco}>R$ {product.price + ",00"}</h2>
+      <h2 className={styles.preco}>R$ {props.product.price + ",00"}</h2>
       <button
         className={styles.action}
         onClick={async () => {
           if (session && session.user) {
-            const productId = Number(product.id);
+            const productId = Number(props.product.id);
             const cartId = Number(await getCartId(String(session.user.email)));
-            // console.log(productId, cartId);
             if (confirm("Adicionar produto ao carrinho?")) {
               postCartProdut({ cartId: cartId, productId: productId });
             }

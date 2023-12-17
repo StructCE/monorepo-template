@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../../../../prisma/prisma";
 
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -16,6 +17,8 @@ export default async function handler(
               email: ownerEmail,
               name: req.body.owner.name,
               password: req.body.owner.password,
+              image:
+                "https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png",
               isOwner: true,
             },
           });

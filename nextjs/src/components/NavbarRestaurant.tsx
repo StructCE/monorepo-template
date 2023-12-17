@@ -2,8 +2,13 @@ import styles from "@/styles/Navbar.module.css";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import NavbarLogin from "./NavbarLogin";
+import { Restaurant } from "@/types/types";
 
-export default function NavbarRestaurant({ restaurantData }: any) {
+export default function NavbarRestaurant(props: {
+  restaurant: Restaurant | undefined;
+}) {
+  if (!props.restaurant) return null;
+
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -19,10 +24,10 @@ export default function NavbarRestaurant({ restaurantData }: any) {
 
       <div className={styles.logo_div}>
         <img
-          src={`/images/restaurants/${String(restaurantData.name)
+          src={`/images/restaurants/${String(props.restaurant.name)
             .toLowerCase()
             .replaceAll(" ", "_")}.png`}
-          alt={String(restaurantData.name).toLowerCase().replaceAll(" ", "_")}
+          alt={String(props.restaurant.name).toLowerCase().replaceAll(" ", "_")}
           className={styles.logo_restaurant}
           // onClick={() => {
           //   router.push(`/`);
@@ -34,7 +39,6 @@ export default function NavbarRestaurant({ restaurantData }: any) {
         Contato
       </button>
 
-      {/* <NavbarLogin /> */}
     </nav>
   );
 }
