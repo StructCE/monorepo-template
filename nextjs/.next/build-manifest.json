@@ -26,16 +26,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/restaurant/menu/[id].js"
-    ],
-    "/user/cart/[cartId]": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/user/cart/[cartId].js"
-    ],
-    "/user/menu/[ownerId]": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/user/menu/[ownerId].js"
     ]
   },
   "ampFirstPages": []

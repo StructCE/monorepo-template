@@ -46,7 +46,9 @@ export default function ShowProduct(props: {
         <p className={styles.descricao}>{props.product.description}</p>
         <p className={styles.ingredientes}>{props.product.ingredients}</p>
       </div>
-      <h2 className={styles.preco}>R$ {props.product.price + ",00"}</h2>
+      <h2 className={styles.preco}>
+        R$ {String(props.product.price.toFixed(2)).replace(".", ",")}
+      </h2>
       <button
         className={styles.action}
         onClick={async () => {
