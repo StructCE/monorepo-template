@@ -1,4 +1,4 @@
-import styles from "@/pages/cardapio/styles/bolotas.module.css"
+import styles from "@/pages/cardapio/styles/Bolotas.module.css"
 
 export default function Bolotas() {
     return (
