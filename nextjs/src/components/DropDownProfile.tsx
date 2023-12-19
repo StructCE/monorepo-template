@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import styles from "@/styles/Navbar.module.css";
 import { signOut, useSession } from "next-auth/react";
-import { getCartId } from "./ShowProduct";
+import { getCartId } from "./oldShowProduct";
 
 export default function DropDownProfile() {
   const router = useRouter();

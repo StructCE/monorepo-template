@@ -1,7 +1,12 @@
-import styles from "@/styles/ShowProduct.module.css";
+import styles from "@/styles/Menu.module.css";
+
 import { Product } from "@/types/types";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import AddToCart from "@/components/AddToCart";
+
+import Image from "next/image";
+import carrinho from "/public/images/carrinho.png";
 
 export async function postCartProdut(props: {
   productId: number;
@@ -40,41 +45,43 @@ export default function ShowProduct(props: {
   const router = useRouter();
 
   return (
-    <div className={styles.card}>
-      <div className={styles.info}>
-        <h1 className={styles.nome}>{props.product.name}</h1>
-        <p className={styles.descricao}>{props.product.description}</p>
-        <p className={styles.ingredientes}>{props.product.ingredients}</p>
-      </div>
-      <h2 className={styles.preco}>
-        R$ {String(props.product.price.toFixed(2)).replace(".", ",")}
-      </h2>
-      <button
-        className={styles.action}
-        onClick={async () => {
-          if (session && session.user) {
-            const productId = props.product.id;
-            const restaurantId = props.restaurantId;
-            const cartId = Number(await getCartId(String(session.user.email)));
-            if (confirm("Adicionar produto ao carrinho?")) {
-              postCartProdut({
-                cartId: cartId,
-                productId: productId,
-                restaurantId: restaurantId,
-              });
-            }
-          } else {
-            alert("Faça login para acessar adicionar produtos ao carrinho!");
-            router.push(`/api/auth/signin`);
-          }
-        }}
-      >
-        <img
-          src="/images/icons/cart.png"
-          alt="add_to_cart"
-          className={styles.action_icon}
-        />
-      </button>
-    </div>
-  );
+    // <section className={styles.tabelas}>
+      <div className={styles.tabela}>
+        <ul className={styles.ul}>
+          <li className={styles.li}>{props.product.name}</li>
+          <li className={styles.li2}>{props.product.description} </li>
+        </ul>
+
+        <ul className={styles.ul2}>
+          <li className={styles.li}>Valor</li>
+          <li className={styles.li2}>
+            R$ {String(props.product.price.toFixed(2)).replace(".", ",")}
+          </li>
+
+          <AddToCart
+            product={props.product}
+            restaurantId={props.restaurantId}
+          />
+        </ul>
+      </div>)
+
+      {/* <div className={styles.tabela}>
+        <ul className={styles.ul}>
+          <li className={styles.li}>{props.product.name}</li>
+          <li className={styles.li2}>{props.product.description} </li>
+        </ul>
+
+        <ul className={styles.ul2}>
+          <li className={styles.li}>Valor</li>
+          <li className={styles.li2}>
+            R$ {String(props.product.price.toFixed(2)).replace(".", ",")}
+          </li>
+
+          <a>
+            <Image src={carrinho} alt=""></Image>
+          </a>
+        </ul>
+      </div> */}
+    {/* </section> */}
+//   );
 }

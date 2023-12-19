@@ -19,7 +19,7 @@ export default function Navbar() {
           }}
         />
       </div>
-      <div className={styles.actions_div}>
+      {/* <div className={styles.actions_div}>
         <div className={styles.actions}>
           <button onClick={() => {}} className={styles.button}>
             Sobre
@@ -47,7 +47,7 @@ export default function Navbar() {
 
           <NavbarLogin />
         </div>
-      </div>
+      </div> */}
     </nav>
   );
 }

@@ -2,7 +2,10 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/": "pages/index.js",
   "/restaurant/menu/[id]": "pages/restaurant/menu/[id].js",
-  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js"
+  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
+  "/api/restaurant/menu/[id]": "pages/api/restaurant/menu/[id].js",
+  "/user/cart/[cartId]": "pages/user/cart/[cartId].js",
+  "/restaurant/menu/new": "pages/restaurant/menu/new.js",
+  "/": "pages/index.js"
 }
