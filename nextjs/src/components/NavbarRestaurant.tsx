@@ -23,13 +23,27 @@ export default function NavbarRestaurant(props: {
         <li className={styles.li}>Unidades</li>
       </ul>
       <a className={styles.img_logo}>
-        <Image src={logo} height={110} alt=""></Image>
+        {/* <Image src={logo} height={110} alt=""></Image> */}
+        <img
+          src={`/images/restaurants/${props.restaurant.name
+            .toLowerCase()
+            .replaceAll(" ", "_")}`}
+          alt={props.restaurant.name.toLowerCase().replaceAll(" ", "_")}
+        />
       </a>
       <ul className={styles.ul_r}>
         <li className={styles.li}>Contato</li>
-        {/* <li className={styles.li}>Carrinho</li> */}
-        <li className={styles.li}>
-          <NavbarLogin />
+        <li
+          className={styles.li}
+          onClick={() => {
+            if (session && session.user) {
+              router.push(`/user/cart/${session?.user.id}`);
+            } else {
+              alert("Faça login para acessar o carrinho")
+            }
+          }}
+        >
+          Carrinho
         </li>
 
         {/* <a className={styles.img_login}>

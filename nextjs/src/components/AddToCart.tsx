@@ -1,5 +1,5 @@
 import styles from "@/styles/Menu.module.css";
-import { Product } from "@/types/types";
+import { Product, defaultUser } from "@/types/types";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
@@ -28,8 +28,14 @@ export async function getCartId(userEmail: string) {
   const res = await fetch(`http://localhost:3000/api/user/${userEmail}`, {
     method: "GET",
   });
-  const userData = await res.json();
-  return Number(userData.cart.id);
+
+  let user = defaultUser;
+  if (res.ok) user = await res.json();
+
+  if (user && user.cart) {
+    // console.log(user);
+    return Number(user.cart.id);
+  } else return 0;
 }
 
 export default function AddToCart(props: {

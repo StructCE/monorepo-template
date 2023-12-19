@@ -19,15 +19,15 @@ export default function Navbar() {
           }}
         />
       </div>
-      {/* <div className={styles.actions_div}>
+      <div className={styles.actions_div}>
         <div className={styles.actions}>
-          <button onClick={() => {}} className={styles.button}>
+          {/* <button onClick={() => {}} className={styles.button}>
             Sobre
           </button>
 
           <button onClick={() => {}} className={styles.button}>
             Contato
-          </button>
+          </button> */}
 
           {session && session.user && session.user.isOwner && (
             <button
@@ -47,7 +47,7 @@ export default function Navbar() {
 
           <NavbarLogin />
         </div>
-      </div> */}
+      </div>
     </nav>
   );
 }

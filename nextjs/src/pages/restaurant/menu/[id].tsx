@@ -7,12 +7,11 @@ import { Category, Menu, Product, defaultMenu } from "@/types/types";
 import styles from "@/styles/Menu.module.css";
 
 import Image from "next/image";
-
-import caixota from "/public/images/caixa_cardapio.png";
-import carrinho from "/public/images/carrinho.png";
-import pau from "/public/images/pau.png";
-import caxeta from "/public/images/caixa_unidades.png";
 import Head from "next/head";
+
+import caixote from "/public/images/caixa_restaurante.png"
+import caixota from "/public/images/caixa_cardapio.png";
+import pau from "/public/images/pau.png";
 
 export const getServerSideProps: GetServerSideProps<{
   menu: Menu;
@@ -61,14 +60,12 @@ export default function MenuPage({
           <NavbarRestaurant restaurant={menu.restaurant} />
 
           <span className={styles.img_caixa}>
-            <Image src={caixota} height={140} alt=""></Image>
-            {/* {menu.name} */}
+            <Image src={caixote} height={140} alt=""></Image>
           </span>
       
 
           <span className={styles.img_caixa}>
             <Image src={caixota} height={140} alt=""></Image>
-            {/* {menu.name} */}
           </span>
 
           <div>

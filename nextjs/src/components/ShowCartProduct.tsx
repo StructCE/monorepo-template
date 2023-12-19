@@ -3,12 +3,16 @@ import { CartProduct, defaultCartProduct } from "@/types/types";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-async function upateQuantityDB(cartProductId: number, newQuantity: number) {
+async function upateQuantityDB(props: {
+  cartProductId: number;
+  newQuantity: number;
+}) {
+  console.log(props);
   const res = await fetch(
-    `http://localhost:3000/api/user/cart/product/${cartProductId}`,
+    `http://localhost:3000/api/user/cart/product/${props.cartProductId}`,
     {
       method: "PUT",
-      body: JSON.stringify({ quantity: newQuantity }),
+      body: JSON.stringify({ quantity: props.newQuantity }),
       headers: { "Content-Type": "application/json" },
     }
   );
@@ -81,7 +85,10 @@ export default function ShowCartProduct(props: { cartProduct: CartProduct }) {
               if (count > 1) {
                 const newCount = count - 1;
                 setCount(newCount);
-                upateQuantityDB(props.cartProduct.id, newCount);
+                upateQuantityDB({
+                  cartProductId: props.cartProduct.id,
+                  newQuantity: newCount,
+                });
               }
             }}
           >
@@ -95,7 +102,10 @@ export default function ShowCartProduct(props: { cartProduct: CartProduct }) {
             onClick={() => {
               const newCount = count + 1;
               setCount(newCount);
-              upateQuantityDB(props.cartProduct.productId, newCount);
+              upateQuantityDB({
+                cartProductId: props.cartProduct.productId,
+                newQuantity: newCount,
+              });
             }}
           >
             +
