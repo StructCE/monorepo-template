@@ -1,6 +1,70 @@
-.categoria{
+.tabelas {
     display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    width: 1vw;
+    flex-direction: row;
+    font-size: 3.3dvh;
+    margin-top: 40px;
+    align-items: center;
+    margin-left: 120px;
+    margin-right: 3rem;
+    justify-content: space-between;
+
+}
+
+.tabela {
+    display: flex;
+    flex-direction: row;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.tabelas .ul {
+    margin-right: 20%;
+    margin-left: 2%;
+}
+
+.tabelas .ul .li {
+    font-size: 3.4dvh;
+    list-style: none;
+    font-weight: bold;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tabelas .ul .li2 {
+    font-size: 3.3dvh;
+    display: flex;
+    margin-top: 10px;
+    list-style: none;
+    text-align: justify;
+
+}
+
+.img_caixa {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 25%;
+    margin-top: 20px;
+}
+
+.paus {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.pau {
+    margin-right: auto;
+    margin-bottom: 40px;
+    margin-top: 30px;
+}
+
+.paus .cat {
+    text-align: center;
+    font-size: 3.7dvh;
+    list-style: none;
+    padding-right: 10px;
+    padding-left: 10px;
+    font-weight: bold;
 }

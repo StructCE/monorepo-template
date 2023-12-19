@@ -1,4 +1,4 @@
-.navbar{
+.navbar {
     width: 100vw;
     height: 100%;
     display: relative;
@@ -9,14 +9,14 @@
     flex-direction: row;
 }
 
-.ul_l{
+.ul_l {
     display: flex;
     flex-direction: row;
     margin-right: 50px;
     margin-left: 50px;
 }
 
-.ul_r{
+.ul_r {
     display: flex;
     flex-direction: row;
     margin-right: 50px;
@@ -43,9 +43,9 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-  }
+}
 
-  .img_login {
+.img_login {
     align-self: center;
-    margin:auto;
-  }
+    margin: auto;
+}
