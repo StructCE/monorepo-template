@@ -1,0 +1,77 @@
+.body{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  position: absolute;
+  content: "";
+  width: 100vw;
+  height: 4017px;
+  background: rgba(211, 250, 214, 0.66);
+}
+
+.Ellipse2,
+.Ellipse6,
+.Ellipse5,
+.Ellipse4,
+.Ellipse3,
+.Ellipse7,
+.Ellipse8 {
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: multiply;
+}
+
+.Ellipse2 {
+  width: 81%; 
+  padding-top: 81%; 
+  top: -80%;
+  left: -21%;
+  background: rgba(211, 250, 214, 0.66);
+}
+
+.Ellipse3 {
+  width: 66%; 
+  padding-top: 66%; 
+  left: 40%;
+  top: 10.6%;
+  background: rgba(211, 250, 214, 0.66);
+}
+
+.Ellipse4 {
+  width: 40%; 
+  padding-top: 40%; 
+  left: 2%;
+  top: 125%;
+  background: rgba(211, 250, 214, 0.66);
+}
+
+.Ellipse5 {
+  width: 65%; 
+  padding-top: 65%;
+  top: 290%;
+  background: rgba(255, 184, 183, 0.66);
+}
+
+.Ellipse6 {
+  width: 80%; 
+  padding-top: 80%;
+  left: 25%;
+  top: 378%;
+  background: rgba(255, 184, 183, 0.66);
+}
+
+/* .Ellipse7 {
+  width: 80%; 
+  padding-top: 80%;
+  left: 0%;
+  top: 500%;
+  background: rgba(255, 184, 183, 0.66);
+} */
+
+.Ellipse8 {
+  width: 36%; 
+  padding-top: 36%;
+  right: 15%;
+  top: 200%;
+  background: rgba(255, 184, 183, 0.66);
+}

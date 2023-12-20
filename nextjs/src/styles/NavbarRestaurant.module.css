@@ -1,0 +1,51 @@
+.navbar {
+    width: 100vw;
+    height: 250px;
+    display: relative;
+    align-items: center;
+    font-weight: bold;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+}
+
+.ul_l {
+    display: flex;
+    flex-direction: row;
+    margin-right: 50px;
+    margin-left: 50px;
+}
+
+.ul_r {
+    display: flex;
+    flex-direction: row;
+    margin-right: 50px;
+    margin-left: 50px;
+}
+
+.ul_l .li {
+    list-style: none;
+    margin: 60px;
+    cursor: pointer;
+    font-size: 3.3dvh;
+}
+
+.ul_r .li {
+    list-style: none;
+    margin: 60px;
+    cursor: pointer;
+    font-size: 3.3dvh;
+
+}
+
+.img_logo {
+    align-self: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.img_login {
+    align-self: center;
+    margin: auto;
+}

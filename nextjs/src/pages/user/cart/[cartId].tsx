@@ -68,13 +68,13 @@ export default function CartPage({
       {!cart.cartProduct || JSON.stringify(cart.cartProduct) === "[]" ? (
         <div>
           <h2>Adicione produtos ao carrinho</h2>
-          <button
+          {/* <button
             onClick={() => {
               router.push(`/search`);
             }}
           >
             Pesquisar restaurantes
-          </button>
+          </button> */}
         </div>
       ) : (
         cart.cartProduct && (

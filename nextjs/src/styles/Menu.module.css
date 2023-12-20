@@ -1,6 +1,114 @@
-.categoria{
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    width: 1vw;
+.page {
+  width: 100%;
+}
+
+.tabelas {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+
+  margin-top: 40px;
+  /* margin-left: 120px; */
+  /* margin-right: 48px; */
+
+  font-size: 3.3dvh;
+}
+
+.tabela {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 40%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.tabelas .ul {
+  width: 70%;
+}
+
+.tabelas .ul .li {
+  font-size: 3.4dvh;
+  list-style: none;
+  font-weight: bold;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tabelas .ul .li2 {
+  font-size: 3.3dvh;
+  /* display: flex; */
+  margin-top: 10px;
+  list-style: none;
+  text-align: left;
+}
+
+.tabelas .ul2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20%;
+}
+
+.tabelas .ul2 .li {
+  font-size: 3.4dvh;
+  list-style: none;
+  font-weight: bold;
+}
+
+.tabelas .ul2 .li2 {
+  font-size: 3.3dvh;
+  list-style: none;
+  text-align: left;
+}
+
+.img_caixa {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* width: 300px; */
+  /* height: 50px; */
+  /* border: 2px #000 solid;
+  font-size: 3.4dvh;
+  font-weight: bold;    
+  padding: 20px; */
+}
+
+.paus {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.pau {
+margin: 20px;
+}
+
+.paus .cat {
+  text-align: center;
+  font-size: 3.7dvh;
+  list-style: none;
+  padding-right: 10px;
+  padding-left: 10px;
+  font-weight: bold;
+}
+
+.action {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.action_icon {
+    margin-top: 10px;
+  width: 30px;
+  height: 35px;
 }

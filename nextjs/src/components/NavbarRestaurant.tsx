@@ -1,8 +1,12 @@
-import styles from "@/styles/Navbar.module.css";
+import Image from "next/image";
+import styles from "@/styles/NavbarRestaurant.module.css";
+
+import login from "/public/images/login-cardapio.png";
+import logo from "/public/images/logo_sushispace.png";
+import { Restaurant } from "@/types/types";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import NavbarLogin from "./NavbarLogin";
-import { Restaurant } from "@/types/types";
 
 export default function NavbarRestaurant(props: {
   restaurant: Restaurant | undefined;
@@ -13,32 +17,39 @@ export default function NavbarRestaurant(props: {
   const router = useRouter();
 
   return (
-    <nav className={styles.nav_div_res}>
-      <button onClick={() => {}} className={styles.button}>
-        Cardápio
-      </button>
-
-      <button onClick={() => {}} className={styles.button}>
-        Filiais
-      </button>
-
-      <div className={styles.logo_div}>
+    <nav className={styles.navbar}>
+      <ul className={styles.ul_l}>
+        <li className={styles.li}>Cardápio</li>
+        <li className={styles.li}>Unidades</li>
+      </ul>
+      <a className={styles.img_logo}>
+        {/* <Image src={logo} height={110} alt=""></Image> */}
         <img
-          src={`/images/restaurants/${String(props.restaurant.name)
+          src={`/images/restaurants/${props.restaurant.name
             .toLowerCase()
-            .replaceAll(" ", "_")}.png`}
-          alt={String(props.restaurant.name).toLowerCase().replaceAll(" ", "_")}
-          className={styles.logo_restaurant}
-          // onClick={() => {
-          //   router.push(`/`);
-          // }}
+            .replaceAll(" ", "_")}`}
+          alt={props.restaurant.name.toLowerCase().replaceAll(" ", "_")}
         />
-      </div>
+      </a>
+      <ul className={styles.ul_r}>
+        <li className={styles.li}>Contato</li>
+        <li
+          className={styles.li}
+          onClick={() => {
+            if (session && session.user) {
+              router.push(`/user/cart/${session?.user.id}`);
+            } else {
+              alert("Faça login para acessar o carrinho")
+            }
+          }}
+        >
+          Carrinho
+        </li>
 
-      <button onClick={() => {}} className={styles.button}>
-        Contato
-      </button>
-
+        {/* <a className={styles.img_login}>
+          <Image src={login} height={35} alt=""></Image>
+        </a> */}
+      </ul>
     </nav>
   );
 }
