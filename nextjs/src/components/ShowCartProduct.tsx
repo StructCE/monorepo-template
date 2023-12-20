@@ -41,27 +41,30 @@ export default function ShowCartProduct(props: { cartProduct: CartProduct }) {
 
   return (
     <tr className={styles.line}>
-      <th>
+      <th className={styles.coluna0}>
         <img
+          className={styles.restaurant_logo}
           src={`/images/restaurants/${props.cartProduct.restaurant.name
             .toLowerCase()
             .replaceAll(" ", "_")}.png`}
           alt={`/images/restaurants/${props.cartProduct.restaurant.name
             .toLowerCase()
             .replaceAll(" ", "_")}.png`}
-          className={styles.image}
+          onClick={() => {
+            router.push(`/restaurant/menu/${props.cartProduct.restaurant?.id}`);
+          }}
         />
       </th>
-      <th className={styles.cell_product}>
-        <img
+      <th className={styles.coluna1}>
+        {/* <img
           src={`/images/products/${props.cartProduct.product.name
             .toLowerCase()
             .replaceAll(" ", "_")}.png`}
           alt={`/images/products/${props.cartProduct.product.name
             .toLowerCase()
             .replaceAll(" ", "_")}.png`}
-          className={styles.image}
-        />
+          className={styles.product_image}
+        /> */}
         <span className={styles.product_info}>
           <h1 className={styles.name}>{props.cartProduct.product.name}</h1>
           <p className={styles.description}>
@@ -72,15 +75,15 @@ export default function ShowCartProduct(props: { cartProduct: CartProduct }) {
           </p>
         </span>
       </th>
-      <th>
+      <th className={styles.coluna2}>
         <span className={styles.price}>
-          R${String((price * count).toFixed(2)).replace(".", ",")}
+          R${String(price.toFixed(2)).replace(".", ",")}
         </span>
       </th>
-      <th>
+      <th className={styles.coluna3}>
         <div className={styles.quantifier}>
           <button
-            className={styles.quatifier_button}
+            className={styles.button}
             onClick={() => {
               if (count > 1) {
                 const newCount = count - 1;
@@ -92,13 +95,13 @@ export default function ShowCartProduct(props: { cartProduct: CartProduct }) {
               }
             }}
           >
-            -
+            <p className={styles.p}>-</p>
           </button>
 
           <span className={styles.quantity}>{count}</span>
 
           <button
-            className={styles.quatifier_button}
+            className={styles.button}
             onClick={() => {
               const newCount = count + 1;
               setCount(newCount);
@@ -108,14 +111,14 @@ export default function ShowCartProduct(props: { cartProduct: CartProduct }) {
               });
             }}
           >
-            +
+            <p className={styles.p}>+</p>
           </button>
         </div>
       </th>
-      <th>
+      <th className={styles.coluna4}>
         <span>R${String((price * count).toFixed(2)).replace(".", ",")}</span>
       </th>
-      <th style={{ color: "#fff" }}>
+      <th className={styles.coluna5}>
         <button
           className={styles.trash_button}
           onClick={() => {

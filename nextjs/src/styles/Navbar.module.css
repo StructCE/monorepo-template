@@ -1,6 +1,6 @@
 .nav_div {
   width: 100%;
-  height: 10rem;
+  height: 12rem;
   background-color: #d3fad6;
   display: inline-flex;
   flex-wrap: nowrap;
@@ -96,8 +96,8 @@
 
 .dropDownProfile {
   position: absolute;
-  top: 160px;
-  right: 120px;
+  top: 50px;
+  right: 170px;
   /* width: ; */
 }
 

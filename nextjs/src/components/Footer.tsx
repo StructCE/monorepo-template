@@ -25,31 +25,29 @@ export default function Footer() {
           <h1 className={styles.h1}>Recursos</h1>
           <ul className={styles.ul}>
             <li className={styles.li}>
-              <Link href="" className={styles.a}>
-                Navegar
+              <Link href="/search" className={styles.a}>
+                Pesquisa avançada
               </Link>
             </li>
-            <li className={styles.li}>
+            {/* <li className={styles.li}>
               <Link href="" className={styles.a}>
                 Meu Restaurante
+              </Link>
+            </li> */}
+
+            <li className={styles.li}>
+              <Link href="/register" className={styles.a}>
+                Cadastar restaurante
               </Link>
             </li>
             <li className={styles.li}>
               <Link
-                href=""
-                onClick={() => {
-                  if (session && session.user) {
-                    router.push(`/user/menu/${session.user.email}`);
-                  }
-                }}
+                href={`/user/menu/${
+                  session && session.user ? session.user.id : 0
+                }`}
                 className={styles.a}
               >
                 Criar cardápio
-              </Link>
-            </li>
-            <li className={styles.li}>
-              <Link href="/register" className={styles.a}>
-                Criar conta
               </Link>
             </li>
           </ul>

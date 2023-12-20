@@ -2,16 +2,40 @@
   background-color: #fff;
 }
 
-.image {
+.product_image {
   width: 175px;
   height: 175px;
   /* padding: 1 5px; */
 }
 
-.cell_product {
-  display: flex;
-  flex-direction: row;
-  text-align: left;
+.restaurant_logo {
+  width: 175px;
+  height: 175px;
+  cursor: pointer;
+}
+
+.coluna0 {
+  width: 15%;
+}
+
+.coluna1 {
+  width: 35%;
+}
+
+.coluna2 {
+  width: 15%;
+}
+
+.coluna3 {
+  width: 15%;
+}
+
+.coluna4 {
+  width: 15%;
+}
+
+.coluna5 {
+  width: 5%;
 }
 
 .name {
@@ -37,7 +61,6 @@
   padding-top: 10px;
   font-size: 24px;
   font-weight: normal;
-
 }
 
 .trash {
@@ -57,6 +80,33 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
+}
+
+.quantifier .button {
+  cursor: pointer;
+
+  width:  fit-content;
+  height: fit-content;
+
+  font-size: 50;
+
+  margin: 0;
+  padding: 0;
+
+  /* display: block;
+  align-items: center;
+  justify-content: center; */
+}
+
+.quantifier .button .p {
+  margin: 0;
+  height: 15px;
+  width:  15px;
+  padding: 2px;
+
+  line-height: 10px;
+  
+  text-align: center;
 }
 
 .quantity {

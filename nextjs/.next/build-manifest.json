@@ -27,10 +27,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/restaurant/menu/[id].js"
     ],
-    "/restaurant/menu/new": [
+    "/user/cart/[cartId]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/restaurant/menu/new.js"
+      "static/chunks/pages/user/cart/[cartId].js"
     ]
   },
   "ampFirstPages": []

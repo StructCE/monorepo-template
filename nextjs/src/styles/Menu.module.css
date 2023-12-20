@@ -1,5 +1,7 @@
 .page {
   width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .tabelas {
@@ -29,7 +31,7 @@
 }
 
 .tabelas .ul .li {
-  font-size: 3.4dvh;
+  font-size: 3.2dvh;
   list-style: none;
   font-weight: bold;
   margin-left: auto;
@@ -37,11 +39,20 @@
 }
 
 .tabelas .ul .li2 {
-  font-size: 3.3dvh;
+  font-size: 2.8dvh;
   /* display: flex; */
   margin-top: 10px;
   list-style: none;
   text-align: left;
+}
+
+.tabelas .ul .li3 {
+  font-size: 2.4dvh;
+  /* display: flex; */
+  margin-top: 10px;
+  list-style: none;
+  text-align: left;
+  font-style: italic;
 }
 
 .tabelas .ul2 {
@@ -52,13 +63,13 @@
 }
 
 .tabelas .ul2 .li {
-  font-size: 3.4dvh;
+  font-size: 3.2dvh;
   list-style: none;
   font-weight: bold;
 }
 
 .tabelas .ul2 .li2 {
-  font-size: 3.3dvh;
+  font-size: 2.8dvh;
   list-style: none;
   text-align: left;
 }

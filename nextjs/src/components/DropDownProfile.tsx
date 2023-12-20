@@ -32,6 +32,21 @@ export default function DropDownProfile() {
         >
           Perfil
         </button>{" "}
+        {session && session.user && session.user.isOwner && (
+          <button
+            className={styles.dropDownItem}
+            onClick={() => {
+              if (session && session.user) {
+                router.push(`/user/menu/${session.user.id}`);
+              } else {
+                alert("Faça login para acessar seu restaurante!");
+                router.push(`/login`);
+              }
+            }}
+          >
+            Meu restaurante
+          </button>
+        )}
         <button
           className={styles.dropDownItem}
           onClick={async () => {

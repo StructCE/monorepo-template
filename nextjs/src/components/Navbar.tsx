@@ -29,7 +29,7 @@ export default function Navbar() {
             Contato
           </button> */}
 
-          {session && session.user && session.user.isOwner && (
+          {/* {session && session.user && session.user.isOwner && (
             <button
               onClick={() => {
                 if (session && session.user) {
@@ -43,7 +43,7 @@ export default function Navbar() {
             >
               Restaurante
             </button>
-          )}
+          )} */}
 
           <NavbarLogin />
         </div>

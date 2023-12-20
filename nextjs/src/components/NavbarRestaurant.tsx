@@ -22,12 +22,12 @@ export default function NavbarRestaurant(props: {
         <li className={styles.li}>Cardápio</li>
         <li className={styles.li}>Unidades</li>
       </ul>
-      <a className={styles.img_logo}>
+      <a className={styles.image_container}>
         {/* <Image src={logo} height={110} alt=""></Image> */}
         <img
           src={`/images/restaurants/${props.restaurant.name
             .toLowerCase()
-            .replaceAll(" ", "_")}`}
+            .replaceAll(" ", "_")}.png`}
           alt={props.restaurant.name.toLowerCase().replaceAll(" ", "_")}
         />
       </a>
@@ -39,16 +39,12 @@ export default function NavbarRestaurant(props: {
             if (session && session.user) {
               router.push(`/user/cart/${session?.user.id}`);
             } else {
-              alert("Faça login para acessar o carrinho")
+              alert("Faça login para acessar o carrinho");
             }
           }}
         >
           Carrinho
         </li>
-
-        {/* <a className={styles.img_login}>
-          <Image src={login} height={35} alt=""></Image>
-        </a> */}
       </ul>
     </nav>
   );

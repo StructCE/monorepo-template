@@ -9,7 +9,7 @@ import styles from "@/styles/Menu.module.css";
 import Image from "next/image";
 import Head from "next/head";
 
-import caixote from "/public/images/caixa_restaurante.png"
+import caixote from "/public/images/caixa_restaurante.png";
 import caixota from "/public/images/caixa_cardapio.png";
 import pau from "/public/images/pau.png";
 
@@ -59,16 +59,24 @@ export default function MenuPage({
 
           <NavbarRestaurant restaurant={menu.restaurant} />
 
-          <span className={styles.img_caixa}>
-            <Image src={caixote} height={140} alt=""></Image>
-          </span>
-      
-
-          <span className={styles.img_caixa}>
-            <Image src={caixota} height={140} alt=""></Image>
-          </span>
+          <div>
+            <span className={styles.img_caixa}>
+              <Image src={caixote} width={350} alt=""></Image>
+            </span>
+            <div>
+              <h1>{menu.restaurant.name}</h1>
+              <p>{menu.restaurant.description}</p>
+              <p>{menu.restaurant.contacts}</p>
+              <p>{menu.restaurant.location}</p>
+              <p>{menu.restaurant.phone}</p>
+              <p>{menu.restaurant.schedule}</p>
+            </div>
+          </div>
 
           <div>
+            <span className={styles.img_caixa}>
+              <Image src={caixota} width={350} alt=""></Image>
+            </span>
             {menu.categories &&
               menu.categories.map((categoria: Category) => {
                 return (

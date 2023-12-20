@@ -42,12 +42,31 @@ export default function ShowProduct(props: {
       <ul className={styles.ul}>
         <li className={styles.li}>{props.product.name}</li>
         <li className={styles.li2}>{props.product.description} </li>
+        <li className={styles.li3}>{props.product.ingredients} </li>
       </ul>
 
       <ul className={styles.ul2}>
         <li className={styles.li}>Valor</li>
         <li className={styles.li2}>
-          R$ {String(props.product.price.toFixed(2)).replace(".", ",")}
+          <span
+            style={{
+              textDecoration:
+                props.product.discount === 0 ? "none" : "line-through",
+            }}
+          >
+            {`R$ ${String(props.product.price.toFixed(2)).replace(".", ",")}`}
+          </span>
+
+          <br />
+          <span style={{ color: "green" }}>
+            {props.product.discount !== 0 &&
+              `R$ ${String(
+                (
+                  props.product.price *
+                  (1 - props.product.discount / 100)
+                ).toFixed(2)
+              ).replace(".", ",")}`}
+          </span>
         </li>
 
         <AddToCart product={props.product} restaurantId={props.restaurantId} />
